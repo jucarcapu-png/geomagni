@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Símbolo GEOMAGNI">
+  <mask id="ranuras" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+    <rect width="512" height="512" fill="#fff"/>
+    <g stroke="#000" stroke-width="18" stroke-linecap="butt"><line x1="274" y1="171" x2="302.3" y2="38.2"/><line x1="341" y1="213.5" x2="454.0" y2="156.9"/></g>
+  </mask>
+  <g mask="url(#ranuras)">
+    <path fill="#5B2A86" fill-rule="evenodd" d="M298.6 55.5 439.3 164.3 442 342.2 304.6 455.2 130.7 418.3 51 259.1 125.7 97.8ZM171 171V341H341V171Z"/>
+    <path fill="#FF7400" d="M298.6 55.5 439.3 164.3 341 213.5 274 171Z"/>
+  </g>
+</svg>

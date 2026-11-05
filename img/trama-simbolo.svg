@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 16 16" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision">
+  <title id="title">Símbolo TRAMA</title>
+  <desc id="desc">Cuatro recorridos geométricos se entretejen. Un cruce naranja identifica el relevo verificable entre disciplinas.</desc>
+  <g fill="#5B2A86">
+    <!-- Recorrido vertical izquierdo: pasa por debajo arriba y por encima abajo. -->
+    <path d="M4 3 5 2H7V4H4Z"/>
+    <path d="M4 7H7V13L6 14H4Z"/>
+
+    <!-- Recorrido vertical derecho: pasa por encima arriba y por debajo abajo. -->
+    <path d="M9 3 10 2H12V4H9Z"/>
+    <path d="M9 7H12V9H9Z"/>
+    <path d="M9 12H12V13L11 14H9Z"/>
+
+    <!-- Recorrido horizontal superior: alterna el orden de cruce. -->
+    <path d="M2 5 3 4H9V7H2Z"/>
+    <path d="M12 4H13L14 5V7H12Z"/>
+
+    <!-- Recorrido horizontal inferior: alterna en sentido opuesto. -->
+    <path d="M2 10 3 9H4V12H2Z"/>
+    <path d="M7 9H14V11L13 12H7Z"/>
+  </g>
+
+  <!-- Hito de trazabilidad: el dato cambia de disciplina o de versión. -->
+  <path fill="#FF7400" d="M9 4H12V7H9Z"/>
+</svg>

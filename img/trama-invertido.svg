@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="TRAMA, firma horizontal invertida">
+  <g transform="translate(36 24) scale(17)">
+    <g fill="#FFFFFF"><path d="M4 3 5 2H7V4H4Z"/><path d="M4 7H7V13L6 14H4Z"/><path d="M9 3 10 2H12V4H9Z"/><path d="M9 7H12V9H9Z"/><path d="M9 12H12V13L11 14H9Z"/><path d="M2 5 3 4H9V7H2Z"/><path d="M12 4H13L14 5V7H12Z"/><path d="M2 10 3 9H4V12H2Z"/><path d="M7 9H14V11L13 12H7Z"/></g><path fill="#FF7400" d="M9 4H12V7H9Z"/>
+  </g>
+  <g transform="translate(370 87) scale(1.45)" fill="#FFFFFF">
+    <path d="M0 0H76V20H49V100H27V20H0Z"/>
+    <path fill-rule="evenodd" d="M96 0H140C164 0 176 12 176 32V35C176 50 168 60 155 65L180 100H154L133 68H118V100H96ZM118 20V49H139C149 49 154 44 154 35V32C154 24 149 20 139 20Z"/>
+    <path fill-rule="evenodd" d="M195 100 224 0H250L284 100H260L253 78H220L213 100ZM226 59H247L236.5 25Z"/>
+    <path d="M300 100V0H326L352 43 378 0H404V100H382V35L360 70H344L322 35V100Z"/>
+    <path fill-rule="evenodd" d="M420 100 449 0H475L509 100H485L478 78H445L438 100ZM451 59H472L461.5 25Z"/>
+  </g>
+</svg>
