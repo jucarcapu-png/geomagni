@@ -6,11 +6,13 @@
 // (Consola de Firebase › Configuración del proyecto › Tus apps › SDK de Firebase › Configuración).
 // Estos valores identifican el proyecto y pueden ser públicos; la seguridad la dan las reglas de firestore.rules.
 const FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
+  apiKey: "AIzaSyC82TKGq1keu-hpFquCLjNoxI9GxhXT0dY",
+  authDomain: "usuarios-geomagni.firebaseapp.com",
+  projectId: "usuarios-geomagni",
+  // Activar cuando Storage esté configurado y los instaladores subidos:
+  // storageBucket: "usuarios-geomagni.firebasestorage.app",
   storageBucket: "",
-  appId: ""
+  appId: "1:1008376057828:web:a7d38ebc53b046322741f1"
 };
 const DIAS_PRUEBA = 7;
 // Archivos de TRAMA en Firebase Storage (carpeta «instaladores»). Solo se entregan con licencia vigente (storage.rules).
