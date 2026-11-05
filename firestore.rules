@@ -59,5 +59,17 @@ service cloud.firestore {
         );
       allow update, delete: if false;
     }
+
+    // Equipo donde se usa TRAMA: una cuenta, un equipo (LIC-001).
+    // TRAMA lo registra la primera vez; para cambiar de equipo, el administrador borra el documento en la consola.
+    match /equipos/{uid} {
+      allow read: if propio(uid);
+      allow create: if propio(uid)
+        && request.auth.token.email_verified == true
+        && request.resource.data.keys().hasOnly(['huella', 'equipo'])
+        && request.resource.data.huella is string && request.resource.data.huella.size() == 64
+        && texto(request.resource.data.equipo, 80);
+      allow update, delete: if false;
+    }
   }
 }
