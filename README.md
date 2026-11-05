@@ -15,6 +15,7 @@ Sitio web de la compañía: ingeniería, BIM y software para proyectos de constr
 | `nosotros.html` | Propósito, historia, fundador, valores y datos de registro |
 | `trabaja.html` | Áreas, vacantes y postulación |
 | `contacto.html` | Canales y formulario |
+| `inscripcion.html`, `ingresar.html`, `cuenta.html` | Cuentas de usuario y licencias de prueba o estudiantiles (Firebase; ver `FIREBASE.md`) |
 | `privacidad.html` | Política de tratamiento de datos (Ley 1581 de 2012) |
 
 ## Editar

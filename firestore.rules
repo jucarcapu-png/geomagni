@@ -1,0 +1,63 @@
+rules_version = '2';
+
+// Reglas de seguridad de Firestore para las cuentas y licencias de GEOMAGNI.
+// Publíquelas en Consola de Firebase › Firestore Database › Reglas.
+// Cada persona solo lee y crea sus propios documentos; nadie puede alargar ni cambiar una licencia.
+service cloud.firestore {
+  match /databases/{base}/documents {
+
+    function propio(uid) { return request.auth != null && request.auth.uid == uid; }
+    function texto(v, max) { return v is string && v.size() <= max; }
+    function correoAcademico() {
+      return request.auth.token.email.matches('.*[.]edu([.][a-z]{2})?$')
+        && !request.auth.token.email.matches('.*@(gmail|googlemail|hotmail|outlook|live|msn|yahoo|ymail|icloud|me|mac|aol|proton|protonmail|gmx|zoho|yandex|mail)[.].*');
+    }
+
+    // Perfil del usuario (se crea al inscribirse)
+    match /usuarios/{uid} {
+      allow read: if propio(uid);
+      allow create: if propio(uid)
+        && request.resource.data.correo == request.auth.token.email
+        && request.resource.data.creado == request.time
+        && texto(request.resource.data.nombre, 120) && request.resource.data.nombre.size() > 1
+        && texto(request.resource.data.empresa, 120) && texto(request.resource.data.cargo, 120)
+        && texto(request.resource.data.telefono, 40) && texto(request.resource.data.pais, 80) && texto(request.resource.data.ciudad, 80)
+        && request.resource.data.perfil in ['profesional', 'empresa', 'estudiante']
+        && (request.resource.data.perfil != 'estudiante' || (
+              correoAcademico()
+              && texto(request.resource.data.universidad, 160) && texto(request.resource.data.programa, 160)
+              && request.resource.data.inicio is timestamp
+              && request.resource.data.inicio < request.time
+              && request.resource.data.duracionAnios is int
+              && request.resource.data.duracionAnios >= 1 && request.resource.data.duracionAnios <= 7))
+        && request.resource.data.keys().hasOnly(['nombre', 'correo', 'empresa', 'cargo', 'telefono', 'pais', 'ciudad', 'perfil',
+                                                  'creado', 'universidad', 'programa', 'inicio', 'duracionAnios']);
+      allow update: if propio(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['nombre', 'empresa', 'cargo', 'telefono', 'pais', 'ciudad']);
+      allow delete: if false;
+    }
+
+    // Licencia de TRAMA: una por cuenta, solo con correo confirmado, no editable.
+    match /licencias/{uid} {
+      allow read: if propio(uid);
+      allow create: if propio(uid)
+        && request.auth.token.email_verified == true
+        && request.resource.data.creado == request.time
+        && (
+          // Prueba: vence 7 días después de «creado» (lo calculan la web y TRAMA)
+          (request.resource.data.tipo == 'prueba'
+            && request.resource.data.keys().hasOnly(['tipo', 'creado']))
+          ||
+          // Estudiantil: correo institucional; datos iguales a los del perfil; vence en la fecha estimada de grado
+          (request.resource.data.tipo == 'estudiante'
+            && correoAcademico()
+            && request.resource.data.keys().hasOnly(['tipo', 'creado', 'inicio', 'duracionAnios'])
+            && get(/databases/$(base)/documents/usuarios/$(uid)).data.perfil == 'estudiante'
+            && request.resource.data.inicio == get(/databases/$(base)/documents/usuarios/$(uid)).data.inicio
+            && request.resource.data.duracionAnios == get(/databases/$(base)/documents/usuarios/$(uid)).data.duracionAnios
+            && request.resource.data.inicio + duration.value(request.resource.data.duracionAnios * 365, 'd') > request.time)
+        );
+      allow update, delete: if false;
+    }
+  }
+}

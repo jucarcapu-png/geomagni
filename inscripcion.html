@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscripción · GEOMAGNI TECNOLOGÍAS</title>
+  <meta name="description" content="Cree su cuenta GEOMAGNI y active una licencia de prueba de TRAMA por 7 días o una licencia estudiantil.">
+  <meta name="theme-color" content="#5B2A86">
+  <link rel="canonical" href="https://jucarcapu-png.github.io/geomagni/inscripcion.html">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:site_name" content="GEOMAGNI TECNOLOGÍAS">
+  <meta property="og:title" content="Inscripción · GEOMAGNI TECNOLOGÍAS">
+  <meta property="og:description" content="Cree su cuenta GEOMAGNI y active una licencia de prueba de TRAMA por 7 días o una licencia estudiantil.">
+  <meta property="og:url" content="https://jucarcapu-png.github.io/geomagni/inscripcion.html">
+  <meta property="og:image" content="https://jucarcapu-png.github.io/geomagni/img/og-geomagni.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="paginas.css">
+  <link rel="stylesheet" href="dinamico.css">
+  <script type="module" src="cuenta.js"></script>
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<div class="aviso-prueba" role="note"><strong>Sitio de prueba.</strong> Esta página está en construcción: precios, planes y descargas son demostrativos y pueden cambiar.</div>
+<header class="cabecera" id="cabecera">
+  <div class="contenedor cabecera__fila">
+    <a class="marca" href="index.html" aria-label="GEOMAGNI TECNOLOGÍAS, inicio">
+      <img src="img/geomagni-firma.svg" alt="GEOMAGNI TECNOLOGÍAS" width="200" height="50">
+    </a>
+    <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="menu" id="menu" aria-label="Principal">
+      <div class="menu__grupo">
+        <button class="menu__abrir" id="abrirProductos" aria-expanded="false" aria-controls="desplegableProductos">Productos</button>
+        <div class="desplegable" id="desplegableProductos">
+          <a class="destacado" href="productos.html#trama"><strong>TRAMA</strong><span>Plataforma BIM y gestión integral de proyectos</span></a>
+          <h4>Servicios</h4>
+          <a href="productos.html#gestion"><strong>Gestión de proyectos</strong><span>Alcance, cronograma, costos y control</span></a>
+          <a href="productos.html#bim"><strong>Modelación BIM</strong><span>Modelos coordinados de arquitectura y estructura</span></a>
+          <a href="productos.html#estructural"><strong>Diseño estructural</strong><span>Análisis, diseño y memorias de cálculo</span></a>
+          <a href="productos.html#coordinacion"><strong>Coordinación técnica</strong><span>Interferencias, incidencias y disciplinas</span></a>
+          <a href="productos.html#software"><strong>Software a la medida</strong><span>Herramientas y automatización para el sector</span></a>
+          <a href="productos.html#capacitacion"><strong>Consultoría y capacitación</strong><span>Adopción de flujos digitales y BIM</span></a>
+        </div>
+      </div>
+      <a href="planes.html">Planes</a>
+      <a href="descargas.html">Descargas</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html">Contacto</a>
+      <a class="enlace-cuenta" href="cuenta.html">Mi cuenta</a>
+      <a class="boton boton--naranja" href="inscripcion.html">Pruebe gratis</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+  <section class="encabezado">
+    <div class="contenedor">
+      <p class="migas"><a href="index.html">Inicio</a> / Inscripción</p>
+      <p class="etiqueta">Cuenta GEOMAGNI</p>
+      <h1>Inscríbase y pruebe TRAMA</h1>
+      <p>Cree su cuenta y active una licencia de prueba de 7 días. Si es estudiante, obtenga una licencia estudiantil por la duración de su carrera.</p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor contacto">
+      <div class="contacto__texto">
+        <h2>Qué recibe</h2>
+        <ul class="lista-chequeo lista-chequeo--clara">
+          <li><strong>Licencia de prueba:</strong> 7 días de TRAMA con todas las funciones.</li>
+          <li><strong>Licencia estudiantil:</strong> válida hasta la fecha estimada de grado, con su correo institucional.</li>
+          <li>Acceso a las descargas y a las novedades de TRAMA.</li>
+        </ul>
+        <p>¿Ya tiene cuenta? <a href="ingresar.html">Inicie sesión</a>.</p>
+      </div>
+      <div>
+      <div class="vacio" data-cuenta="pronto" hidden>
+        <h3>Inscripción disponible pronto</h3>
+        <p style="margin:0">Estamos preparando las cuentas de usuario. Mientras tanto puede <a href="descargas.html">descargar la versión de prueba</a> o <a href="contacto.html">escribirnos</a>.</p>
+      </div>
+      <form class="formulario" id="formInscripcion" data-cuenta="fuera" novalidate>
+        <fieldset class="perfiles">
+          <legend>Me inscribo como</legend>
+          <label><input type="radio" name="perfil" value="profesional" checked> Profesional independiente</label>
+          <label><input type="radio" name="perfil" value="empresa"> Empresa</label>
+          <label><input type="radio" name="perfil" value="estudiante"> Estudiante</label>
+        </fieldset>
+        <div class="campo"><label for="i-nombre">Nombre completo</label><input id="i-nombre" name="nombre" autocomplete="name" required maxlength="120"></div>
+        <div class="campo"><label for="i-correo">Correo electrónico</label><input id="i-correo" name="correo" type="email" autocomplete="email" required maxlength="160">
+          <small class="ayuda" id="ayudaCorreo">Le enviaremos un enlace para confirmarlo.</small></div>
+        <div class="dos">
+          <div class="campo"><label for="i-clave">Contraseña</label><input id="i-clave" name="clave" type="password" autocomplete="new-password" required minlength="8"></div>
+          <div class="campo"><label for="i-clave2">Repita la contraseña</label><input id="i-clave2" name="clave2" type="password" autocomplete="new-password" required></div>
+        </div>
+        <div class="dos">
+          <div class="campo"><label for="i-empresa">Empresa u organización <span class="opcional">(opcional)</span></label><input id="i-empresa" name="empresa" autocomplete="organization" maxlength="120"></div>
+          <div class="campo"><label for="i-cargo">Cargo <span class="opcional">(opcional)</span></label><input id="i-cargo" name="cargo" autocomplete="organization-title" maxlength="120"></div>
+        </div>
+        <div class="campo"><label for="i-tel">Teléfono <span class="opcional">(opcional)</span></label><input id="i-tel" name="telefono" type="tel" autocomplete="tel" maxlength="40"></div>
+        <div class="dos">
+          <div class="campo"><label for="i-pais">País</label><input id="i-pais" name="pais" autocomplete="country-name" required maxlength="80" value="Colombia"></div>
+          <div class="campo"><label for="i-ciudad">Ciudad</label><input id="i-ciudad" name="ciudad" autocomplete="address-level2" required maxlength="80"></div>
+        </div>
+        <div id="bloqueEstudiante" class="bloque-estudiante" hidden>
+          <p class="bloque-estudiante__titulo">Datos académicos</p>
+          <div class="campo"><label for="i-uni">Universidad o institución</label><input id="i-uni" name="universidad" maxlength="160"></div>
+          <div class="campo"><label for="i-prog">Programa que estudia</label><input id="i-prog" name="programa" maxlength="160" placeholder="Por ejemplo: Ingeniería Civil"></div>
+          <div class="dos">
+            <div class="campo"><label for="i-ini">Fecha de inicio de los estudios</label><input id="i-ini" name="inicio" type="date"></div>
+            <div class="campo"><label for="i-dur">Duración de la carrera</label>
+              <select id="i-dur" name="duracion"><option value="1">1 año</option><option value="2">2 años</option><option value="3">3 años</option><option value="4">4 años</option><option value="5" selected>5 años</option><option value="6">6 años</option><option value="7">7 años</option></select></div>
+          </div>
+          <p class="ayuda">La licencia vence en la fecha estimada de grado (inicio + duración). Solo se acepta el correo institucional de su universidad; no se aceptan correos personales.</p>
+        </div>
+        <div class="campo campo--casilla">
+          <input type="checkbox" id="i-autorizo" name="autorizo" required>
+          <label for="i-autorizo">Autorizo a GEOMAGNI TECNOLOGÍAS S.A.S. a tratar mis datos para responder esta solicitud, según su <a href="privacidad.html">política de tratamiento de datos</a>.</label>
+        </div>
+        <button class="boton boton--naranja" type="submit">Crear cuenta</button>
+        <p class="formulario__nota" role="status">Al crear la cuenta le enviaremos un correo para confirmar su dirección.</p>
+      </form>
+      <div class="vacio" data-cuenta="dentro" hidden><h3>Ya inició sesión</h3><p style="margin:0"><a href="cuenta.html">Ir a mi cuenta</a></p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="pie__columnas">
+      <div>
+        <div class="pie__marca"><svg viewBox="0 0 512 512" width="40" height="40" aria-hidden="true"><mask id="ranurasPie" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g stroke="#000" stroke-width="18"><line x1="274" y1="171" x2="302.3" y2="38.2"/><line x1="341" y1="213.5" x2="454" y2="156.9"/></g></mask><g mask="url(#ranurasPie)"><path fill="#FFFFFF" fill-rule="evenodd" d="M298.6 55.5 439.3 164.3 442 342.2 304.6 455.2 130.7 418.3 51 259.1 125.7 97.8ZM171 171V341H341V171Z"/><path fill="#FF7400" d="M298.6 55.5 439.3 164.3 341 213.5 274 171Z"/></g></svg>
+          <div><strong>GEOMAGNI TECNOLOGÍAS S.A.S.</strong><span>NIT 902.113.610-0</span></div>
+        </div>
+        <p class="pie__descripcion">Ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena de Indias, Colombia.</p>
+      </div>
+      <div>
+        <h4>Productos</h4>
+        <ul>
+          <li><a href="productos.html#trama">TRAMA</a></li>
+          <li><a href="productos.html#bim">Modelación BIM</a></li>
+          <li><a href="productos.html#estructural">Diseño estructural</a></li>
+          <li><a href="productos.html#software">Software a la medida</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Recursos</h4>
+        <ul>
+          <li><a href="planes.html">Planes y precios</a></li>
+          <li><a href="planes.html#pagos">Formas de pago</a></li>
+          <li><a href="descargas.html">Descargas</a></li>
+          <li><a href="planes.html#preguntas">Preguntas frecuentes</a></li>
+          <li><a href="inscripcion.html">Inscripción y prueba gratis</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="trabaja.html">Trabaja con nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="privacidad.html">Tratamiento de datos</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__fila">
+      <p class="pie__copy" style="margin:0">© <span class="anio">2026</span> GEOMAGNI TECNOLOGÍAS S.A.S. Todos los derechos reservados. · Sitio de prueba.
+        <span class="visitas-pie" hidden> · <b class="visitas-numero">0</b> visitas</span></p>
+      <p class="pie__lema">La medida da forma.</p>
+    </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

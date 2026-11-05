@@ -101,7 +101,6 @@ MENU = [
     ("planes.html", "Planes"),
     ("descargas.html", "Descargas"),
     ("nosotros.html", "Nosotros"),
-    ("trabaja.html", "Trabaja con nosotros"),
     ("contacto.html", "Contacto"),
 ]
 
@@ -134,10 +133,11 @@ def cabecera(activa):
     </button>
     <nav class="menu" id="menu" aria-label="Principal">
       <div class="menu__grupo">
-        <button class="menu__abrir%s" id="abrirProductos" aria-expanded="false" aria-controls="desplegableProductos">Productos y servicios</button>%s
+        <button class="menu__abrir%s" id="abrirProductos" aria-expanded="false" aria-controls="desplegableProductos">Productos</button>%s
       </div>
 %s
-      <a class="boton boton--naranja" href="contacto.html?asunto=demostracion">Solicitar demostración</a>
+      <a class="enlace-cuenta" href="cuenta.html">Mi cuenta</a>
+      <a class="boton boton--naranja" href="inscripcion.html">Pruebe gratis</a>
     </nav>
   </div>
 </header>
@@ -168,6 +168,7 @@ PIE = """<footer class="pie">
           <li><a href="planes.html#pagos">Formas de pago</a></li>
           <li><a href="descargas.html">Descargas</a></li>
           <li><a href="planes.html#preguntas">Preguntas frecuentes</a></li>
+          <li><a href="inscripcion.html">Inscripción y prueba gratis</a></li>
         </ul>
       </div>
       <div>
@@ -533,7 +534,7 @@ def p_planes():
       <div class="planes" style="text-align:left">
 %s
       </div>
-      <p class="nota-centro" id="notaPago">Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto puede <a href="descargas.html">descargar la versión de prueba</a> o <a href="contacto.html?asunto=planes">solicitar una cotización</a>.</p>
+      <p class="nota-centro" id="notaPago">Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto, <a href="inscripcion.html">inscríbase y pruebe TRAMA 7 días gratis</a>, o si es estudiante <a href="inscripcion.html?perfil=estudiante">obtenga su licencia estudiantil</a>.</p>
     </div>
   </section>
 
@@ -713,6 +714,7 @@ def p_nosotros():
           <p>Fundó GEOMAGNI para llevar la experiencia de la ingeniería civil y la dirección de proyectos al desarrollo de herramientas digitales para el sector de la construcción.</p>
         </div>
       </article>
+      <p style="margin-top:28px">¿Quiere hacer parte del equipo? <a class="enlace-flecha" href="trabaja.html">Trabaja con nosotros</a></p>
     </div>
   </section>
 
@@ -855,7 +857,129 @@ def p_privacidad():
     documento("privacidad.html", "Política de tratamiento de datos · GEOMAGNI TECNOLOGÍAS",
               "Política de tratamiento de datos personales de GEOMAGNI TECNOLOGÍAS S.A.S., conforme a la Ley 1581 de 2012.", cuerpo)
 
+# ---------------------------------------------------------------- CUENTAS
+MODULO_CUENTA = '\n  <script type="module" src="cuenta.js"></script>'
+PRONTO = """      <div class="vacio" data-cuenta="pronto" hidden>
+        <h3>Inscripción disponible pronto</h3>
+        <p style="margin:0">Estamos preparando las cuentas de usuario. Mientras tanto puede <a href="descargas.html">descargar la versión de prueba</a> o <a href="contacto.html">escribirnos</a>.</p>
+      </div>"""
+
+def p_inscripcion():
+    cuerpo = encabezado("Inscripción", "Cuenta GEOMAGNI", "Inscríbase y pruebe TRAMA",
+                        "Cree su cuenta y active una licencia de prueba de 7 días. Si es estudiante, obtenga una licencia estudiantil por la duración de su carrera.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor contacto">
+      <div class="contacto__texto">
+        <h2>Qué recibe</h2>
+        <ul class="lista-chequeo lista-chequeo--clara">
+          <li><strong>Licencia de prueba:</strong> 7 días de TRAMA con todas las funciones.</li>
+          <li><strong>Licencia estudiantil:</strong> válida hasta la fecha estimada de grado, con su correo institucional.</li>
+          <li>Acceso a las descargas y a las novedades de TRAMA.</li>
+        </ul>
+        <p>¿Ya tiene cuenta? <a href="ingresar.html">Inicie sesión</a>.</p>
+      </div>
+      <div>
+%(pronto)s
+      <form class="formulario" id="formInscripcion" data-cuenta="fuera" novalidate>
+        <fieldset class="perfiles">
+          <legend>Me inscribo como</legend>
+          <label><input type="radio" name="perfil" value="profesional" checked> Profesional independiente</label>
+          <label><input type="radio" name="perfil" value="empresa"> Empresa</label>
+          <label><input type="radio" name="perfil" value="estudiante"> Estudiante</label>
+        </fieldset>
+        <div class="campo"><label for="i-nombre">Nombre completo</label><input id="i-nombre" name="nombre" autocomplete="name" required maxlength="120"></div>
+        <div class="campo"><label for="i-correo">Correo electrónico</label><input id="i-correo" name="correo" type="email" autocomplete="email" required maxlength="160">
+          <small class="ayuda" id="ayudaCorreo">Le enviaremos un enlace para confirmarlo.</small></div>
+        <div class="dos">
+          <div class="campo"><label for="i-clave">Contraseña</label><input id="i-clave" name="clave" type="password" autocomplete="new-password" required minlength="8"></div>
+          <div class="campo"><label for="i-clave2">Repita la contraseña</label><input id="i-clave2" name="clave2" type="password" autocomplete="new-password" required></div>
+        </div>
+        <div class="dos">
+          <div class="campo"><label for="i-empresa">Empresa u organización <span class="opcional">(opcional)</span></label><input id="i-empresa" name="empresa" autocomplete="organization" maxlength="120"></div>
+          <div class="campo"><label for="i-cargo">Cargo <span class="opcional">(opcional)</span></label><input id="i-cargo" name="cargo" autocomplete="organization-title" maxlength="120"></div>
+        </div>
+        <div class="campo"><label for="i-tel">Teléfono <span class="opcional">(opcional)</span></label><input id="i-tel" name="telefono" type="tel" autocomplete="tel" maxlength="40"></div>
+        <div class="dos">
+          <div class="campo"><label for="i-pais">País</label><input id="i-pais" name="pais" autocomplete="country-name" required maxlength="80" value="Colombia"></div>
+          <div class="campo"><label for="i-ciudad">Ciudad</label><input id="i-ciudad" name="ciudad" autocomplete="address-level2" required maxlength="80"></div>
+        </div>
+        <div id="bloqueEstudiante" class="bloque-estudiante" hidden>
+          <p class="bloque-estudiante__titulo">Datos académicos</p>
+          <div class="campo"><label for="i-uni">Universidad o institución</label><input id="i-uni" name="universidad" maxlength="160"></div>
+          <div class="campo"><label for="i-prog">Programa que estudia</label><input id="i-prog" name="programa" maxlength="160" placeholder="Por ejemplo: Ingeniería Civil"></div>
+          <div class="dos">
+            <div class="campo"><label for="i-ini">Fecha de inicio de los estudios</label><input id="i-ini" name="inicio" type="date"></div>
+            <div class="campo"><label for="i-dur">Duración de la carrera</label>
+              <select id="i-dur" name="duracion"><option value="1">1 año</option><option value="2">2 años</option><option value="3">3 años</option><option value="4">4 años</option><option value="5" selected>5 años</option><option value="6">6 años</option><option value="7">7 años</option></select></div>
+          </div>
+          <p class="ayuda">La licencia vence en la fecha estimada de grado (inicio + duración). Solo se acepta el correo institucional de su universidad; no se aceptan correos personales.</p>
+        </div>
+%(casilla)s
+        <button class="boton boton--naranja" type="submit">Crear cuenta</button>
+        <p class="formulario__nota" role="status">Al crear la cuenta le enviaremos un correo para confirmar su dirección.</p>
+      </form>
+      <div class="vacio" data-cuenta="dentro" hidden><h3>Ya inició sesión</h3><p style="margin:0"><a href="cuenta.html">Ir a mi cuenta</a></p></div>
+      </div>
+    </div>
+  </section>
+""" % {"pronto": PRONTO, "casilla": FORM_CASILLA % {"id": "i-autorizo"}}
+    documento("inscripcion.html", "Inscripción · GEOMAGNI TECNOLOGÍAS",
+              "Cree su cuenta GEOMAGNI y active una licencia de prueba de TRAMA por 7 días o una licencia estudiantil.", cuerpo, MODULO_CUENTA)
+
+def p_ingresar():
+    cuerpo = encabezado("Ingresar", "Cuenta GEOMAGNI", "Inicie sesión", "Entre con el correo y la contraseña de su cuenta.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor" style="max-width:520px">
+%(pronto)s
+      <form class="formulario" id="formIngresar" data-cuenta="fuera" novalidate>
+        <div class="campo"><label for="g-correo">Correo electrónico</label><input id="g-correo" name="correo" type="email" autocomplete="email" required></div>
+        <div class="campo"><label for="g-clave">Contraseña</label><input id="g-clave" name="clave" type="password" autocomplete="current-password" required></div>
+        <button class="boton boton--morado" type="submit">Ingresar</button>
+        <button class="boton-texto" id="olvideClave" type="button">Olvidé mi contraseña</button>
+        <p class="formulario__nota" role="status">¿No tiene cuenta? <a href="inscripcion.html">Inscríbase gratis</a>.</p>
+      </form>
+      <div class="vacio" data-cuenta="dentro" hidden><h3>Ya inició sesión</h3><p style="margin:0"><a href="cuenta.html">Ir a mi cuenta</a></p></div>
+    </div>
+  </section>
+""" % {"pronto": PRONTO}
+    documento("ingresar.html", "Ingresar · GEOMAGNI TECNOLOGÍAS", "Inicie sesión en su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
+
+def p_cuenta():
+    cuerpo = encabezado("Mi cuenta", "Cuenta GEOMAGNI", "Mi cuenta", "Consulte su licencia de TRAMA y sus datos.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor" style="max-width:880px">
+%(pronto)s
+      <div class="vacio" data-cuenta="fuera" hidden>
+        <h3>Inicie sesión para ver su cuenta</h3>
+        <p><a class="boton boton--morado" href="ingresar.html">Ingresar</a> <a class="boton boton--naranja" href="inscripcion.html">Inscribirme</a></p>
+      </div>
+      <div id="panelCuenta" data-cuenta="dentro" hidden>
+        <div class="cuenta-cabeza">
+          <div class="persona__foto persona__foto--chica" aria-hidden="true">◆</div>
+          <div><h2 id="cuentaNombre" style="margin:0"></h2><p id="cuentaCorreo" style="margin:0;color:var(--gris-600)"></p></div>
+          <button class="boton boton--contorno-oscuro cerrar-sesion" type="button">Cerrar sesión</button>
+        </div>
+        <p id="estadoCuenta" role="status"></p>
+        <div id="bloqueVerificar" class="vacio" hidden>
+          <h3>Confirme su correo</h3>
+          <p>Le enviamos un enlace de confirmación. Ábralo y vuelva aquí para activar su licencia. Revise también la carpeta de correo no deseado.</p>
+          <p><button class="boton boton--morado" id="yaConfirme" type="button">Ya lo confirmé</button> <button class="boton-texto" id="reenviarVerificacion" type="button">Reenviar correo</button></p>
+        </div>
+        <div id="bloqueLicencia" hidden>
+          <h2>Mi licencia de TRAMA</h2>
+          <div id="licencia"><p>Cargando…</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+""" % {"pronto": PRONTO}
+    documento("cuenta.html", "Mi cuenta · GEOMAGNI TECNOLOGÍAS", "Licencia de TRAMA y datos de su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
+
 if __name__ == "__main__":
     print("Generando páginas:")
     p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad()
+    p_inscripcion(); p_ingresar(); p_cuenta()
     print("Listo.")
