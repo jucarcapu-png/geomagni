@@ -1,21 +1,39 @@
 # GEOMAGNI TECNOLOGÍAS S.A.S.
 
-Página web de la compañía: ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena, Colombia.
+Sitio web de la compañía: ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena, Colombia.
 
-**Sitio:** https://jucarcapu-png.github.io/geomagni/
+**Sitio:** https://jucarcapu-png.github.io/geomagni/ — *sitio de prueba, en construcción.*
 
-## Contenido
+## Páginas
 
-- `index.html`: página principal (servicios, TRAMA, método, clientes, empresa y contacto).
-- `privacidad.html`: política de tratamiento de datos personales (Ley 1581 de 2012).
-- `404.html`: página de error.
-- `estilos.css`, `script.js`: diseño y comportamiento.
-- `img/`, `fuentes/`: identidad de marca y tipografías Sora e Inter (licencia OFL, ver `fuentes/`).
+| Archivo | Contenido |
+|---|---|
+| `index.html` | Inicio: portada, productos y servicios, TRAMA, cifras, públicos y método |
+| `productos.html` | TRAMA y los seis servicios |
+| `planes.html` | Planes de TRAMA, comparación, formas de pago y preguntas frecuentes |
+| `descargas.html` | Instalador y versión portátil de TRAMA, PDF y kit de marca |
+| `nosotros.html` | Propósito, historia, fundador, valores y datos de registro |
+| `trabaja.html` | Áreas, vacantes y postulación |
+| `contacto.html` | Canales y formulario |
+| `privacidad.html` | Política de tratamiento de datos (Ley 1581 de 2012) |
 
 ## Editar
 
-Es un sitio estático sin dependencias. Cualquier cambio confirmado en la rama `main` se publica en GitHub Pages en uno o dos minutos.
+Las páginas se generan con `construir.py` (cabecera, menú y pie comunes):
 
-Con dominio propio: crear el archivo `CNAME` con el dominio, cambiar las direcciones `og:url`, `og:image` y `canonical` de `index.html`, y en `404.html` cambiar `<base href="/geomagni/">` por `<base href="/">`.
+```
+python construir.py
+```
+
+Configuración en `script.js`:
+- `CORREO`: correo que reciben los formularios.
+- `ENLACES_PAGO`: enlaces de pago de cada plan (Wompi, Mercado Pago o PayU). Vacíos = «Pago en línea próximamente».
+- `CONTADOR_SERVICIO`: contador de visitas (Abacus). Vacío = sin contador.
+
+Cualquier cambio confirmado en `main` se publica en GitHub Pages en uno o dos minutos.
+
+## Diseño
+
+Diseño, textos e ilustraciones propios de GEOMAGNI. Tipografías Sora e Inter con licencia SIL Open Font License (ver `fuentes/`).
 
 © 2026 GEOMAGNI TECNOLOGÍAS S.A.S. · NIT 902.113.610-0

@@ -1,0 +1,861 @@
+# -*- coding: utf-8 -*-
+"""Genera las páginas del sitio de GEOMAGNI con cabecera y pie comunes.
+
+Uso:  python construir.py
+Edite aquí el menú, el pie o el contenido y vuelva a ejecutar.
+"""
+import os
+
+RAIZ = os.path.dirname(os.path.abspath(__file__))
+URL = "https://jucarcapu-png.github.io/geomagni/"
+CORREO = "jucarcapu@gmail.com"
+TEL = "+57 311 722 7083"
+TEL_ENLACE = "+573117227083"
+
+# ---------------------------------------------------------------- ilustraciones propias (SVG)
+ICONOS = {
+    "gestion": '<path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/>',
+    "bim": '<path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/>',
+    "estructura": '<path d="M4 20V8m16 12V8M2 8h20M4 14h16M8 8l4-5 4 5"/>',
+    "coordinacion": '<circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M8.5 7.5l2 8M15.5 7.5l-2 8M9 6h6"/>',
+    "software": '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
+    "consultoria": '<rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4M7 9h4M7 12h7"/>',
+    "descarga": '<path d="M12 3v12M7 10l5 5 5-5M4 19h16"/>',
+    "pdf": '<path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5M9 13h6M9 17h6"/>',
+    "marca": '<path d="M12 2 20 7v10l-8 5-8-5V7z"/><path d="M9 9h6v6H9z"/>',
+    "caja": '<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+    "tarjeta": '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+    "banco": '<path d="M3 10l9-6 9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>',
+    "movil": '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+    "transferencia": '<path d="M4 8h14l-4-4M20 16H6l4 4"/>',
+}
+
+def icono(nombre):
+    return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONOS[nombre] + '</svg>'
+
+# Ilustraciones isométricas dibujadas para este sitio
+def iso_bloques():
+    return ('<svg viewBox="0 0 320 180" aria-hidden="true">'
+            '<path d="M70 110 120 81 170 110 120 139Z" fill="#A583C2"/><path d="M70 110 120 139V170L70 141Z" fill="#7A4AA8"/><path d="M120 139 170 110V141L120 170Z" fill="#3A195B"/>'
+            '<path d="M140 60 190 31 240 60 190 89Z" fill="#A583C2"/><path d="M140 60 190 89V150L140 121Z" fill="#7A4AA8"/><path d="M190 89 240 60V121L190 150Z" fill="#3A195B"/>'
+            '<path d="M200 120 225 105 250 120 225 135Z" fill="#FFB273"/><path d="M200 120 225 135V160L200 145Z" fill="#FF7400"/><path d="M225 135 250 120V145L225 160Z" fill="#C54F00"/></svg>')
+
+def iso_estructura():
+    lineas = ''.join('<path d="M%d 150V70" stroke="#5B2A86" stroke-width="5"/>' % x for x in (70, 130, 190, 250))
+    vigas = ''.join('<path d="M60 %d H260" stroke="#7A4AA8" stroke-width="5"/>' % y for y in (70, 110))
+    return ('<svg viewBox="0 0 320 180" aria-hidden="true"><path d="M40 150H280" stroke="#262329" stroke-width="4"/>'
+            + lineas + vigas +
+            '<path d="M70 70 130 110M130 70 190 110M190 70 250 110" stroke="#FF7400" stroke-width="2.5" stroke-dasharray="6 5"/>'
+            '<path d="M60 40H260" stroke="#FF7400" stroke-width="2"/><path d="M60 34V46M260 34V46" stroke="#FF7400" stroke-width="2"/>'
+            '<text x="160" y="32" text-anchor="middle" font-family="Sora,Arial" font-size="13" font-weight="600" fill="#C54F00">18,00 m</text></svg>')
+
+def iso_red():
+    return ('<svg viewBox="0 0 320 180" aria-hidden="true">'
+            '<g stroke="#A583C2" stroke-width="2.5"><path d="M160 90 80 50M160 90 240 50M160 90 80 140M160 90 240 140M80 50 240 50"/></g>'
+            '<circle cx="160" cy="90" r="22" fill="#5B2A86"/><circle cx="80" cy="50" r="14" fill="#7A4AA8"/><circle cx="240" cy="50" r="14" fill="#7A4AA8"/>'
+            '<circle cx="80" cy="140" r="14" fill="#FF7400"/><circle cx="240" cy="140" r="14" fill="#7A4AA8"/>'
+            '<path d="M152 90h16M160 82v16" stroke="#fff" stroke-width="3"/></svg>')
+
+def iso_codigo():
+    return ('<svg viewBox="0 0 320 180" aria-hidden="true"><rect x="50" y="25" width="220" height="130" rx="10" fill="#262329"/>'
+            '<rect x="50" y="25" width="220" height="22" rx="10" fill="#3A3540"/><circle cx="66" cy="36" r="4" fill="#FF7400"/>'
+            '<g stroke-width="7" stroke-linecap="round"><path d="M72 70h50" stroke="#A583C2"/><path d="M132 70h70" stroke="#FFB273"/>'
+            '<path d="M90 90h90" stroke="#7A4AA8"/><path d="M90 110h40" stroke="#A583C2"/><path d="M140 110h60" stroke="#FF7400"/><path d="M72 130h80" stroke="#7A4AA8"/></g></svg>')
+
+def iso_planos():
+    return ('<svg viewBox="0 0 320 180" aria-hidden="true"><rect x="60" y="20" width="200" height="140" fill="#fff" stroke="#262329" stroke-width="2"/>'
+            '<rect x="200" y="130" width="56" height="26" fill="none" stroke="#5B2A86" stroke-width="2"/>'
+            '<path d="M90 50h80v60H90z M130 50v60 M90 80h40" fill="none" stroke="#5B2A86" stroke-width="3"/>'
+            '<path d="M90 125h80" stroke="#FF7400" stroke-width="2"/><path d="M90 120v10M170 120v10" stroke="#FF7400" stroke-width="2"/>'
+            '<circle cx="215" cy="70" r="22" fill="none" stroke="#A583C2" stroke-width="3"/><path d="M215 48v44M193 70h44" stroke="#A583C2" stroke-width="2"/></svg>')
+
+def iso_ensenanza():
+    return ('<svg viewBox="0 0 320 180" aria-hidden="true"><path d="M160 30 270 75 160 120 50 75Z" fill="#5B2A86"/>'
+            '<path d="M95 95v35c0 14 30 25 65 25s65-11 65-25V95l-65 25z" fill="#7A4AA8"/>'
+            '<path d="M250 83v45" stroke="#FF7400" stroke-width="4"/><circle cx="250" cy="134" r="7" fill="#FF7400"/></svg>')
+
+def ventana_trama():
+    """Ilustración original de la interfaz de un programa BIM (no es una captura)."""
+    return ('<div class="ventana"><div class="ventana__barra"><i></i><i></i><i></i></div>'
+            '<svg viewBox="0 0 520 300" aria-label="Ilustración de la interfaz de TRAMA">'
+            '<rect width="520" height="300" fill="#1B181E"/><rect width="520" height="34" fill="#5B2A86"/>'
+            '<g fill="#fff" opacity=".85"><rect x="14" y="12" width="44" height="10" rx="2"/><rect x="70" y="12" width="44" height="10" rx="2"/><rect x="126" y="12" width="44" height="10" rx="2"/></g>'
+            '<rect x="0" y="34" width="110" height="266" fill="#262329"/>'
+            '<g fill="#68616D"><rect x="14" y="52" width="80" height="8" rx="2"/><rect x="24" y="70" width="64" height="8" rx="2"/><rect x="24" y="88" width="56" height="8" rx="2"/><rect x="14" y="110" width="80" height="8" rx="2"/><rect x="24" y="128" width="60" height="8" rx="2"/></g>'
+            '<rect x="24" y="86" width="70" height="12" rx="2" fill="#FF7400" opacity=".25"/>'
+            '<g transform="translate(150 50)"><path d="M90 120 170 74 250 120 170 166Z" fill="#A583C2"/><path d="M90 120 170 166V230L90 184Z" fill="#7A4AA8"/><path d="M170 166 250 120V184L170 230Z" fill="#3A195B"/>'
+            '<path d="M30 130 80 101 130 130 80 159Z" fill="#A583C2" opacity=".9"/><path d="M30 130 80 159V190L30 161Z" fill="#7A4AA8"/><path d="M80 159 130 130V161L80 190Z" fill="#3A195B"/>'
+            '<path d="M120 74 170 45 220 74" fill="none" stroke="#FF7400" stroke-width="2" stroke-dasharray="5 4"/></g>'
+            '<g transform="translate(470 54)"><rect x="-22" y="-14" width="40" height="40" rx="4" fill="#3A3540"/><text x="-2" y="11" text-anchor="middle" font-family="Sora,Arial" font-size="10" fill="#fff">3D</text></g>'
+            '<rect x="0" y="282" width="520" height="18" fill="#262329"/><rect x="10" y="287" width="90" height="8" rx="2" fill="#68616D"/>'
+            '</svg></div>')
+
+# ---------------------------------------------------------------- piezas comunes
+SIMBOLO_BLANCO = ('<svg viewBox="0 0 512 512" width="40" height="40" aria-hidden="true">'
+    '<mask id="ranurasPie" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/>'
+    '<g stroke="#000" stroke-width="18"><line x1="274" y1="171" x2="302.3" y2="38.2"/><line x1="341" y1="213.5" x2="454" y2="156.9"/></g></mask>'
+    '<g mask="url(#ranurasPie)"><path fill="#FFFFFF" fill-rule="evenodd" d="M298.6 55.5 439.3 164.3 442 342.2 304.6 455.2 130.7 418.3 51 259.1 125.7 97.8ZM171 171V341H341V171Z"/>'
+    '<path fill="#FF7400" d="M298.6 55.5 439.3 164.3 341 213.5 274 171Z"/></g></svg>')
+
+MENU = [
+    ("planes.html", "Planes"),
+    ("descargas.html", "Descargas"),
+    ("nosotros.html", "Nosotros"),
+    ("trabaja.html", "Trabaja con nosotros"),
+    ("contacto.html", "Contacto"),
+]
+
+DESPLEGABLE = """
+        <div class="desplegable" id="desplegableProductos">
+          <a class="destacado" href="productos.html#trama"><strong>TRAMA</strong><span>Plataforma BIM y gestión integral de proyectos</span></a>
+          <h4>Servicios</h4>
+          <a href="productos.html#gestion"><strong>Gestión de proyectos</strong><span>Alcance, cronograma, costos y control</span></a>
+          <a href="productos.html#bim"><strong>Modelación BIM</strong><span>Modelos coordinados de arquitectura y estructura</span></a>
+          <a href="productos.html#estructural"><strong>Diseño estructural</strong><span>Análisis, diseño y memorias de cálculo</span></a>
+          <a href="productos.html#coordinacion"><strong>Coordinación técnica</strong><span>Interferencias, incidencias y disciplinas</span></a>
+          <a href="productos.html#software"><strong>Software a la medida</strong><span>Herramientas y automatización para el sector</span></a>
+          <a href="productos.html#capacitacion"><strong>Consultoría y capacitación</strong><span>Adopción de flujos digitales y BIM</span></a>
+        </div>"""
+
+def cabecera(activa):
+    enlaces = []
+    for href, texto in MENU:
+        clase = ' class="activo" aria-current="page"' if href == activa else ''
+        enlaces.append('      <a href="%s"%s>%s</a>' % (href, clase, texto))
+    activo_prod = ' activo' if activa == "productos.html" else ''
+    return """<div class="aviso-prueba" role="note"><strong>Sitio de prueba.</strong> Esta página está en construcción: precios, planes y descargas son demostrativos y pueden cambiar.</div>
+<header class="cabecera" id="cabecera">
+  <div class="contenedor cabecera__fila">
+    <a class="marca" href="index.html" aria-label="GEOMAGNI TECNOLOGÍAS, inicio">
+      <img src="img/geomagni-firma.svg" alt="GEOMAGNI TECNOLOGÍAS" width="200" height="50">
+    </a>
+    <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="menu" id="menu" aria-label="Principal">
+      <div class="menu__grupo">
+        <button class="menu__abrir%s" id="abrirProductos" aria-expanded="false" aria-controls="desplegableProductos">Productos y servicios</button>%s
+      </div>
+%s
+      <a class="boton boton--naranja" href="contacto.html?asunto=demostracion">Solicitar demostración</a>
+    </nav>
+  </div>
+</header>
+""" % (activo_prod, DESPLEGABLE, "\n".join(enlaces))
+
+PIE = """<footer class="pie">
+  <div class="contenedor">
+    <div class="pie__columnas">
+      <div>
+        <div class="pie__marca">%(simbolo)s
+          <div><strong>GEOMAGNI TECNOLOGÍAS S.A.S.</strong><span>NIT 902.113.610-0</span></div>
+        </div>
+        <p class="pie__descripcion">Ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena de Indias, Colombia.</p>
+      </div>
+      <div>
+        <h4>Productos</h4>
+        <ul>
+          <li><a href="productos.html#trama">TRAMA</a></li>
+          <li><a href="productos.html#bim">Modelación BIM</a></li>
+          <li><a href="productos.html#estructural">Diseño estructural</a></li>
+          <li><a href="productos.html#software">Software a la medida</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Recursos</h4>
+        <ul>
+          <li><a href="planes.html">Planes y precios</a></li>
+          <li><a href="planes.html#pagos">Formas de pago</a></li>
+          <li><a href="descargas.html">Descargas</a></li>
+          <li><a href="planes.html#preguntas">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="trabaja.html">Trabaja con nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="privacidad.html">Tratamiento de datos</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__fila">
+      <p class="pie__copy" style="margin:0">© <span class="anio">2026</span> GEOMAGNI TECNOLOGÍAS S.A.S. Todos los derechos reservados. · Sitio de prueba.
+        <span class="visitas-pie" hidden> · <b class="visitas-numero">0</b> visitas</span></p>
+      <p class="pie__lema">La medida da forma.</p>
+    </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
+""" % {"simbolo": SIMBOLO_BLANCO}
+
+def documento(archivo, titulo, descripcion, cuerpo, extra_head=""):
+    canon = URL + ("" if archivo == "index.html" else archivo)
+    html = """<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>%(titulo)s</title>
+  <meta name="description" content="%(desc)s">
+  <meta name="theme-color" content="#5B2A86">
+  <link rel="canonical" href="%(canon)s">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:site_name" content="GEOMAGNI TECNOLOGÍAS">
+  <meta property="og:title" content="%(titulo)s">
+  <meta property="og:description" content="%(desc)s">
+  <meta property="og:url" content="%(canon)s">
+  <meta property="og:image" content="%(url)simg/og-geomagni.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="paginas.css">
+  <link rel="stylesheet" href="dinamico.css">%(extra)s
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+""" % {"titulo": titulo, "desc": descripcion, "canon": canon, "url": URL, "extra": extra_head}
+    html += cabecera(archivo) + '\n<main id="contenido">\n' + cuerpo + '\n</main>\n\n' + PIE
+    with open(os.path.join(RAIZ, archivo), "w", encoding="utf-8", newline="\n") as f:
+        f.write(html)
+    print("  ", archivo)
+
+def encabezado(miga, etiqueta, titulo, texto):
+    return """  <section class="encabezado">
+    <div class="contenedor">
+      <p class="migas"><a href="index.html">Inicio</a> / %s</p>
+      <p class="etiqueta">%s</p>
+      <h1>%s</h1>
+      <p>%s</p>
+    </div>
+  </section>
+""" % (miga, etiqueta, titulo, texto)
+
+FRANJA = """  <section class="seccion">
+    <div class="contenedor">
+      <div class="franja">
+        <div><h2>¿Tiene un proyecto en mente?</h2><p>Cuéntenos el alcance y le enviamos una propuesta de trabajo.</p></div>
+        <a class="boton boton--naranja" href="contacto.html">Hablemos</a>
+      </div>
+    </div>
+  </section>
+"""
+
+FORM_CASILLA = """        <div class="campo campo--casilla">
+          <input type="checkbox" id="%(id)s" name="autorizo" required>
+          <label for="%(id)s">Autorizo a GEOMAGNI TECNOLOGÍAS S.A.S. a tratar mis datos para responder esta solicitud, según su <a href="privacidad.html">política de tratamiento de datos</a>.</label>
+        </div>"""
+
+JSON_LD = """
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "GEOMAGNI TECNOLOGÍAS S.A.S.",
+    "alternateName": "GEOMAGNI",
+    "slogan": "La medida da forma.",
+    "url": "%s",
+    "logo": "%simg/geomagni-simbolo.svg",
+    "taxID": "902113610-0",
+    "email": "%s",
+    "telephone": "%s",
+    "founder": { "@type": "Person", "name": "Juan Carlos Camacho Puello", "jobTitle": "Ingeniero Civil" },
+    "foundingDate": "2026-08-31",
+    "address": { "@type": "PostalAddress", "addressLocality": "Cartagena", "addressRegion": "Bolívar", "addressCountry": "CO" },
+    "areaServed": "CO",
+    "knowsAbout": ["Gestión de proyectos", "Modelación BIM", "Análisis y diseño estructural", "Coordinación técnica", "Desarrollo de software"]
+  }
+  </script>""" % (URL, URL, CORREO, TEL)
+
+# ---------------------------------------------------------------- INICIO
+def p_inicio():
+    tarjetas = [
+        ("productos.html#trama", iso_bloques(), "TRAMA", "Plataforma BIM propia para modelar, documentar y gestionar el proyecto en un mismo entorno."),
+        ("productos.html#bim", iso_planos(), "Modelación BIM", "Modelos coordinados con niveles, ejes, vistas y planos listos para construir."),
+        ("productos.html#estructural", iso_estructura(), "Diseño estructural", "Análisis y diseño de estructuras con memorias de cálculo trazables."),
+        ("productos.html#coordinacion", iso_red(), "Coordinación técnica", "Disciplinas integradas e incidencias con origen, estado y responsable."),
+        ("productos.html#software", iso_codigo(), "Software a la medida", "Automatización e intercambio de datos CAD y BIM para su equipo."),
+        ("productos.html#capacitacion", iso_ensenanza(), "Consultoría y capacitación", "Acompañamiento para adoptar flujos de trabajo digitales y BIM."),
+    ]
+    cards = "\n".join("""        <article class="ilustrada">
+          <div class="ilustrada__img">%s</div>
+          <div class="ilustrada__cuerpo"><h3>%s</h3><p>%s</p><a class="enlace-flecha" href="%s">Conocer más</a></div>
+        </article>""" % (svg, t, d, h) for h, svg, t, d in tarjetas)
+    cuerpo = """  <section class="portada" id="inicio">
+    <div class="contenedor portada__fila">
+      <div class="portada__texto">
+        <p class="etiqueta">La medida da forma</p>
+        <h1>Ingeniería, BIM y software para <span class="rotativa" data-palabras="construcción|infraestructura|estructuras|su proyecto">construcción</span></h1>
+        <p class="portada__bajada">GEOMAGNI conecta geometría, datos y decisiones para que los proyectos puedan comprenderse y gestionarse como un solo sistema.</p>
+        <div class="portada__acciones">
+          <a class="boton boton--naranja" href="productos.html">Ver productos y servicios</a>
+          <a class="boton boton--contorno" href="descargas.html">Descargar TRAMA</a>
+        </div>
+      </div>
+      <div class="portada__grafico" aria-hidden="true">
+        <svg viewBox="0 0 480 480" class="isometria">
+          <defs><pattern id="malla" width="40" height="23.09" patternUnits="userSpaceOnUse" patternTransform="skewX(-30)"><path d="M0 0H40M0 0V23.09" stroke="rgba(255,255,255,.10)" stroke-width="1" fill="none"/></pattern></defs>
+          <rect width="480" height="480" fill="url(#malla)"/>
+          <g class="bloque b1"><path d="M150 250 210 215 270 250 210 285Z" fill="#A583C2"/><path d="M150 250 210 285V365L150 330Z" fill="#7A4AA8"/><path d="M210 285 270 250V330L210 365Z" fill="#3A195B"/></g>
+          <g class="bloque b2"><path d="M230 170 290 135 350 170 290 205Z" fill="#A583C2"/><path d="M230 170 290 205V315L230 280Z" fill="#7A4AA8"/><path d="M290 205 350 170V280L290 315Z" fill="#3A195B"/></g>
+          <g class="bloque b3"><path d="M290 300 330 277 370 300 330 323Z" fill="#FFB273"/><path d="M290 300 330 323V363L290 340Z" fill="#FF7400"/><path d="M330 323 370 300V340L330 363Z" fill="#C54F00"/></g>
+          <g class="cota" stroke="#FF7400" stroke-width="2" fill="none"><path d="M120 262 120 342"/><path d="M114 262H126M114 342H126"/></g>
+          <text x="96" y="306" class="cota__texto" transform="rotate(-90 96 306)">3,00 m</text>
+          <circle cx="290" cy="135" r="6" fill="#FF7400" class="nodo"/><circle cx="150" cy="250" r="5" fill="#fff" class="nodo n2"/>
+          <path d="M290 135 L150 250" stroke="rgba(255,255,255,.35)" stroke-dasharray="4 6" class="enlace"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="cinta" aria-hidden="true"><div class="cinta__pista">%(cinta)s</div></div>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="seccion__cabeza">
+        <p class="etiqueta etiqueta--morada">Productos y servicios</p>
+        <h2>Todo lo que su proyecto necesita, conectado</h2>
+        <p>Software propio y servicios de ingeniería que trabajan sobre la misma información.</p>
+      </header>
+      <div class="rejilla rejilla--3">
+%(cards)s
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--oscura">
+    <div class="contenedor producto">
+      <div>
+        <img src="img/trama-invertido.svg" alt="TRAMA" class="trama__logo" width="300" height="80">
+        <p class="trama__firma">Una plataforma de GEOMAGNI</p>
+        <h2>El proyecto como un solo sistema</h2>
+        <div class="pestanas" role="tablist" aria-label="Funciones de TRAMA">
+          <button role="tab" id="t1" aria-controls="p1" data-zona="20,10,78,72">Modelado 3D</button>
+          <button role="tab" id="t2" aria-controls="p2" data-zona="0,10,22,82">Vistas y niveles</button>
+          <button role="tab" id="t3" aria-controls="p3" data-zona="0,0,100,14">Planos</button>
+          <button role="tab" id="t4" aria-controls="p4" data-zona="84,10,15,18">Interoperabilidad</button>
+        </div>
+        <div class="panel-pestana" role="tabpanel" id="p1" aria-labelledby="t1"><h3>Geometría que obedece a las medidas</h3><p>Sólidos, vacíos y componentes paramétricos con cotas que gobiernan la forma.</p></div>
+        <div class="panel-pestana" role="tabpanel" id="p2" aria-labelledby="t2" hidden><h3>Todo el proyecto organizado</h3><p>Niveles, ejes, plantas, alzados, secciones y cajas de sección en un navegador de vistas.</p></div>
+        <div class="panel-pestana" role="tabpanel" id="p3" aria-labelledby="t3" hidden><h3>De modelo a plano</h3><p>Composición de planos con formatos, rótulos y vistas colocadas a escala.</p></div>
+        <div class="panel-pestana" role="tabpanel" id="p4" aria-labelledby="t4" hidden><h3>Trabaje con lo que ya tiene</h3><p>Importación y exportación de archivos DWG y DXF, con capas y colores.</p></div>
+        <div class="portada__acciones">
+          <a class="boton boton--naranja" href="descargas.html">Descargar versión de prueba</a>
+          <a class="boton boton--contorno" href="planes.html">Ver planes</a>
+        </div>
+      </div>
+      <div class="producto__visual">%(ventana)s<span class="resalte" aria-hidden="true"></span></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <div class="cifras cifras--grandes">
+        <div class="cifra"><strong><span data-fin="6">0</span></strong><span>servicios de ingeniería y tecnología</span></div>
+        <div class="cifra"><strong><span data-fin="1">0</span></strong><span>plataforma BIM propia, hecha en Colombia</span></div>
+        <div class="cifra"><strong><span data-fin="100">0</span><small>%%</small></strong><span>información trazable de principio a fin</span></div>
+        <div class="cifra cifra--visitas" hidden><strong><span class="visitas-numero">0</span></strong><span>visitas a este sitio</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="seccion__cabeza">
+        <p class="etiqueta etiqueta--morada">Para quién trabajamos</p>
+        <h2>Información útil para cada responsable del proyecto</h2>
+      </header>
+      <div class="rejilla rejilla--4">
+        <article class="publico"><h3>Propietarios y dirección</h3><p>Vea el proyecto como un sistema conectado, con información y responsabilidades identificables para decidir con confianza.</p></article>
+        <article class="publico"><h3>Gerencia de proyectos y PMO</h3><p>Convierta información dispersa en una estructura común y trazable de alcance, avance, decisiones y responsables.</p></article>
+        <article class="publico"><h3>Coordinación BIM</h3><p>Conecte el modelo con la información que le da contexto: datos, incidencias y disciplinas en un mismo lugar.</p></article>
+        <article class="publico"><h3>Construcción y obra</h3><p>Lleve a campo la información vigente: qué cambió, qué aplica y quién responde.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave">
+    <div class="contenedor">
+      <header class="seccion__cabeza">
+        <p class="etiqueta etiqueta--morada">Método</p>
+        <h2>Cómo trabajamos</h2>
+      </header>
+      <ol class="pasos">
+        <li><span class="pasos__num">01</span><h3>Entender</h3><p>Escuchamos la necesidad, revisamos la información existente y definimos alcance y criterios de aceptación.</p></li>
+        <li><span class="pasos__num">02</span><h3>Estructurar</h3><p>Organizamos el proyecto: modelo, disciplinas, responsables, cronograma y entregables.</p></li>
+        <li><span class="pasos__num">03</span><h3>Desarrollar</h3><p>Modelamos, calculamos y coordinamos con revisiones periódicas y control de versiones.</p></li>
+        <li><span class="pasos__num">04</span><h3>Verificar y entregar</h3><p>Comprobamos contra los criterios acordados y entregamos información trazable y lista para usar.</p></li>
+      </ol>
+    </div>
+  </section>
+%(franja)s"""
+    palabras = ["Modelación BIM", "Diseño estructural", "Gestión de proyectos", "Coordinación técnica", "Software a la medida", "DWG y DXF", "Planos y documentación", "Capacitación"]
+    cinta = "".join("<span>%s</span>" % w for w in palabras * 2)
+    cuerpo = cuerpo % {"cards": cards, "ventana": ventana_trama(), "franja": FRANJA, "cinta": cinta}
+    documento("index.html", "GEOMAGNI TECNOLOGÍAS · Ingeniería, BIM y software para proyectos",
+              "GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia. Plataforma BIM TRAMA, modelación BIM, diseño estructural, coordinación técnica y software especializado para construcción e infraestructura.",
+              cuerpo, JSON_LD)
+
+# ---------------------------------------------------------------- PRODUCTOS
+def p_productos():
+    servicios = [
+        ("gestion", "gestion", iso_red(), "Consultoría y gestión de proyectos",
+         "Planeación, control y seguimiento de proyectos de construcción e infraestructura con criterios claros.",
+         ["Definición de alcance y estructura de desglose del trabajo", "Programación y control de avance", "Presupuesto y control de costos", "Matriz de responsables e informes de estado"]),
+        ("bim", "bim", iso_planos(), "Modelación BIM",
+         "Modelos de información de arquitectura y estructura listos para revisar, cuantificar y construir.",
+         ["Modelos 3D por disciplina", "Niveles, ejes, plantas, alzados y secciones", "Planos y cuadros de cantidades", "Intercambio con archivos DWG y DXF"]),
+        ("estructural", "estructura", iso_estructura(), "Análisis y diseño estructural",
+         "Diseño de estructuras con memorias de cálculo trazables, conforme a la normativa colombiana aplicable.",
+         ["Modelación y análisis estructural", "Diseño de elementos en concreto y acero", "Memorias de cálculo y planos", "Revisión de diseños existentes"]),
+        ("coordinacion", "coordinacion", iso_red(), "Coordinación técnica",
+         "Integración de disciplinas para que cada cambio tenga origen, estado y responsable.",
+         ["Detección de interferencias", "Gestión de incidencias", "Reuniones de coordinación con actas", "Control de versiones de la información"]),
+        ("software", "software", iso_codigo(), "Software a la medida",
+         "Herramientas para el sector diseñadas a partir de su forma de trabajar.",
+         ["Automatización de tareas repetitivas", "Conversión e intercambio de datos CAD/BIM", "Aplicaciones técnicas de escritorio", "Integración con sus herramientas actuales"]),
+        ("capacitacion", "consultoria", iso_ensenanza(), "Consultoría tecnológica y capacitación",
+         "Acompañamiento para que su equipo adopte flujos de trabajo digitales y BIM.",
+         ["Diagnóstico de procesos", "Estándares y plantillas", "Capacitación del equipo", "Acompañamiento en el primer proyecto"]),
+    ]
+    bloques = []
+    for i, (ancla, ico, svg, titulo, texto, items) in enumerate(servicios):
+        lista = "".join("<li>%s</li>" % x for x in items)
+        fondo = " seccion--suave" if i % 2 == 0 else ""
+        bloques.append("""  <section class="seccion%s" id="%s">
+    <div class="contenedor producto">
+      <div>
+        <div class="tarjeta__icono">%s</div>
+        <h2>%s</h2>
+        <p>%s</p>
+        <ul class="lista-chequeo lista-chequeo--clara">%s</ul>
+        <a class="boton boton--morado" href="contacto.html?asunto=%s">Solicitar propuesta</a>
+      </div>
+      <div class="ilustrada"><div class="ilustrada__img" style="aspect-ratio:4/3">%s</div></div>
+    </div>
+  </section>""" % (fondo, ancla, icono(ico), titulo, texto, lista, ancla, svg))
+    cuerpo = encabezado("Productos y servicios", "Productos y servicios",
+                        "Software propio e ingeniería sobre la misma información",
+                        "Conozca TRAMA, nuestra plataforma BIM, y los servicios con los que acompañamos cada etapa del proyecto.")
+    cuerpo += """
+  <section class="seccion seccion--oscura" id="trama">
+    <div class="contenedor producto">
+      <div>
+        <img src="img/trama-invertido.svg" alt="TRAMA" class="trama__logo" width="300" height="80">
+        <p class="trama__firma">Una plataforma de GEOMAGNI <span class="insignia insignia--naranja">En desarrollo</span></p>
+        <h2>El proyecto como un solo sistema</h2>
+        <p style="color:rgba(255,255,255,.82)">TRAMA reúne en un mismo entorno el modelo tridimensional, sus vistas y planos, y la información que le da contexto.</p>
+        <ul class="lista-chequeo">
+          <li>Modelado 3D de sólidos, componentes paramétricos y cotas que gobiernan la geometría.</li>
+          <li>Niveles, ejes, plantas, alzados, secciones y cajas de sección.</li>
+          <li>Composición de planos con formatos y rótulos.</li>
+          <li>Importación y exportación de archivos CAD (DXF y DWG).</li>
+          <li>Recorridos de cámara y renderizado del modelo.</li>
+        </ul>
+        <div class="portada__acciones">
+          <a class="boton boton--naranja" href="descargas.html">Descargar</a>
+          <a class="boton boton--contorno" href="planes.html">Planes</a>
+        </div>
+      </div>
+      <div class="producto__visual">%s</div>
+    </div>
+  </section>
+%s
+%s""" % (ventana_trama(), "\n".join(bloques), FRANJA)
+    documento("productos.html", "Productos y servicios · GEOMAGNI TECNOLOGÍAS",
+              "TRAMA, plataforma BIM de GEOMAGNI, y servicios de gestión de proyectos, modelación BIM, diseño estructural, coordinación técnica y software a la medida.", cuerpo)
+
+# ---------------------------------------------------------------- PLANES Y PAGOS
+def p_planes():
+    planes = [
+        ("estudiante", "Estudiante", "Para aprender y hacer proyectos académicos.", False,
+         ["TRAMA para un equipo", "Modelado 3D, vistas y planos", "Importación DWG y DXF", "Comunidad y tutoriales", "Uso no comercial"]),
+        ("profesional", "Profesional", "Para profesionales independientes y pequeños equipos.", True,
+         ["Todo lo del plan Estudiante", "Uso comercial", "Componentes paramétricos", "Exportación DWG y DXF", "Renderizado y recorridos", "Soporte por correo"]),
+        ("empresa", "Empresa", "Para organizaciones con varios proyectos y equipos.", False,
+         ["Todo lo del plan Profesional", "Licencias para varios usuarios", "Gestión de portafolio y programas", "Capacitación del equipo", "Soporte prioritario", "Acompañamiento en la implementación"]),
+    ]
+    tarjetas = []
+    for clave, nombre, para, recom, items in planes:
+        sello = '<span class="plan__sello">Recomendado</span>' if recom else ''
+        lista = "".join("<li>%s</li>" % x for x in items)
+        tarjetas.append("""        <article class="plan%s">
+          %s<h3>%s</h3>
+          <p class="plan__para">%s</p>
+          <p class="plan__precio" data-mensual="Por anunciar" data-anual="Por anunciar">Por anunciar</p>
+          <p class="plan__periodo" data-mensual="Precio mensual por usuario" data-anual="Precio anual por usuario">Precio mensual por usuario</p>
+          <ul>%s</ul>
+          <button class="boton %s boton-pago" type="button" data-plan="%s">Comprar</button>
+        </article>""" % (" plan--recomendado" if recom else "", sello, nombre, para, lista,
+                         "boton--naranja" if recom else "boton--morado", clave))
+    filas = [
+        ("Modelado 3D, vistas y planos", 1, 1, 1),
+        ("Importación DWG y DXF", 1, 1, 1),
+        ("Uso comercial", 0, 1, 1),
+        ("Componentes paramétricos", 0, 1, 1),
+        ("Renderizado y recorridos", 0, 1, 1),
+        ("Varios usuarios", 0, 0, 1),
+        ("Gestión de portafolio y programas", 0, 0, 1),
+        ("Capacitación incluida", 0, 0, 1),
+        ("Soporte", "Comunidad", "Correo", "Prioritario"),
+    ]
+    def celda(v):
+        if v == 1: return '<td class="si" aria-label="Incluido">✓</td>'
+        if v == 0: return '<td class="no" aria-label="No incluido">—</td>'
+        return '<td>%s</td>' % v
+    tabla = "\n".join("            <tr><td>%s</td>%s</tr>" % (f[0], "".join(celda(v) for v in f[1:])) for f in filas)
+    pagos = [
+        ("tarjeta", "Tarjetas", "Crédito y débito Visa, Mastercard y American Express"),
+        ("banco", "PSE", "Débito desde su cuenta en cualquier banco colombiano"),
+        ("movil", "Nequi", "Pago desde la aplicación"),
+        ("transferencia", "Transferencia", "Bancaria, para planes empresariales y servicios"),
+    ]
+    medios = "\n".join('        <div class="pago">%s<strong>%s</strong><span>%s</span></div>' % (icono(i), t, d) for i, t, d in pagos)
+    cuerpo = encabezado("Planes", "Planes y precios", "Elija el plan de TRAMA para su forma de trabajar",
+                        "TRAMA está en desarrollo. Los planes se muestran como referencia; los precios se anunciarán con el lanzamiento.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor" style="text-align:center">
+      <div class="conmutador" role="group" aria-label="Periodo de pago">
+        <button type="button" data-periodo="mensual" aria-pressed="true">Mensual</button>
+        <button type="button" data-periodo="anual" aria-pressed="false">Anual <small>ahorre</small></button>
+      </div>
+    </div>
+    <div class="contenedor">
+      <div class="planes" style="text-align:left">
+%s
+      </div>
+      <p class="nota-centro" id="notaPago">Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto puede <a href="descargas.html">descargar la versión de prueba</a> o <a href="contacto.html?asunto=planes">solicitar una cotización</a>.</p>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave">
+    <div class="contenedor">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Comparación</p><h2>Qué incluye cada plan</h2></header>
+      <div class="tabla-envoltura">
+        <table class="tabla">
+          <thead><tr><th scope="col">Función</th><th scope="col">Estudiante</th><th scope="col">Profesional</th><th scope="col">Empresa</th></tr></thead>
+          <tbody>
+%s
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion" id="pagos">
+    <div class="contenedor">
+      <header class="seccion__cabeza">
+        <p class="etiqueta etiqueta--morada">Formas de pago</p>
+        <h2>Pague como prefiera</h2>
+        <p>Los pagos en línea se procesarán a través de una pasarela de pagos colombiana certificada. GEOMAGNI no almacena los datos de su tarjeta.</p>
+      </header>
+      <div class="pagos">
+%s
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave" id="preguntas">
+    <div class="contenedor" style="max-width:820px">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Preguntas frecuentes</p><h2>Antes de elegir</h2></header>
+      <div class="faq">
+        <details><summary>¿Puedo probar TRAMA antes de comprar?</summary><p>Sí. En la página de descargas encontrará la versión de prueba para Windows.</p></details>
+        <details><summary>¿Cuándo se publican los precios?</summary><p>Con el lanzamiento comercial de TRAMA. Si quiere recibir el aviso, escríbanos desde la página de contacto.</p></details>
+        <details><summary>¿Qué necesito para instalarlo?</summary><p>Un equipo con Windows 10 u 11 de 64 bits. Los requisitos completos están en la página de descargas.</p></details>
+        <details><summary>¿Emiten factura electrónica?</summary><p>Sí. GEOMAGNI TECNOLOGÍAS S.A.S. está registrada en Colombia con NIT 902.113.610-0 y factura cada compra.</p></details>
+        <details><summary>¿Ofrecen planes para universidades o empresas grandes?</summary><p>Sí. Para licencias por volumen, instituciones educativas o servicios de implementación, solicite una cotización.</p></details>
+      </div>
+    </div>
+  </section>
+%s""" % ("\n".join(tarjetas), tabla, medios, FRANJA)
+    documento("planes.html", "Planes, precios y formas de pago · GEOMAGNI TECNOLOGÍAS",
+              "Planes Estudiante, Profesional y Empresa de TRAMA, comparación de funciones, formas de pago (tarjeta, PSE, Nequi, transferencia) y preguntas frecuentes.", cuerpo)
+
+# ---------------------------------------------------------------- DESCARGAS
+DESCARGAS = [
+    # (icono, titulo, insignia, descripcion, archivo, texto boton)
+    ("descarga", "Instalador de TRAMA para Windows", ("Versión de prueba", "naranja"),
+     "Versión 1.5.703. Instala TRAMA con sus accesos en el escritorio y el menú Inicio.",
+     "descargas/Instalar-TRAMA-1.5.703.exe", "Descargar instalador"),
+    ("caja", "TRAMA portátil", ("Versión de prueba", "naranja"),
+     "La misma versión en un archivo comprimido que se ejecuta sin instalar. Descomprima y abra IniciarTRAMA.exe.",
+     "descargas/TRAMA-1.5.703-portable.zip", "Descargar portátil"),
+    ("pdf", "Portafolio de servicios", ("PDF", "morada"),
+     "Presentación de GEOMAGNI: servicios, método de trabajo y datos de contacto.",
+     "descargas/GEOMAGNI-portafolio-de-servicios.pdf", "Descargar PDF"),
+    ("pdf", "Ficha técnica de TRAMA", ("PDF", "morada"),
+     "Funciones, requisitos del sistema y formatos compatibles de la plataforma.",
+     "descargas/TRAMA-ficha-tecnica.pdf", "Descargar PDF"),
+    ("marca", "Kit de marca GEOMAGNI", ("ZIP", "morada"),
+     "Símbolo, firma e icono en SVG y PNG, colores corporativos y tipografías Sora e Inter con sus licencias.",
+     "descargas/GEOMAGNI-kit-de-marca.zip", "Descargar kit"),
+]
+
+def tamano(ruta):
+    p = os.path.join(RAIZ, ruta)
+    if not os.path.exists(p): return "pendiente"
+    b = os.path.getsize(p)
+    return ("%.1f MB" % (b / 1048576)).replace(".", ",") if b > 1048576 else ("%d KB" % max(1, b // 1024))
+
+def sha256(ruta):
+    import hashlib
+    p = os.path.join(RAIZ, ruta)
+    if not os.path.exists(p): return ""
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(1 << 20), b""): h.update(b)
+    return h.hexdigest().upper()
+
+def p_descargas():
+    items = []
+    for ico, titulo, (ins, color), desc, archivo, boton in DESCARGAS:
+        meta = tamano(archivo)
+        if archivo.endswith((".exe", ".zip")) and "TRAMA" in archivo:
+            meta += " · SHA-256: " + sha256(archivo)
+        items.append("""        <article class="descarga">
+          <div class="descarga__icono">%s</div>
+          <div><h3>%s <span class="insignia insignia--%s">%s</span></h3><p>%s</p><p class="descarga__meta">%s</p></div>
+          <a class="boton boton--morado" href="%s" download>%s</a>
+        </article>""" % (icono(ico), titulo, color, ins, desc, meta, archivo, boton))
+    cuerpo = encabezado("Descargas", "Descargas", "Software, documentos y material de marca",
+                        "Descargue la versión de prueba de TRAMA, los documentos de la empresa y el kit de marca.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor">
+      <div class="descargas">
+%s
+      </div>
+      <p class="formulario__nota" style="margin-top:20px">La versión de prueba de TRAMA se entrega para evaluación, sin garantía y sujeta a cambios. Puede comprobar la integridad del archivo con su huella SHA-256.</p>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave" id="requisitos">
+    <div class="contenedor" style="max-width:880px">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Requisitos</p><h2>Requisitos del sistema para TRAMA</h2></header>
+      <div class="requisitos">
+        <dl>
+          <dt>Sistema operativo</dt><dd>Windows 10 u 11 de 64 bits</dd>
+          <dt>Procesador</dt><dd>Doble núcleo de 2 GHz o superior</dd>
+          <dt>Memoria</dt><dd>8 GB de RAM (16 GB recomendados para modelos grandes)</dd>
+          <dt>Tarjeta gráfica</dt><dd>Compatible con OpenGL; sin tarjeta dedicada funciona en modo compatible por procesador</dd>
+          <dt>Espacio en disco</dt><dd>500 MB libres</dd>
+          <dt>Formatos</dt><dd>Proyectos .ptrm, componentes .ctrm, importación y exportación DWG y DXF</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor" style="max-width:820px">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Instalación</p><h2>Cómo instalar TRAMA</h2></header>
+      <ol class="pasos" style="grid-template-columns:repeat(3,1fr)">
+        <li><span class="pasos__num">01</span><h3>Descargue</h3><p>Descargue el instalador desde esta página.</p></li>
+        <li><span class="pasos__num">02</span><h3>Ejecute</h3><p>Abra Instalar-TRAMA.exe. Si Windows muestra un aviso, elija «Más información» y «Ejecutar de todas formas»: el instalador aún no tiene firma digital.</p></li>
+        <li><span class="pasos__num">03</span><h3>Empiece</h3><p>Abra TRAMA desde el escritorio o el menú Inicio.</p></li>
+      </ol>
+    </div>
+  </section>
+%s""" % ("\n".join(items), FRANJA)
+    documento("descargas.html", "Descargas · GEOMAGNI TECNOLOGÍAS",
+              "Descargue la versión de prueba de TRAMA para Windows, el portafolio de servicios, la ficha técnica y el kit de marca de GEOMAGNI.", cuerpo)
+
+# ---------------------------------------------------------------- NOSOTROS
+def p_nosotros():
+    valores = [
+        ("Rigor", "Tratamos la información técnica con método y criterio, y diferenciamos datos, supuestos y resultados verificados."),
+        ("Trazabilidad", "Cada dato y decisión conserva el contexto para saber de dónde viene y cómo cambió."),
+        ("Integración", "Conectamos disciplinas sin borrar sus diferencias ni sustituir el conocimiento especializado."),
+        ("Claridad", "Explicamos lo necesario con precisión: la complejidad no justifica una comunicación confusa."),
+        ("Colaboración responsable", "La tecnología organiza el trabajo; las personas conservan el criterio y la responsabilidad."),
+        ("Innovación útil", "Adoptamos tecnología por el valor que aporta, no por novedad."),
+    ]
+    vals = "\n".join('        <div class="valor"><h3>%s</h3><p>%s</p></div>' % v for v in valores)
+    cuerpo = encabezado("Nosotros", "Nosotros", "Una empresa colombiana de ingeniería y tecnología",
+                        "Unimos la práctica de la ingeniería civil con el desarrollo de software para que la información de los proyectos sea comprensible, conectada y verificable.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor empresa">
+      <div class="empresa__texto">
+        <p class="etiqueta etiqueta--morada">Propósito</p>
+        <h2>Información conectada para decidir con confianza</h2>
+        <p>GEOMAGNI TECNOLOGÍAS S.A.S. nace en Cartagena de Indias en 2026. Creemos que un proyecto se gestiona mejor cuando su geometría, sus datos y sus responsables forman una misma estructura.</p>
+        <p><strong>Misión.</strong> Hacer que la información de los proyectos sea comprensible, conectada y verificable, para que las personas puedan coordinarse y decidir con mayor confianza.</p>
+        <p><strong>Visión.</strong> Impulsar una forma de gestionar proyectos en la que cada dato tenga contexto, cada decisión pueda rastrearse y cada disciplina contribuya a una visión común.</p>
+      </div>
+      <div>
+        <p class="etiqueta etiqueta--morada">Historia</p>
+        <ol class="linea-tiempo">
+          <li><time>Agosto de 2026</time><h3>Constitución</h3><p>Se constituye GEOMAGNI TECNOLOGÍAS S.A.S. en Cartagena.</p></li>
+          <li><time>Octubre de 2026</time><h3>Registro mercantil</h3><p>Matrícula 10019603 en la Cámara de Comercio de Cartagena.</p></li>
+          <li><time>2026</time><h3>TRAMA</h3><p>Desarrollo de la plataforma BIM propia y primera versión de prueba.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave" id="fundadores">
+    <div class="contenedor">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Fundadores</p><h2>Quién está detrás de GEOMAGNI</h2></header>
+      <article class="persona">
+        <div class="persona__foto" aria-hidden="true">JC</div>
+        <div>
+          <h3 style="font-size:1.5rem">Juan Carlos Camacho Puello</h3>
+          <p class="persona__cargo">Fundador y representante legal · Ingeniero Civil</p>
+          <p>Fundó GEOMAGNI para llevar la experiencia de la ingeniería civil y la dirección de proyectos al desarrollo de herramientas digitales para el sector de la construcción.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Valores</p><h2>Cómo trabajamos</h2></header>
+      <div class="valores">
+%s
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave">
+    <div class="contenedor empresa">
+      <div class="empresa__texto">
+        <p class="etiqueta etiqueta--morada">Empresa formal</p>
+        <h2>Datos de registro</h2>
+        <p>Somos una sociedad por acciones simplificada registrada en Colombia. Puede verificar estos datos en el Registro Único Empresarial y Social (RUES).</p>
+      </div>
+      <aside class="ficha" aria-label="Datos de registro">
+        <dl>
+          <dt>Razón social</dt><dd>GEOMAGNI TECNOLOGÍAS S.A.S.</dd>
+          <dt>NIT</dt><dd>902.113.610-0</dd>
+          <dt>Matrícula mercantil</dt><dd>10019603 · Cámara de Comercio de Cartagena</dd>
+          <dt>Domicilio</dt><dd>Cartagena, Bolívar, Colombia</dd>
+          <dt>Actividades (CIIU)</dt><dd>6201 Desarrollo de software · 5820 Edición de programas · 6202 Consultoría informática · 7490 Otras actividades profesionales y técnicas</dd>
+        </dl>
+      </aside>
+    </div>
+  </section>
+%s""" % (vals, FRANJA)
+    documento("nosotros.html", "Nosotros · GEOMAGNI TECNOLOGÍAS",
+              "Propósito, historia, fundador, valores y datos de registro de GEOMAGNI TECNOLOGÍAS S.A.S., empresa colombiana de ingeniería y tecnología.", cuerpo)
+
+# ---------------------------------------------------------------- TRABAJA CON NOSOTROS
+def p_trabaja():
+    areas = [("Ingeniería", "Diseño estructural, gestión y coordinación de proyectos"),
+             ("Modelación BIM", "Modelado, documentación y coordinación"),
+             ("Desarrollo de software", "Programación de TRAMA y herramientas técnicas"),
+             ("Diseño y comunicación", "Experiencia de usuario, marca y contenidos")]
+    ar = "\n".join('        <div class="area"><strong>%s</strong><span>%s</span></div>' % a for a in areas)
+    cuerpo = encabezado("Trabaja con nosotros", "Trabaja con nosotros", "Construyamos juntos la forma de gestionar proyectos",
+                        "Buscamos personas rigurosas y curiosas que quieran unir ingeniería y tecnología.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Áreas</p><h2>Dónde puede aportar</h2></header>
+      <div class="areas">
+%s
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave">
+    <div class="contenedor">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Vacantes</p><h2>Ofertas abiertas</h2></header>
+      <div class="vacio">
+        <h3>En este momento no hay vacantes publicadas</h3>
+        <p style="margin:0">Envíenos su hoja de vida y la tendremos en cuenta para próximas oportunidades.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion" id="postulacion">
+    <div class="contenedor contacto">
+      <div class="contacto__texto">
+        <p class="etiqueta etiqueta--morada">Postulación</p>
+        <h2>Envíenos su hoja de vida</h2>
+        <p>Complete el formulario. Se abrirá su programa de correo con el mensaje listo: <strong>adjunte allí su hoja de vida en PDF</strong> antes de enviarlo.</p>
+      </div>
+      <form class="formulario" data-asunto="Postulación" novalidate>
+        <div class="campo"><label for="t-nombre">Nombre completo</label><input id="t-nombre" name="nombre" autocomplete="name" required></div>
+        <div class="campo"><label for="t-correo">Correo electrónico</label><input id="t-correo" name="correo" type="email" autocomplete="email" required></div>
+        <div class="campo"><label for="t-tel">Teléfono <span class="opcional">(opcional)</span></label><input id="t-tel" name="telefono" type="tel" autocomplete="tel"></div>
+        <div class="campo"><label for="t-area">Área de interés</label><select id="t-area" name="area"><option>Ingeniería</option><option>Modelación BIM</option><option>Desarrollo de software</option><option>Diseño y comunicación</option><option>Otra</option></select></div>
+        <div class="campo"><label for="t-perfil">Cuéntenos sobre usted</label><textarea id="t-perfil" name="mensaje" rows="5" required></textarea></div>
+%s
+        <button class="boton boton--morado" type="submit">Preparar correo</button>
+        <p class="formulario__nota" role="status">Sus datos se usan solo para el proceso de selección.</p>
+      </form>
+    </div>
+  </section>
+""" % (ar, FORM_CASILLA % {"id": "t-autorizo"})
+    documento("trabaja.html", "Trabaja con nosotros · GEOMAGNI TECNOLOGÍAS",
+              "Áreas de trabajo, vacantes y postulación para trabajar en GEOMAGNI TECNOLOGÍAS, Cartagena, Colombia.", cuerpo)
+
+# ---------------------------------------------------------------- CONTACTO
+def p_contacto():
+    cuerpo = encabezado("Contacto", "Contacto", "Cuéntenos sobre su proyecto",
+                        "Escríbanos y le responderemos con una propuesta de alcance y tiempos.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor contacto">
+      <div class="contacto__texto">
+        <h2>Canales de atención</h2>
+        <ul class="datos">
+          <li><span>Teléfono y WhatsApp</span><a href="tel:%(tel_e)s">%(tel)s</a></li>
+          <li><span>Correo</span><a href="mailto:%(correo)s">%(correo)s</a></li>
+          <li><span>Ciudad</span>Cartagena de Indias, Colombia</li>
+          <li><span>Horario</span>Lunes a viernes, 8:00 a. m. a 6:00 p. m.</li>
+        </ul>
+        <a class="boton boton--whatsapp" href="https://wa.me/573117227083?text=Hola%%20GEOMAGNI%%2C%%20quiero%%20informaci%%C3%%B3n%%20sobre%%20sus%%20servicios." target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      </div>
+      <form class="formulario" id="formulario" data-asunto="Solicitud web" novalidate>
+        <div class="campo"><label for="nombre">Nombre</label><input id="nombre" name="nombre" autocomplete="name" required></div>
+        <div class="campo"><label for="organizacion">Empresa u organización</label><input id="organizacion" name="organizacion" autocomplete="organization"></div>
+        <div class="campo"><label for="correo">Correo electrónico</label><input id="correo" name="correo" type="email" autocomplete="email" required></div>
+        <div class="campo"><label for="telefono">Teléfono <span class="opcional">(opcional)</span></label><input id="telefono" name="telefono" type="tel" autocomplete="tel"></div>
+        <div class="campo"><label for="servicio">Motivo</label>
+          <select id="servicio" name="servicio">
+            <option value="demostracion">Demostración de TRAMA</option>
+            <option value="planes">Planes y precios de TRAMA</option>
+            <option value="gestion">Consultoría y gestión de proyectos</option>
+            <option value="bim">Modelación BIM</option>
+            <option value="estructural">Análisis y diseño estructural</option>
+            <option value="coordinacion">Coordinación técnica</option>
+            <option value="software">Software a la medida</option>
+            <option value="capacitacion">Consultoría y capacitación</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="campo"><label for="mensaje">Mensaje</label><textarea id="mensaje" name="mensaje" rows="5" required></textarea></div>
+%(casilla)s
+        <button class="boton boton--morado" type="submit">Enviar mensaje</button>
+        <p class="formulario__nota" role="status">Se abrirá su programa de correo con el mensaje listo para enviar.</p>
+      </form>
+    </div>
+  </section>
+""" % {"tel": TEL, "tel_e": TEL_ENLACE, "correo": CORREO, "casilla": FORM_CASILLA % {"id": "autorizo"}}
+    documento("contacto.html", "Contacto · GEOMAGNI TECNOLOGÍAS",
+              "Teléfono, WhatsApp, correo y formulario de contacto de GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia.", cuerpo)
+
+# ---------------------------------------------------------------- PRIVACIDAD (conserva el texto legal existente)
+def p_privacidad():
+    import re
+    ruta = os.path.join(RAIZ, "privacidad.html")
+    html = open(ruta, encoding="utf-8").read()
+    art = re.search(r'(<article class="contenedor legal">.*?</article>)', html, re.S).group(1)
+    cuerpo = '  <section class="seccion">\n    ' + art + '\n  </section>\n'
+    documento("privacidad.html", "Política de tratamiento de datos · GEOMAGNI TECNOLOGÍAS",
+              "Política de tratamiento de datos personales de GEOMAGNI TECNOLOGÍAS S.A.S., conforme a la Ley 1581 de 2012.", cuerpo)
+
+if __name__ == "__main__":
+    print("Generando páginas:")
+    p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad()
+    print("Listo.")

@@ -4,23 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GEOMAGNI TECNOLOGÍAS · Ingeniería, BIM y software para proyectos</title>
-  <meta name="description" content="GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia. Consultoría en ingeniería y gestión de proyectos de construcción e infraestructura, modelación BIM, análisis y diseño estructural, coordinación técnica y desarrollo de software especializado.">
+  <meta name="description" content="GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia. Plataforma BIM TRAMA, modelación BIM, diseño estructural, coordinación técnica y software especializado para construcción e infraestructura.">
   <meta name="theme-color" content="#5B2A86">
+  <link rel="canonical" href="https://jucarcapu-png.github.io/geomagni/">
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-  <!-- Con dominio propio, cambie estas dos direcciones -->
-  <meta property="og:url" content="https://jucarcapu-png.github.io/geomagni/">
-  <link rel="canonical" href="https://jucarcapu-png.github.io/geomagni/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_CO">
   <meta property="og:site_name" content="GEOMAGNI TECNOLOGÍAS">
-  <meta property="og:title" content="GEOMAGNI TECNOLOGÍAS · Ingeniería, BIM y software">
-  <meta property="og:description" content="Consultoría en ingeniería y gestión de proyectos, modelación BIM, diseño estructural y software especializado. Cartagena, Colombia.">
+  <meta property="og:title" content="GEOMAGNI TECNOLOGÍAS · Ingeniería, BIM y software para proyectos">
+  <meta property="og:description" content="GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia. Plataforma BIM TRAMA, modelación BIM, diseño estructural, coordinación técnica y software especializado para construcción e infraestructura.">
+  <meta property="og:url" content="https://jucarcapu-png.github.io/geomagni/">
   <meta property="og:image" content="https://jucarcapu-png.github.io/geomagni/img/og-geomagni.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="paginas.css">
+  <link rel="stylesheet" href="dinamico.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -28,9 +30,9 @@
     "name": "GEOMAGNI TECNOLOGÍAS S.A.S.",
     "alternateName": "GEOMAGNI",
     "slogan": "La medida da forma.",
-    "taxID": "902113610-0",
     "url": "https://jucarcapu-png.github.io/geomagni/",
     "logo": "https://jucarcapu-png.github.io/geomagni/img/geomagni-simbolo.svg",
+    "taxID": "902113610-0",
     "email": "jucarcapu@gmail.com",
     "telephone": "+57 311 722 7083",
     "founder": { "@type": "Person", "name": "Juan Carlos Camacho Puello", "jobTitle": "Ingeniero Civil" },
@@ -40,150 +42,164 @@
     "knowsAbout": ["Gestión de proyectos", "Modelación BIM", "Análisis y diseño estructural", "Coordinación técnica", "Desarrollo de software"]
   }
   </script>
-  <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-
 <a class="saltar" href="#contenido">Saltar al contenido</a>
-
+<div class="aviso-prueba" role="note"><strong>Sitio de prueba.</strong> Esta página está en construcción: precios, planes y descargas son demostrativos y pueden cambiar.</div>
 <header class="cabecera" id="cabecera">
   <div class="contenedor cabecera__fila">
-    <a class="marca" href="#inicio" aria-label="GEOMAGNI TECNOLOGÍAS, inicio">
+    <a class="marca" href="index.html" aria-label="GEOMAGNI TECNOLOGÍAS, inicio">
       <img src="img/geomagni-firma.svg" alt="GEOMAGNI TECNOLOGÍAS" width="200" height="50">
     </a>
     <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
       <span></span><span></span><span></span>
     </button>
     <nav class="menu" id="menu" aria-label="Principal">
-      <a href="#servicios">Servicios</a>
-      <a href="#trama">TRAMA</a>
-      <a href="#metodo">Método</a>
-      <a href="#empresa">Empresa</a>
-      <a class="boton boton--naranja" href="#contacto">Solicitar propuesta</a>
+      <div class="menu__grupo">
+        <button class="menu__abrir" id="abrirProductos" aria-expanded="false" aria-controls="desplegableProductos">Productos y servicios</button>
+        <div class="desplegable" id="desplegableProductos">
+          <a class="destacado" href="productos.html#trama"><strong>TRAMA</strong><span>Plataforma BIM y gestión integral de proyectos</span></a>
+          <h4>Servicios</h4>
+          <a href="productos.html#gestion"><strong>Gestión de proyectos</strong><span>Alcance, cronograma, costos y control</span></a>
+          <a href="productos.html#bim"><strong>Modelación BIM</strong><span>Modelos coordinados de arquitectura y estructura</span></a>
+          <a href="productos.html#estructural"><strong>Diseño estructural</strong><span>Análisis, diseño y memorias de cálculo</span></a>
+          <a href="productos.html#coordinacion"><strong>Coordinación técnica</strong><span>Interferencias, incidencias y disciplinas</span></a>
+          <a href="productos.html#software"><strong>Software a la medida</strong><span>Herramientas y automatización para el sector</span></a>
+          <a href="productos.html#capacitacion"><strong>Consultoría y capacitación</strong><span>Adopción de flujos digitales y BIM</span></a>
+        </div>
+      </div>
+      <a href="planes.html">Planes</a>
+      <a href="descargas.html">Descargas</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="trabaja.html">Trabaja con nosotros</a>
+      <a href="contacto.html">Contacto</a>
+      <a class="boton boton--naranja" href="contacto.html?asunto=demostracion">Solicitar demostración</a>
     </nav>
   </div>
 </header>
 
 <main id="contenido">
-
-  <!-- PORTADA -->
   <section class="portada" id="inicio">
     <div class="contenedor portada__fila">
       <div class="portada__texto">
         <p class="etiqueta">La medida da forma</p>
-        <h1>Ingeniería, BIM y software para proyectos de construcción e infraestructura</h1>
+        <h1>Ingeniería, BIM y software para <span class="rotativa" data-palabras="construcción|infraestructura|estructuras|su proyecto">construcción</span></h1>
         <p class="portada__bajada">GEOMAGNI conecta geometría, datos y decisiones para que los proyectos puedan comprenderse y gestionarse como un solo sistema.</p>
         <div class="portada__acciones">
-          <a class="boton boton--naranja" href="#contacto">Conversemos su proyecto</a>
-          <a class="boton boton--contorno" href="#servicios">Ver servicios</a>
+          <a class="boton boton--naranja" href="productos.html">Ver productos y servicios</a>
+          <a class="boton boton--contorno" href="descargas.html">Descargar TRAMA</a>
         </div>
       </div>
       <div class="portada__grafico" aria-hidden="true">
         <svg viewBox="0 0 480 480" class="isometria">
-          <defs>
-            <pattern id="malla" width="40" height="23.09" patternUnits="userSpaceOnUse" patternTransform="skewX(-30)">
-              <path d="M0 0H40M0 0V23.09" stroke="rgba(255,255,255,.10)" stroke-width="1" fill="none"/>
-            </pattern>
-          </defs>
+          <defs><pattern id="malla" width="40" height="23.09" patternUnits="userSpaceOnUse" patternTransform="skewX(-30)"><path d="M0 0H40M0 0V23.09" stroke="rgba(255,255,255,.10)" stroke-width="1" fill="none"/></pattern></defs>
           <rect width="480" height="480" fill="url(#malla)"/>
-          <!-- bloques isométricos: estructura del proyecto -->
           <g class="bloque b1"><path d="M150 250 210 215 270 250 210 285Z" fill="#A583C2"/><path d="M150 250 210 285V365L150 330Z" fill="#7A4AA8"/><path d="M210 285 270 250V330L210 365Z" fill="#3A195B"/></g>
           <g class="bloque b2"><path d="M230 170 290 135 350 170 290 205Z" fill="#A583C2"/><path d="M230 170 290 205V315L230 280Z" fill="#7A4AA8"/><path d="M290 205 350 170V280L290 315Z" fill="#3A195B"/></g>
           <g class="bloque b3"><path d="M290 300 330 277 370 300 330 323Z" fill="#FFB273"/><path d="M290 300 330 323V363L290 340Z" fill="#FF7400"/><path d="M330 323 370 300V340L330 363Z" fill="#C54F00"/></g>
-          <!-- cotas -->
-          <g class="cota" stroke="#FF7400" stroke-width="2" fill="none">
-            <path d="M120 262 120 342"/><path d="M114 262H126M114 342H126"/>
-          </g>
+          <g class="cota" stroke="#FF7400" stroke-width="2" fill="none"><path d="M120 262 120 342"/><path d="M114 262H126M114 342H126"/></g>
           <text x="96" y="306" class="cota__texto" transform="rotate(-90 96 306)">3,00 m</text>
-          <circle cx="290" cy="135" r="6" fill="#FF7400" class="nodo"/>
-          <circle cx="150" cy="250" r="5" fill="#fff" class="nodo n2"/>
+          <circle cx="290" cy="135" r="6" fill="#FF7400" class="nodo"/><circle cx="150" cy="250" r="5" fill="#fff" class="nodo n2"/>
           <path d="M290 135 L150 250" stroke="rgba(255,255,255,.35)" stroke-dasharray="4 6" class="enlace"/>
         </svg>
       </div>
     </div>
   </section>
 
-  <!-- SERVICIOS -->
-  <section class="seccion" id="servicios">
+  <div class="cinta" aria-hidden="true"><div class="cinta__pista"><span>Modelación BIM</span><span>Diseño estructural</span><span>Gestión de proyectos</span><span>Coordinación técnica</span><span>Software a la medida</span><span>DWG y DXF</span><span>Planos y documentación</span><span>Capacitación</span><span>Modelación BIM</span><span>Diseño estructural</span><span>Gestión de proyectos</span><span>Coordinación técnica</span><span>Software a la medida</span><span>DWG y DXF</span><span>Planos y documentación</span><span>Capacitación</span></div></div>
+
+  <section class="seccion">
     <div class="contenedor">
       <header class="seccion__cabeza">
-        <p class="etiqueta etiqueta--morada">Servicios</p>
-        <h2>Lo que hacemos por su proyecto</h2>
-        <p>Prestamos servicios de ingeniería, consultoría y gestión para proyectos de construcción e infraestructura, apoyados en modelación de información y software propio.</p>
+        <p class="etiqueta etiqueta--morada">Productos y servicios</p>
+        <h2>Todo lo que su proyecto necesita, conectado</h2>
+        <p>Software propio y servicios de ingeniería que trabajan sobre la misma información.</p>
       </header>
       <div class="rejilla rejilla--3">
-        <article class="tarjeta">
-          <div class="tarjeta__icono"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></div>
-          <h3>Consultoría y gestión de proyectos</h3>
-          <p>Planeación, control y seguimiento de proyectos de construcción e infraestructura: alcance, programación, costos y responsables con criterios claros.</p>
+        <article class="ilustrada">
+          <div class="ilustrada__img"><svg viewBox="0 0 320 180" aria-hidden="true"><path d="M70 110 120 81 170 110 120 139Z" fill="#A583C2"/><path d="M70 110 120 139V170L70 141Z" fill="#7A4AA8"/><path d="M120 139 170 110V141L120 170Z" fill="#3A195B"/><path d="M140 60 190 31 240 60 190 89Z" fill="#A583C2"/><path d="M140 60 190 89V150L140 121Z" fill="#7A4AA8"/><path d="M190 89 240 60V121L190 150Z" fill="#3A195B"/><path d="M200 120 225 105 250 120 225 135Z" fill="#FFB273"/><path d="M200 120 225 135V160L200 145Z" fill="#FF7400"/><path d="M225 135 250 120V145L225 160Z" fill="#C54F00"/></svg></div>
+          <div class="ilustrada__cuerpo"><h3>TRAMA</h3><p>Plataforma BIM propia para modelar, documentar y gestionar el proyecto en un mismo entorno.</p><a class="enlace-flecha" href="productos.html#trama">Conocer más</a></div>
         </article>
-        <article class="tarjeta">
-          <div class="tarjeta__icono"><svg viewBox="0 0 24 24"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></div>
-          <h3>Modelación BIM</h3>
-          <p>Modelos de información de arquitectura y estructura, con niveles, ejes, vistas y planos coordinados, listos para revisar, cuantificar y construir.</p>
+        <article class="ilustrada">
+          <div class="ilustrada__img"><svg viewBox="0 0 320 180" aria-hidden="true"><rect x="60" y="20" width="200" height="140" fill="#fff" stroke="#262329" stroke-width="2"/><rect x="200" y="130" width="56" height="26" fill="none" stroke="#5B2A86" stroke-width="2"/><path d="M90 50h80v60H90z M130 50v60 M90 80h40" fill="none" stroke="#5B2A86" stroke-width="3"/><path d="M90 125h80" stroke="#FF7400" stroke-width="2"/><path d="M90 120v10M170 120v10" stroke="#FF7400" stroke-width="2"/><circle cx="215" cy="70" r="22" fill="none" stroke="#A583C2" stroke-width="3"/><path d="M215 48v44M193 70h44" stroke="#A583C2" stroke-width="2"/></svg></div>
+          <div class="ilustrada__cuerpo"><h3>Modelación BIM</h3><p>Modelos coordinados con niveles, ejes, vistas y planos listos para construir.</p><a class="enlace-flecha" href="productos.html#bim">Conocer más</a></div>
         </article>
-        <article class="tarjeta">
-          <div class="tarjeta__icono"><svg viewBox="0 0 24 24"><path d="M4 20V8m16 12V8M2 8h20M4 14h16M8 8l4-5 4 5"/></svg></div>
-          <h3>Análisis y diseño estructural</h3>
-          <p>Análisis y diseño de estructuras con memorias de cálculo trazables, en concordancia con la normativa colombiana aplicable a cada proyecto.</p>
+        <article class="ilustrada">
+          <div class="ilustrada__img"><svg viewBox="0 0 320 180" aria-hidden="true"><path d="M40 150H280" stroke="#262329" stroke-width="4"/><path d="M70 150V70" stroke="#5B2A86" stroke-width="5"/><path d="M130 150V70" stroke="#5B2A86" stroke-width="5"/><path d="M190 150V70" stroke="#5B2A86" stroke-width="5"/><path d="M250 150V70" stroke="#5B2A86" stroke-width="5"/><path d="M60 70 H260" stroke="#7A4AA8" stroke-width="5"/><path d="M60 110 H260" stroke="#7A4AA8" stroke-width="5"/><path d="M70 70 130 110M130 70 190 110M190 70 250 110" stroke="#FF7400" stroke-width="2.5" stroke-dasharray="6 5"/><path d="M60 40H260" stroke="#FF7400" stroke-width="2"/><path d="M60 34V46M260 34V46" stroke="#FF7400" stroke-width="2"/><text x="160" y="32" text-anchor="middle" font-family="Sora,Arial" font-size="13" font-weight="600" fill="#C54F00">18,00 m</text></svg></div>
+          <div class="ilustrada__cuerpo"><h3>Diseño estructural</h3><p>Análisis y diseño de estructuras con memorias de cálculo trazables.</p><a class="enlace-flecha" href="productos.html#estructural">Conocer más</a></div>
         </article>
-        <article class="tarjeta">
-          <div class="tarjeta__icono"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M8.5 7.5l2 8M15.5 7.5l-2 8M9 6h6"/></svg></div>
-          <h3>Coordinación técnica</h3>
-          <p>Integración de disciplinas, detección de interferencias y gestión de incidencias para que cada cambio tenga origen, estado y responsable.</p>
+        <article class="ilustrada">
+          <div class="ilustrada__img"><svg viewBox="0 0 320 180" aria-hidden="true"><g stroke="#A583C2" stroke-width="2.5"><path d="M160 90 80 50M160 90 240 50M160 90 80 140M160 90 240 140M80 50 240 50"/></g><circle cx="160" cy="90" r="22" fill="#5B2A86"/><circle cx="80" cy="50" r="14" fill="#7A4AA8"/><circle cx="240" cy="50" r="14" fill="#7A4AA8"/><circle cx="80" cy="140" r="14" fill="#FF7400"/><circle cx="240" cy="140" r="14" fill="#7A4AA8"/><path d="M152 90h16M160 82v16" stroke="#fff" stroke-width="3"/></svg></div>
+          <div class="ilustrada__cuerpo"><h3>Coordinación técnica</h3><p>Disciplinas integradas e incidencias con origen, estado y responsable.</p><a class="enlace-flecha" href="productos.html#coordinacion">Conocer más</a></div>
         </article>
-        <article class="tarjeta">
-          <div class="tarjeta__icono"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
-          <h3>Software especializado</h3>
-          <p>Desarrollo de herramientas a la medida para el sector: automatización, intercambio de datos CAD/BIM y aplicaciones técnicas para su equipo.</p>
+        <article class="ilustrada">
+          <div class="ilustrada__img"><svg viewBox="0 0 320 180" aria-hidden="true"><rect x="50" y="25" width="220" height="130" rx="10" fill="#262329"/><rect x="50" y="25" width="220" height="22" rx="10" fill="#3A3540"/><circle cx="66" cy="36" r="4" fill="#FF7400"/><g stroke-width="7" stroke-linecap="round"><path d="M72 70h50" stroke="#A583C2"/><path d="M132 70h70" stroke="#FFB273"/><path d="M90 90h90" stroke="#7A4AA8"/><path d="M90 110h40" stroke="#A583C2"/><path d="M140 110h60" stroke="#FF7400"/><path d="M72 130h80" stroke="#7A4AA8"/></g></svg></div>
+          <div class="ilustrada__cuerpo"><h3>Software a la medida</h3><p>Automatización e intercambio de datos CAD y BIM para su equipo.</p><a class="enlace-flecha" href="productos.html#software">Conocer más</a></div>
         </article>
-        <article class="tarjeta">
-          <div class="tarjeta__icono"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4M7 9h4M7 12h7"/></svg></div>
-          <h3>Consultoría tecnológica</h3>
-          <p>Acompañamiento para adoptar flujos de trabajo digitales y BIM: diagnóstico, estándares, plantillas y capacitación del equipo.</p>
+        <article class="ilustrada">
+          <div class="ilustrada__img"><svg viewBox="0 0 320 180" aria-hidden="true"><path d="M160 30 270 75 160 120 50 75Z" fill="#5B2A86"/><path d="M95 95v35c0 14 30 25 65 25s65-11 65-25V95l-65 25z" fill="#7A4AA8"/><path d="M250 83v45" stroke="#FF7400" stroke-width="4"/><circle cx="250" cy="134" r="7" fill="#FF7400"/></svg></div>
+          <div class="ilustrada__cuerpo"><h3>Consultoría y capacitación</h3><p>Acompañamiento para adoptar flujos de trabajo digitales y BIM.</p><a class="enlace-flecha" href="productos.html#capacitacion">Conocer más</a></div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- TRAMA -->
-  <section class="seccion seccion--oscura" id="trama">
-    <div class="contenedor trama">
-      <div class="trama__texto">
+  <section class="seccion seccion--oscura">
+    <div class="contenedor producto">
+      <div>
         <img src="img/trama-invertido.svg" alt="TRAMA" class="trama__logo" width="300" height="80">
         <p class="trama__firma">Una plataforma de GEOMAGNI</p>
         <h2>El proyecto como un solo sistema</h2>
-        <p>TRAMA es la plataforma BIM y de gestión integral de proyectos que desarrolla GEOMAGNI. Reúne en un mismo entorno el modelo tridimensional, sus vistas y planos, y la información que le da contexto.</p>
-        <ul class="lista-chequeo">
-          <li>Modelado 3D de sólidos, componentes paramétricos y cotas que gobiernan la geometría.</li>
-          <li>Niveles, ejes, plantas, alzados, secciones y cajas de sección.</li>
-          <li>Composición de planos con formatos y rótulos.</li>
-          <li>Importación y exportación de archivos CAD (DXF y DWG).</li>
-          <li>Recorridos de cámara y renderizado del modelo.</li>
-        </ul>
-        <p class="nota">TRAMA se encuentra en desarrollo activo. Solicite una demostración para conocer su estado actual.</p>
-        <a class="boton boton--naranja" href="#contacto">Solicitar demostración</a>
+        <div class="pestanas" role="tablist" aria-label="Funciones de TRAMA">
+          <button role="tab" id="t1" aria-controls="p1" data-zona="20,10,78,72">Modelado 3D</button>
+          <button role="tab" id="t2" aria-controls="p2" data-zona="0,10,22,82">Vistas y niveles</button>
+          <button role="tab" id="t3" aria-controls="p3" data-zona="0,0,100,14">Planos</button>
+          <button role="tab" id="t4" aria-controls="p4" data-zona="84,10,15,18">Interoperabilidad</button>
+        </div>
+        <div class="panel-pestana" role="tabpanel" id="p1" aria-labelledby="t1"><h3>Geometría que obedece a las medidas</h3><p>Sólidos, vacíos y componentes paramétricos con cotas que gobiernan la forma.</p></div>
+        <div class="panel-pestana" role="tabpanel" id="p2" aria-labelledby="t2" hidden><h3>Todo el proyecto organizado</h3><p>Niveles, ejes, plantas, alzados, secciones y cajas de sección en un navegador de vistas.</p></div>
+        <div class="panel-pestana" role="tabpanel" id="p3" aria-labelledby="t3" hidden><h3>De modelo a plano</h3><p>Composición de planos con formatos, rótulos y vistas colocadas a escala.</p></div>
+        <div class="panel-pestana" role="tabpanel" id="p4" aria-labelledby="t4" hidden><h3>Trabaje con lo que ya tiene</h3><p>Importación y exportación de archivos DWG y DXF, con capas y colores.</p></div>
+        <div class="portada__acciones">
+          <a class="boton boton--naranja" href="descargas.html">Descargar versión de prueba</a>
+          <a class="boton boton--contorno" href="planes.html">Ver planes</a>
+        </div>
       </div>
-      <div class="trama__pilares">
-        <h3>Nuestros pilares</h3>
-        <ol>
-          <li><strong>Estructura</strong><span>La información deja de ser una suma de archivos aislados.</span></li>
-          <li><strong>Conexión</strong><span>Modelos, datos, disciplinas y responsabilidades se relacionan.</span></li>
-          <li><strong>Trazabilidad</strong><span>Se conoce el origen, estado y evolución de cada dato.</span></li>
-          <li><strong>Claridad</strong><span>Lo complejo se presenta de forma comprensible y accionable.</span></li>
-          <li><strong>Verificación</strong><span>Las decisiones se apoyan en criterios y evidencia identificables.</span></li>
-        </ol>
+      <div class="producto__visual"><div class="ventana"><div class="ventana__barra"><i></i><i></i><i></i></div><svg viewBox="0 0 520 300" aria-label="Ilustración de la interfaz de TRAMA"><rect width="520" height="300" fill="#1B181E"/><rect width="520" height="34" fill="#5B2A86"/><g fill="#fff" opacity=".85"><rect x="14" y="12" width="44" height="10" rx="2"/><rect x="70" y="12" width="44" height="10" rx="2"/><rect x="126" y="12" width="44" height="10" rx="2"/></g><rect x="0" y="34" width="110" height="266" fill="#262329"/><g fill="#68616D"><rect x="14" y="52" width="80" height="8" rx="2"/><rect x="24" y="70" width="64" height="8" rx="2"/><rect x="24" y="88" width="56" height="8" rx="2"/><rect x="14" y="110" width="80" height="8" rx="2"/><rect x="24" y="128" width="60" height="8" rx="2"/></g><rect x="24" y="86" width="70" height="12" rx="2" fill="#FF7400" opacity=".25"/><g transform="translate(150 50)"><path d="M90 120 170 74 250 120 170 166Z" fill="#A583C2"/><path d="M90 120 170 166V230L90 184Z" fill="#7A4AA8"/><path d="M170 166 250 120V184L170 230Z" fill="#3A195B"/><path d="M30 130 80 101 130 130 80 159Z" fill="#A583C2" opacity=".9"/><path d="M30 130 80 159V190L30 161Z" fill="#7A4AA8"/><path d="M80 159 130 130V161L80 190Z" fill="#3A195B"/><path d="M120 74 170 45 220 74" fill="none" stroke="#FF7400" stroke-width="2" stroke-dasharray="5 4"/></g><g transform="translate(470 54)"><rect x="-22" y="-14" width="40" height="40" rx="4" fill="#3A3540"/><text x="-2" y="11" text-anchor="middle" font-family="Sora,Arial" font-size="10" fill="#fff">3D</text></g><rect x="0" y="282" width="520" height="18" fill="#262329"/><rect x="10" y="287" width="90" height="8" rx="2" fill="#68616D"/></svg></div><span class="resalte" aria-hidden="true"></span></div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <div class="cifras cifras--grandes">
+        <div class="cifra"><strong><span data-fin="6">0</span></strong><span>servicios de ingeniería y tecnología</span></div>
+        <div class="cifra"><strong><span data-fin="1">0</span></strong><span>plataforma BIM propia, hecha en Colombia</span></div>
+        <div class="cifra"><strong><span data-fin="100">0</span><small>%</small></strong><span>información trazable de principio a fin</span></div>
+        <div class="cifra cifra--visitas" hidden><strong><span class="visitas-numero">0</span></strong><span>visitas a este sitio</span></div>
       </div>
     </div>
   </section>
 
-  <!-- MÉTODO -->
-  <section class="seccion" id="metodo">
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="seccion__cabeza">
+        <p class="etiqueta etiqueta--morada">Para quién trabajamos</p>
+        <h2>Información útil para cada responsable del proyecto</h2>
+      </header>
+      <div class="rejilla rejilla--4">
+        <article class="publico"><h3>Propietarios y dirección</h3><p>Vea el proyecto como un sistema conectado, con información y responsabilidades identificables para decidir con confianza.</p></article>
+        <article class="publico"><h3>Gerencia de proyectos y PMO</h3><p>Convierta información dispersa en una estructura común y trazable de alcance, avance, decisiones y responsables.</p></article>
+        <article class="publico"><h3>Coordinación BIM</h3><p>Conecte el modelo con la información que le da contexto: datos, incidencias y disciplinas en un mismo lugar.</p></article>
+        <article class="publico"><h3>Construcción y obra</h3><p>Lleve a campo la información vigente: qué cambió, qué aplica y quién responde.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave">
     <div class="contenedor">
       <header class="seccion__cabeza">
         <p class="etiqueta etiqueta--morada">Método</p>
         <h2>Cómo trabajamos</h2>
-        <p>Un proceso claro, con entregables definidos y comunicación directa en cada etapa.</p>
       </header>
       <ol class="pasos">
         <li><span class="pasos__num">01</span><h3>Entender</h3><p>Escuchamos la necesidad, revisamos la información existente y definimos alcance y criterios de aceptación.</p></li>
@@ -193,148 +209,61 @@
       </ol>
     </div>
   </section>
-
-  <!-- PARA QUIÉN -->
-  <section class="seccion seccion--borde" id="clientes">
+  <section class="seccion">
     <div class="contenedor">
-      <header class="seccion__cabeza">
-        <p class="etiqueta etiqueta--morada">Para quién trabajamos</p>
-        <h2>Información útil para cada responsable del proyecto</h2>
-      </header>
-      <div class="rejilla rejilla--4">
-        <article class="publico">
-          <h3>Propietarios y dirección</h3>
-          <p>Vea el proyecto como un sistema conectado, con información y responsabilidades identificables para decidir con confianza.</p>
-        </article>
-        <article class="publico">
-          <h3>Gerencia de proyectos y PMO</h3>
-          <p>Convierta información dispersa en una estructura común y trazable de alcance, avance, decisiones y responsables.</p>
-        </article>
-        <article class="publico">
-          <h3>Coordinación BIM</h3>
-          <p>Conecte el modelo con la información que le da contexto: datos, incidencias y disciplinas en un mismo lugar.</p>
-        </article>
-        <article class="publico">
-          <h3>Construcción y obra</h3>
-          <p>Lleve a campo la información vigente: qué cambió, qué aplica y quién responde.</p>
-        </article>
+      <div class="franja">
+        <div><h2>¿Tiene un proyecto en mente?</h2><p>Cuéntenos el alcance y le enviamos una propuesta de trabajo.</p></div>
+        <a class="boton boton--naranja" href="contacto.html">Hablemos</a>
       </div>
-    </div>
-  </section>
-
-  <!-- EMPRESA -->
-  <section class="seccion seccion--suave" id="empresa">
-    <div class="contenedor empresa">
-      <div class="empresa__texto">
-        <p class="etiqueta etiqueta--morada">Empresa</p>
-        <h2>Una empresa colombiana de ingeniería y tecnología</h2>
-        <p>GEOMAGNI TECNOLOGÍAS S.A.S. nace en Cartagena de Indias para unir la práctica de la ingeniería civil con el desarrollo de software. Creemos que la información de un proyecto debe ser comprensible, conectada y verificable, para que las personas puedan coordinarse y decidir con mayor confianza.</p>
-        <p>Nuestro trabajo combina rigor técnico, trazabilidad e innovación útil: adoptamos tecnología por el valor que aporta, no por novedad.</p>
-        <div class="direccion">
-          <img src="img/geomagni-simbolo.svg" alt="" width="56" height="56">
-          <div>
-            <strong>Juan Carlos Camacho Puello</strong>
-            <span>Ingeniero Civil · Representante legal</span>
-          </div>
-        </div>
-      </div>
-      <aside class="ficha" aria-label="Datos de registro">
-        <h3>Datos de registro</h3>
-        <dl>
-          <dt>Razón social</dt><dd>GEOMAGNI TECNOLOGÍAS S.A.S.</dd>
-          <dt>NIT</dt><dd>902.113.610-0</dd>
-          <dt>Matrícula mercantil</dt><dd>10019603 · Cámara de Comercio de Cartagena</dd>
-          <dt>Domicilio</dt><dd>Cartagena, Bolívar, Colombia</dd>
-          <dt>Actividades (CIIU)</dt><dd>6201 Desarrollo de software · 5820 Edición de programas · 6202 Consultoría informática · 7490 Otras actividades profesionales y técnicas</dd>
-        </dl>
-      </aside>
-    </div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section class="seccion" id="contacto">
-    <div class="contenedor contacto">
-      <div class="contacto__texto">
-        <p class="etiqueta etiqueta--morada">Contacto</p>
-        <h2>Cuéntenos sobre su proyecto</h2>
-        <p>Escríbanos y le responderemos con una propuesta de alcance y tiempos.</p>
-        <ul class="datos">
-          <li><span>Teléfono y WhatsApp</span><a href="tel:+573117227083">+57 311 722 7083</a></li>
-          <li><span>Correo</span><a href="mailto:jucarcapu@gmail.com">jucarcapu@gmail.com</a></li>
-          <li><span>Ciudad</span>Cartagena de Indias, Colombia</li>
-        </ul>
-        <a class="boton boton--whatsapp" href="https://wa.me/573117227083?text=Hola%20GEOMAGNI%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" rel="noopener">Escribir por WhatsApp</a>
-      </div>
-      <form class="formulario" id="formulario" name="contacto" method="POST" data-netlify="true" netlify-honeypot="sitio" novalidate>
-        <input type="hidden" name="form-name" value="contacto">
-        <p class="oculto" aria-hidden="true"><label>No llenar <input name="sitio" tabindex="-1" autocomplete="off"></label></p>
-        <div class="campo">
-          <label for="nombre">Nombre</label>
-          <input id="nombre" name="nombre" autocomplete="name" required>
-        </div>
-        <div class="campo">
-          <label for="organizacion">Empresa u organización</label>
-          <input id="organizacion" name="organizacion" autocomplete="organization">
-        </div>
-        <div class="campo">
-          <label for="correo">Correo electrónico</label>
-          <input id="correo" name="correo" type="email" autocomplete="email" required>
-        </div>
-        <div class="campo">
-          <label for="telefono">Teléfono <span class="opcional">(opcional)</span></label>
-          <input id="telefono" name="telefono" type="tel" autocomplete="tel">
-        </div>
-        <div class="campo">
-          <label for="servicio">Servicio de interés</label>
-          <select id="servicio" name="servicio">
-            <option>Consultoría y gestión de proyectos</option>
-            <option>Modelación BIM</option>
-            <option>Análisis y diseño estructural</option>
-            <option>Coordinación técnica</option>
-            <option>Software especializado</option>
-            <option>Demostración de TRAMA</option>
-            <option>Otro</option>
-          </select>
-        </div>
-        <div class="campo">
-          <label for="mensaje">Mensaje</label>
-          <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
-        </div>
-        <div class="campo campo--casilla">
-          <input type="checkbox" id="autorizo" name="autorizo" required>
-          <label for="autorizo">Autorizo a GEOMAGNI TECNOLOGÍAS S.A.S. a tratar mis datos para responder esta solicitud, según su <a href="privacidad.html">política de tratamiento de datos</a>.</label>
-        </div>
-        <button class="boton boton--morado" type="submit">Enviar mensaje</button>
-        <p class="formulario__nota" id="formNota" role="status">Le responderemos al correo que indique.</p>
-      </form>
     </div>
   </section>
 
 </main>
 
 <footer class="pie">
-  <div class="contenedor pie__fila">
-    <div class="pie__marca">
-      <svg viewBox="0 0 512 512" width="40" height="40" aria-hidden="true">
-        <mask id="ranurasPie" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
-          <rect width="512" height="512" fill="#fff"/>
-          <g stroke="#000" stroke-width="18"><line x1="274" y1="171" x2="302.3" y2="38.2"/><line x1="341" y1="213.5" x2="454" y2="156.9"/></g>
-        </mask>
-        <g mask="url(#ranurasPie)">
-          <path fill="#FFFFFF" fill-rule="evenodd" d="M298.6 55.5 439.3 164.3 442 342.2 304.6 455.2 130.7 418.3 51 259.1 125.7 97.8ZM171 171V341H341V171Z"/>
-          <path fill="#FF7400" d="M298.6 55.5 439.3 164.3 341 213.5 274 171Z"/>
-        </g>
-      </svg>
+  <div class="contenedor">
+    <div class="pie__columnas">
       <div>
-        <strong>GEOMAGNI TECNOLOGÍAS S.A.S.</strong>
-        <span>NIT 902.113.610-0 · Cartagena, Colombia</span>
+        <div class="pie__marca"><svg viewBox="0 0 512 512" width="40" height="40" aria-hidden="true"><mask id="ranurasPie" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g stroke="#000" stroke-width="18"><line x1="274" y1="171" x2="302.3" y2="38.2"/><line x1="341" y1="213.5" x2="454" y2="156.9"/></g></mask><g mask="url(#ranurasPie)"><path fill="#FFFFFF" fill-rule="evenodd" d="M298.6 55.5 439.3 164.3 442 342.2 304.6 455.2 130.7 418.3 51 259.1 125.7 97.8ZM171 171V341H341V171Z"/><path fill="#FF7400" d="M298.6 55.5 439.3 164.3 341 213.5 274 171Z"/></g></svg>
+          <div><strong>GEOMAGNI TECNOLOGÍAS S.A.S.</strong><span>NIT 902.113.610-0</span></div>
+        </div>
+        <p class="pie__descripcion">Ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena de Indias, Colombia.</p>
+      </div>
+      <div>
+        <h4>Productos</h4>
+        <ul>
+          <li><a href="productos.html#trama">TRAMA</a></li>
+          <li><a href="productos.html#bim">Modelación BIM</a></li>
+          <li><a href="productos.html#estructural">Diseño estructural</a></li>
+          <li><a href="productos.html#software">Software a la medida</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Recursos</h4>
+        <ul>
+          <li><a href="planes.html">Planes y precios</a></li>
+          <li><a href="planes.html#pagos">Formas de pago</a></li>
+          <li><a href="descargas.html">Descargas</a></li>
+          <li><a href="planes.html#preguntas">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="trabaja.html">Trabaja con nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="privacidad.html">Tratamiento de datos</a></li>
+        </ul>
       </div>
     </div>
-    <p class="pie__lema">La medida da forma.</p>
-    <p class="pie__copy">© <span id="anio">2026</span> GEOMAGNI TECNOLOGÍAS S.A.S. Todos los derechos reservados. · <a href="privacidad.html">Política de tratamiento de datos</a></p>
+    <div class="pie__fila">
+      <p class="pie__copy" style="margin:0">© <span class="anio">2026</span> GEOMAGNI TECNOLOGÍAS S.A.S. Todos los derechos reservados. · Sitio de prueba.
+        <span class="visitas-pie" hidden> · <b class="visitas-numero">0</b> visitas</span></p>
+      <p class="pie__lema">La medida da forma.</p>
+    </div>
   </div>
 </footer>
-
 <script src="script.js"></script>
 </body>
 </html>
