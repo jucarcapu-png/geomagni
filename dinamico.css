@@ -113,6 +113,12 @@
 .licencia dd { margin: 2px 0 10px; font-weight: 600; }
 .licencia dd:last-child { margin-bottom: 0; }
 .licencia .codigo { font-family: Consolas, monospace; letter-spacing: .08em; color: #FFB273; }
+.aviso-licencia { background: #EBE1F4; border-left: 4px solid var(--morado); border-radius: 10px; padding: 18px 22px; margin-bottom: 24px; color: var(--gris-900); }
+.aviso-licencia strong { display: block; font-family: var(--f-titulo); color: var(--morado); margin-bottom: 4px; }
+.descarga__acciones { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.botones-descarga { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+.botones-descarga .boton { flex-direction: column; gap: 2px; border-radius: 14px; padding: .8em 1.6em; }
+.botones-descarga small { font: 500 .78rem var(--f-texto); opacity: .85; }
 .licencia--vencida { background: linear-gradient(135deg, #4A4450, #262329); }
 
 @media (max-width: 980px) {

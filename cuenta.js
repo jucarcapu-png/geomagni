@@ -9,9 +9,15 @@ const FIREBASE_CONFIG = {
   apiKey: "",
   authDomain: "",
   projectId: "",
+  storageBucket: "",
   appId: ""
 };
 const DIAS_PRUEBA = 7;
+// Archivos de TRAMA en Firebase Storage (carpeta «instaladores»). Solo se entregan con licencia vigente (storage.rules).
+const INSTALADORES = [
+  { ruta: "instaladores/Instalar-TRAMA-1.5.703.exe", texto: "Descargar instalador", detalle: "Windows 10/11 · 46,5 MB" },
+  { ruta: "instaladores/TRAMA-1.5.703-portable.zip", texto: "Descargar versión portátil", detalle: "Sin instalar · 46,4 MB" }
+];
 // Dominios aceptados para la licencia estudiantil (correo institucional).
 const CORREO_ACADEMICO = /\.edu(\.[a-z]{2})?$/i;
 // Proveedores de correo personal: nunca valen para la licencia estudiantil.
@@ -211,9 +217,29 @@ async function iniciar() {
           ${l.tipo === "estudiante" && u.universidad ? "<p>" + esc(u.programa) + " · " + esc(u.universidad) + "</p>" : ""}</div>
         <dl><dt>Cuenta para TRAMA</dt><dd>${esc(user.email)}</dd><dt>Código de licencia</dt><dd class="codigo">${user.uid.slice(0, 4).toUpperCase()}-${user.uid.slice(4, 8).toUpperCase()}-${user.uid.slice(8, 12).toUpperCase()}</dd></dl>
       </div>
-      <p>Para usar TRAMA, descárguelo e inicie sesión en el programa con este correo y su contraseña.</p>
-      <a class="boton boton--morado" href="descargas.html">Descargar TRAMA</a>
-      ${vigente ? "" : ' <a class="boton boton--naranja" href="planes.html">Ver planes</a>'}`;
+      ${vigente
+        ? `<h3>Descargar TRAMA</h3><div class="botones-descarga">${INSTALADORES.map((f, i) =>
+            `<button class="boton ${i ? "boton--contorno-oscuro" : "boton--morado"} descargar-trama" type="button" data-ruta="${f.ruta}">${f.texto}<small>${f.detalle}</small></button>`).join("")}</div>
+           <p class="ayuda" id="estadoDescarga">Al abrir TRAMA, inicie sesión con este correo y su contraseña.</p>`
+        : '<p>Su licencia venció: ya no puede descargar ni usar TRAMA. Conozca los planes para continuar.</p><a class="boton boton--naranja" href="planes.html">Ver planes</a>'}`;
+    $$(".descargar-trama").forEach((b) => b.addEventListener("click", () => descargar(b)));
+  }
+
+  async function descargar(boton) {
+    const est = $("#estadoDescarga");
+    if (!FIREBASE_CONFIG.storageBucket) { est.textContent = "La descarga se habilitará muy pronto. Le avisaremos a su correo."; return; }
+    boton.disabled = true;
+    est.textContent = "Preparando la descarga…";
+    try {
+      const S = await import(SDK + "firebase-storage.js");
+      const url = await S.getDownloadURL(S.ref(S.getStorage(app), boton.dataset.ruta));
+      location.href = url;
+      est.textContent = "La descarga comenzó. Al abrir TRAMA, inicie sesión con este correo y su contraseña.";
+    } catch (err) {
+      est.textContent = err && err.code === "storage/unauthorized"
+        ? "Su licencia no está vigente o su correo no está confirmado."
+        : "No fue posible iniciar la descarga. Inténtelo de nuevo en unos minutos.";
+    } finally { boton.disabled = false; }
   }
 
   async function activar(user, u) {

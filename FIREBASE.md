@@ -24,14 +24,27 @@ El plan gratuito de Firebase (Spark) alcanza para empezar. No hace falta tarjeta
 
 Las reglas impiden que alguien se dé a sí mismo una licencia más larga, que cambie una licencia ya creada o que lea datos de otras personas. Además, solo dan licencia estudiantil a correos institucionales `.edu` o `.edu.co` confirmados, nunca a correos personales.
 
-## 4. Copiar la configuración al sitio
+## 4. Guardar los instaladores protegidos (Storage)
+
+TRAMA no está en el sitio público: solo se descarga desde «Mi cuenta» con licencia vigente.
+
+1. Menú **Compilación › Storage** › «Comenzar». Firebase pide pasar al plan **Blaze** (pago por uso) para usar Storage en proyectos nuevos. Requiere una tarjeta, pero incluye una cuota sin costo: 5 GB guardados y unos 100 GB de descargas al mes, lo que alcanza para unas 2.000 descargas de TRAMA. Le recomiendo poner una alerta de presupuesto de USD 1 en Google Cloud › Facturación › Presupuestos.
+2. Ubicación: la misma de Firestore.
+3. Cree la carpeta `instaladores` y suba los dos archivos de la carpeta `Instaladores TRAMA privados` sin cambiarles el nombre:
+   - `Instalar-TRAMA-1.5.703.exe`
+   - `TRAMA-1.5.703-portable.zip`
+4. Pestaña **Reglas** › pegue todo el archivo `storage.rules` › **Publicar**.
+
+Mientras Storage no esté configurado, «Mi cuenta» muestra «La descarga se habilitará muy pronto» y nadie puede descargar TRAMA.
+
+## 5. Copiar la configuración al sitio
 
 1. Rueda dentada › **Configuración del proyecto** › «Tus apps» › icono web `</>`.
 2. Apodo `sitio-web` › Registrar app (no hace falta Firebase Hosting).
-3. Copie los valores `apiKey`, `authDomain`, `projectId` y `appId` en `FIREBASE_CONFIG`, al comienzo de `cuenta.js`.
+3. Copie los valores `apiKey`, `authDomain`, `projectId`, `storageBucket` y `appId` en `FIREBASE_CONFIG`, al comienzo de `cuenta.js`.
 4. Suba el cambio al repositorio. Estos valores pueden ser públicos: la seguridad la dan las reglas.
 
-Si prefiere, envíeme los cuatro valores y yo los pongo y subo el cambio.
+Si prefiere, envíeme los cinco valores y yo los pongo y subo el cambio.
 
 ## Cómo funciona
 

@@ -11,7 +11,7 @@ Sitio web de la compañía: ingeniería, BIM y software para proyectos de constr
 | `index.html` | Inicio: portada, productos y servicios, TRAMA, cifras, públicos y método |
 | `productos.html` | TRAMA y los seis servicios |
 | `planes.html` | Planes de TRAMA, comparación, formas de pago y preguntas frecuentes |
-| `descargas.html` | Instalador y versión portátil de TRAMA, PDF y kit de marca |
+| `descargas.html` | Información de TRAMA (la descarga exige cuenta con licencia, desde «Mi cuenta»), PDF y kit de marca |
 | `nosotros.html` | Propósito, historia, fundador, valores y datos de registro |
 | `trabaja.html` | Áreas, vacantes y postulación |
 | `contacto.html` | Canales y formulario |

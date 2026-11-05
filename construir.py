@@ -298,7 +298,7 @@ def p_inicio():
         <p class="portada__bajada">GEOMAGNI conecta geometría, datos y decisiones para que los proyectos puedan comprenderse y gestionarse como un solo sistema.</p>
         <div class="portada__acciones">
           <a class="boton boton--naranja" href="productos.html">Ver productos y servicios</a>
-          <a class="boton boton--contorno" href="descargas.html">Descargar TRAMA</a>
+          <a class="boton boton--contorno" href="inscripcion.html">Pruebe TRAMA gratis</a>
         </div>
       </div>
       <div class="portada__grafico" aria-hidden="true">
@@ -349,7 +349,7 @@ def p_inicio():
         <div class="panel-pestana" role="tabpanel" id="p3" aria-labelledby="t3" hidden><h3>De modelo a plano</h3><p>Composición de planos con formatos, rótulos y vistas colocadas a escala.</p></div>
         <div class="panel-pestana" role="tabpanel" id="p4" aria-labelledby="t4" hidden><h3>Trabaje con lo que ya tiene</h3><p>Importación y exportación de archivos DWG y DXF, con capas y colores.</p></div>
         <div class="portada__acciones">
-          <a class="boton boton--naranja" href="descargas.html">Descargar versión de prueba</a>
+          <a class="boton boton--naranja" href="inscripcion.html">Pruebe 7 días gratis</a>
           <a class="boton boton--contorno" href="planes.html">Ver planes</a>
         </div>
       </div>
@@ -462,7 +462,7 @@ def p_productos():
           <li>Recorridos de cámara y renderizado del modelo.</li>
         </ul>
         <div class="portada__acciones">
-          <a class="boton boton--naranja" href="descargas.html">Descargar</a>
+          <a class="boton boton--naranja" href="inscripcion.html">Pruebe 7 días gratis</a>
           <a class="boton boton--contorno" href="planes.html">Planes</a>
         </div>
       </div>
@@ -569,7 +569,7 @@ def p_planes():
     <div class="contenedor" style="max-width:820px">
       <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Preguntas frecuentes</p><h2>Antes de elegir</h2></header>
       <div class="faq">
-        <details><summary>¿Puedo probar TRAMA antes de comprar?</summary><p>Sí. En la página de descargas encontrará la versión de prueba para Windows.</p></details>
+        <details><summary>¿Puedo probar TRAMA antes de comprar?</summary><p>Sí. Inscríbase, confirme su correo y active una licencia de prueba de 7 días; la descarga queda disponible en «Mi cuenta». Sin cuenta y licencia vigente no es posible descargar ni usar TRAMA.</p></details>
         <details><summary>¿Cuándo se publican los precios?</summary><p>Con el lanzamiento comercial de TRAMA. Si quiere recibir el aviso, escríbanos desde la página de contacto.</p></details>
         <details><summary>¿Qué necesito para instalarlo?</summary><p>Un equipo con Windows 10 u 11 de 64 bits. Los requisitos completos están en la página de descargas.</p></details>
         <details><summary>¿Emiten factura electrónica?</summary><p>Sí. GEOMAGNI TECNOLOGÍAS S.A.S. está registrada en Colombia con NIT 902.113.610-0 y factura cada compra.</p></details>
@@ -582,14 +582,19 @@ def p_planes():
               "Planes Estudiante, Profesional y Empresa de TRAMA, comparación de funciones, formas de pago (tarjeta, PSE, Nequi, transferencia) y preguntas frecuentes.", cuerpo)
 
 # ---------------------------------------------------------------- DESCARGAS
+# TRAMA no se publica en el sitio: se descarga desde «Mi cuenta» con licencia vigente
+# (archivos en Firebase Storage, protegidos por storage.rules). Tamaño y huella de la versión vigente:
+INSTALADORES = [
+    ("descarga", "Instalador de TRAMA para Windows",
+     "Versión 1.5.703. Instala TRAMA con sus accesos en el escritorio y el menú Inicio.",
+     "46,5 MB · SHA-256: 33B4C04C3AAC17D61761D5FEF6D61A160822093A79F99D800AFA18DB071B77BB"),
+    ("caja", "TRAMA portátil",
+     "La misma versión en un archivo comprimido que se ejecuta sin instalar. Descomprima y abra IniciarTRAMA.exe.",
+     "46,4 MB · SHA-256: 0238665BFA65F9070A272CF2917BBCB04BCE01BAD2099830E761D9C004339F59"),
+]
+
 DESCARGAS = [
     # (icono, titulo, insignia, descripcion, archivo, texto boton)
-    ("descarga", "Instalador de TRAMA para Windows", ("Versión de prueba", "naranja"),
-     "Versión 1.5.703. Instala TRAMA con sus accesos en el escritorio y el menú Inicio.",
-     "descargas/Instalar-TRAMA-1.5.703.exe", "Descargar instalador"),
-    ("caja", "TRAMA portátil", ("Versión de prueba", "naranja"),
-     "La misma versión en un archivo comprimido que se ejecuta sin instalar. Descomprima y abra IniciarTRAMA.exe.",
-     "descargas/TRAMA-1.5.703-portable.zip", "Descargar portátil"),
     ("pdf", "Portafolio de servicios", ("PDF", "morada"),
      "Presentación de GEOMAGNI: servicios, método de trabajo y datos de contacto.",
      "descargas/GEOMAGNI-portafolio-de-servicios.pdf", "Descargar PDF"),
@@ -618,6 +623,12 @@ def sha256(ruta):
 
 def p_descargas():
     items = []
+    for ico, titulo, desc, meta in INSTALADORES:
+        items.append("""        <article class="descarga">
+          <div class="descarga__icono">%s</div>
+          <div><h3>%s <span class="insignia insignia--naranja">Requiere licencia</span></h3><p>%s</p><p class="descarga__meta">%s</p></div>
+          <div class="descarga__acciones"><a class="boton boton--naranja" href="inscripcion.html">Inscribirme</a><a class="boton-texto" href="ingresar.html">Ya tengo cuenta</a></div>
+        </article>""" % (icono(ico), titulo, desc, meta))
     for ico, titulo, (ins, color), desc, archivo, boton in DESCARGAS:
         meta = tamano(archivo)
         if archivo.endswith((".exe", ".zip")) and "TRAMA" in archivo:
@@ -632,6 +643,10 @@ def p_descargas():
     cuerpo += """
   <section class="seccion">
     <div class="contenedor">
+      <div class="aviso-licencia">
+        <strong>Para descargar y usar TRAMA necesita una cuenta con licencia.</strong>
+        Inscríbase, confirme su correo y active su licencia de prueba de 7 días o su licencia estudiantil. La descarga queda disponible en «Mi cuenta», y TRAMA le pedirá iniciar sesión con esa cuenta al abrir.
+      </div>
       <div class="descargas">
 %s
       </div>
@@ -659,9 +674,9 @@ def p_descargas():
     <div class="contenedor" style="max-width:820px">
       <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Instalación</p><h2>Cómo instalar TRAMA</h2></header>
       <ol class="pasos" style="grid-template-columns:repeat(3,1fr)">
-        <li><span class="pasos__num">01</span><h3>Descargue</h3><p>Descargue el instalador desde esta página.</p></li>
-        <li><span class="pasos__num">02</span><h3>Ejecute</h3><p>Abra Instalar-TRAMA.exe. Si Windows muestra un aviso, elija «Más información» y «Ejecutar de todas formas»: el instalador aún no tiene firma digital.</p></li>
-        <li><span class="pasos__num">03</span><h3>Empiece</h3><p>Abra TRAMA desde el escritorio o el menú Inicio.</p></li>
+        <li><span class="pasos__num">01</span><h3>Inscríbase</h3><p>Cree su cuenta, confirme su correo y active su licencia en «Mi cuenta».</p></li>
+        <li><span class="pasos__num">02</span><h3>Descargue e instale</h3><p>Descargue el instalador desde «Mi cuenta» y ábralo. Si Windows muestra un aviso, elija «Más información» y «Ejecutar de todas formas»: el instalador aún no tiene firma digital.</p></li>
+        <li><span class="pasos__num">03</span><h3>Inicie sesión</h3><p>Abra TRAMA e ingrese con el correo y la contraseña de su cuenta.</p></li>
       </ol>
     </div>
   </section>
@@ -861,7 +876,7 @@ def p_privacidad():
 MODULO_CUENTA = '\n  <script type="module" src="cuenta.js"></script>'
 PRONTO = """      <div class="vacio" data-cuenta="pronto" hidden>
         <h3>Inscripción disponible pronto</h3>
-        <p style="margin:0">Estamos preparando las cuentas de usuario. Mientras tanto puede <a href="descargas.html">descargar la versión de prueba</a> o <a href="contacto.html">escribirnos</a>.</p>
+        <p style="margin:0">Estamos preparando las cuentas de usuario. Si necesita una demostración de TRAMA, <a href="contacto.html?asunto=demostracion">escríbanos</a>.</p>
       </div>"""
 
 def p_inscripcion():

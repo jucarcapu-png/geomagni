@@ -1,0 +1,32 @@
+rules_version = '2';
+
+// Reglas de Firebase Storage para los instaladores de TRAMA.
+// Publíquelas en Consola de Firebase › Storage › Reglas.
+// Solo descarga quien inició sesión, confirmó su correo y tiene una licencia vigente en Firestore.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function licencia() {
+      return firestore.get(/databases/(default)/documents/licencias/$(request.auth.uid)).data;
+    }
+    function licenciaVigente() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && firestore.exists(/databases/(default)/documents/licencias/$(request.auth.uid))
+        && (
+          (licencia().tipo == 'prueba' && licencia().creado + duration.value(7, 'd') > request.time)
+          || (licencia().tipo == 'estudiante'
+              && licencia().inicio + duration.value(licencia().duracionAnios * 365, 'd') > request.time)
+        );
+    }
+
+    match /instaladores/{archivo} {
+      allow read: if licenciaVigente();
+      allow write: if false; // se suben solo desde la consola de Firebase
+    }
+
+    match /{todo=**} {
+      allow read, write: if false;
+    }
+  }
+}
