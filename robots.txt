@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /_gestion/
+
+Sitemap: https://jucarcapu-png.github.io/geomagni/sitemap.xml

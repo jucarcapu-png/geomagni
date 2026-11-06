@@ -189,10 +189,15 @@ PIE = """<footer class="pie">
     </div>
   </div>
 </footer>
+<a class="whatsapp" href="https://wa.me/%(wa)s?text=%(wa_texto)s" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.6 3 15.5c0 2.5.8 4.9 2.1 6.9L3.6 29l6.8-1.7c1.7.9 3.6 1.4 5.6 1.4 7.2 0 13-5.6 13-12.5S23.2 3 16 3z" fill="currentColor"/><path d="M11.6 9.8c.3 0 .6 0 .8.6l1.1 2.6c.1.3 0 .6-.1.8l-.8 1c-.2.2-.2.5 0 .8.8 1.4 2.1 2.6 3.6 3.3.3.1.6.1.8-.1l1-1.2c.2-.3.5-.3.8-.2l2.5 1.2c.3.1.5.4.4.8-.2 1.3-1.4 2.4-2.8 2.4-4.4-.3-8.6-4.3-8.9-8.6 0-1.4 1-2.7 2.3-3h.3z" fill="#fff"/></svg>
+  <span>¿Hablamos?</span>
+</a>
 <script src="script.js"></script>
 </body>
 </html>
-""" % {"simbolo": SIMBOLO_BLANCO}
+""" % {"simbolo": SIMBOLO_BLANCO, "wa": TEL_ENLACE.lstrip("+"),
+       "wa_texto": "Hola%20GEOMAGNI%2C%20quiero%20informaci%C3%B3n%20sobre%20TRAMA"}
 
 def documento(archivo, titulo, descripcion, cuerpo, extra_head=""):
     canon = URL + ("" if archivo == "index.html" else archivo)
@@ -538,6 +543,7 @@ def p_planes():
       <p class="nota-centro" id="notaPago" role="status">Para comprar necesita una cuenta GEOMAGNI con el correo confirmado; la licencia se activa sola al aprobarse el pago. Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto, <a href="inscripcion.html">inscríbase y pruebe TRAMA 7 días gratis</a>, o si es estudiante <a href="inscripcion.html?perfil=estudiante">obtenga su licencia estudiantil</a>.</p>
     </div>
   </section>
+<!--INTERES-->
 
   <section class="seccion seccion--suave">
     <div class="contenedor">
@@ -579,6 +585,7 @@ def p_planes():
     </div>
   </section>
 %s""" % ("\n".join(tarjetas), tabla, medios, FRANJA)
+    cuerpo = cuerpo.replace("<!--INTERES-->", SECCION_INTERES % {"casilla": FORM_CASILLA % {"id": "n-autorizo"}})
     documento("planes.html", "Planes, precios y formas de pago · GEOMAGNI TECNOLOGÍAS",
               "Planes Estudiante, Profesional y Empresa de TRAMA, comparación de funciones, formas de pago (tarjeta, PSE, Nequi, transferencia) y preguntas frecuentes.", cuerpo, MODULO_CUENTA)
 
@@ -801,7 +808,7 @@ def p_trabaja():
         <h2>Envíenos su hoja de vida</h2>
         <p>Complete el formulario. Se abrirá su programa de correo con el mensaje listo: <strong>adjunte allí su hoja de vida en PDF</strong> antes de enviarlo.</p>
       </div>
-      <form class="formulario" data-asunto="Postulación" novalidate>
+      <form class="formulario" data-asunto="Postulación" data-tipo="postulacion" novalidate>
         <div class="campo"><label for="t-nombre">Nombre completo</label><input id="t-nombre" name="nombre" autocomplete="name" required></div>
         <div class="campo"><label for="t-correo">Correo electrónico</label><input id="t-correo" name="correo" type="email" autocomplete="email" required></div>
         <div class="campo"><label for="t-tel">Teléfono <span class="opcional">(opcional)</span></label><input id="t-tel" name="telefono" type="tel" autocomplete="tel"></div>
@@ -815,7 +822,7 @@ def p_trabaja():
   </section>
 """ % (ar, FORM_CASILLA % {"id": "t-autorizo"})
     documento("trabaja.html", "Trabaja con nosotros · GEOMAGNI TECNOLOGÍAS",
-              "Áreas de trabajo, vacantes y postulación para trabajar en GEOMAGNI TECNOLOGÍAS, Cartagena, Colombia.", cuerpo)
+              "Áreas de trabajo, vacantes y postulación para trabajar en GEOMAGNI TECNOLOGÍAS, Cartagena, Colombia.", cuerpo, MODULO_CUENTA)
 
 # ---------------------------------------------------------------- CONTACTO
 def p_contacto():
@@ -834,7 +841,7 @@ def p_contacto():
         </ul>
         <a class="boton boton--whatsapp" href="https://wa.me/573117227083?text=Hola%%20GEOMAGNI%%2C%%20quiero%%20informaci%%C3%%B3n%%20sobre%%20sus%%20servicios." target="_blank" rel="noopener">Escribir por WhatsApp</a>
       </div>
-      <form class="formulario" id="formulario" data-asunto="Solicitud web" novalidate>
+      <form class="formulario" id="formulario" data-asunto="Solicitud web" data-tipo="contacto" novalidate>
         <div class="campo"><label for="nombre">Nombre</label><input id="nombre" name="nombre" autocomplete="name" required></div>
         <div class="campo"><label for="organizacion">Empresa u organización</label><input id="organizacion" name="organizacion" autocomplete="organization"></div>
         <div class="campo"><label for="correo">Correo electrónico</label><input id="correo" name="correo" type="email" autocomplete="email" required></div>
@@ -861,7 +868,29 @@ def p_contacto():
   </section>
 """ % {"tel": TEL, "tel_e": TEL_ENLACE, "correo": CORREO, "casilla": FORM_CASILLA % {"id": "autorizo"}}
     documento("contacto.html", "Contacto · GEOMAGNI TECNOLOGÍAS",
-              "Teléfono, WhatsApp, correo y formulario de contacto de GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia.", cuerpo)
+              "Teléfono, WhatsApp, correo y formulario de contacto de GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia.", cuerpo, MODULO_CUENTA)
+
+# Lista de interesados (WEB-014): se guarda en Firestore «mensajes» con tipo «interes».
+SECCION_INTERES = """
+  <section class="seccion seccion--suave" id="interes">
+    <div class="contenedor contacto">
+      <div class="contacto__texto">
+        <p class="etiqueta etiqueta--morada">Lanzamiento</p>
+        <h2>Avíseme cuando pueda comprar</h2>
+        <p>Deje su correo y el plan que le interesa. Le escribiremos cuando el pago en línea esté disponible, con las condiciones de lanzamiento.</p>
+      </div>
+      <form class="formulario" data-asunto="Interés en un plan" data-tipo="interes" novalidate>
+        <div class="campo"><label for="n-nombre">Nombre</label><input id="n-nombre" name="nombre" autocomplete="name" required maxlength="120"></div>
+        <div class="campo"><label for="n-correo">Correo electrónico</label><input id="n-correo" name="correo" type="email" autocomplete="email" required maxlength="160"></div>
+        <div class="campo"><label for="n-plan">Plan que le interesa</label>
+          <select id="n-plan" name="plan"><option value="profesional">Profesional</option><option value="empresa">Empresa</option><option value="estudiante">Estudiante</option></select></div>
+%(casilla)s
+        <button class="boton boton--naranja" type="submit">Avisarme</button>
+        <p class="formulario__nota" role="status"></p>
+      </form>
+    </div>
+  </section>
+"""
 
 # ---------------------------------------------------------------- PRIVACIDAD (conserva el texto legal existente)
 def p_privacidad():
@@ -1029,6 +1058,35 @@ def p_ingresar():
 """ % {"pronto": PRONTO}
     documento("ingresar.html", "Ingresar · GEOMAGNI TECNOLOGÍAS", "Inicie sesión en su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
 
+def p_admin():
+    cuerpo = encabezado("Administración", "Solo administrador", "Panel de administración", "Inscritos, licencias, equipos, compras y mensajes del sitio.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor">
+%(pronto)s
+      <div class="vacio" data-cuenta="fuera" hidden>
+        <h3>Inicie sesión con la cuenta de administrador</h3>
+        <p><a class="boton boton--morado" href="ingresar.html?volver=admin">Ingresar</a></p>
+      </div>
+      <div id="panelAdmin" data-cuenta="dentro" hidden>
+        <p id="estadoAdmin" role="status">Cargando…</p>
+        <div id="contenidoAdmin" hidden>
+          <div class="admin-cifras" id="cifrasAdmin"></div>
+          <div class="pestanas pestanas--claras" role="tablist">
+            <button type="button" role="tab" aria-selected="true" data-admin="inscritos">Inscritos</button>
+            <button type="button" role="tab" aria-selected="false" data-admin="mensajes">Mensajes</button>
+            <button type="button" role="tab" aria-selected="false" data-admin="pedidos">Compras</button>
+          </div>
+          <input class="admin-buscar" id="buscarAdmin" type="search" placeholder="Buscar por nombre, correo o ciudad" aria-label="Buscar">
+          <div id="vistaAdmin"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+""" % {"pronto": PRONTO}
+    documento("admin.html", "Administración · GEOMAGNI TECNOLOGÍAS", "Panel privado de administración.", cuerpo,
+              '\n  <meta name="robots" content="noindex, nofollow">' + MODULO_CUENTA)
+
 def p_cuenta():
     cuerpo = encabezado("Mi cuenta", "Cuenta GEOMAGNI", "Mi cuenta", "Consulte su licencia de TRAMA y sus datos.")
     cuerpo += """
@@ -1061,8 +1119,24 @@ def p_cuenta():
 """ % {"pronto": PRONTO}
     documento("cuenta.html", "Mi cuenta · GEOMAGNI TECNOLOGÍAS", "Licencia de TRAMA y datos de su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
 
+# ---------------------------------------------------------------- MAPA DEL SITIO (WEB-013)
+PAGINAS_PUBLICAS = ["index.html", "productos.html", "planes.html", "descargas.html", "nosotros.html",
+                    "trabaja.html", "contacto.html", "inscripcion.html", "terminos.html", "privacidad.html"]
+
+def mapa_del_sitio():
+    import datetime
+    hoy = datetime.date.today().isoformat()
+    urls = "".join("  <url><loc>%s</loc><lastmod>%s</lastmod></url>\n" % (URL + ("" if a == "index.html" else a), hoy)
+                   for a in PAGINAS_PUBLICAS)
+    with open(os.path.join(RAIZ, "sitemap.xml"), "w", encoding="utf-8", newline="\n") as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n")
+    with open(os.path.join(RAIZ, "robots.txt"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("User-agent: *\nAllow: /\nDisallow: /_gestion/\n\nSitemap: " + URL + "sitemap.xml\n")
+    print("   sitemap.xml, robots.txt")
+
 if __name__ == "__main__":
     print("Generando páginas:")
     p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad(); p_terminos()
-    p_inscripcion(); p_ingresar(); p_cuenta()
+    p_inscripcion(); p_ingresar(); p_cuenta(); p_admin()
+    mapa_del_sitio()
     print("Listo.")

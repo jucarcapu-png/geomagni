@@ -108,6 +108,29 @@
     </div>
   </section>
 
+  <section class="seccion seccion--suave" id="interes">
+    <div class="contenedor contacto">
+      <div class="contacto__texto">
+        <p class="etiqueta etiqueta--morada">Lanzamiento</p>
+        <h2>Avíseme cuando pueda comprar</h2>
+        <p>Deje su correo y el plan que le interesa. Le escribiremos cuando el pago en línea esté disponible, con las condiciones de lanzamiento.</p>
+      </div>
+      <form class="formulario" data-asunto="Interés en un plan" data-tipo="interes" novalidate>
+        <div class="campo"><label for="n-nombre">Nombre</label><input id="n-nombre" name="nombre" autocomplete="name" required maxlength="120"></div>
+        <div class="campo"><label for="n-correo">Correo electrónico</label><input id="n-correo" name="correo" type="email" autocomplete="email" required maxlength="160"></div>
+        <div class="campo"><label for="n-plan">Plan que le interesa</label>
+          <select id="n-plan" name="plan"><option value="profesional">Profesional</option><option value="empresa">Empresa</option><option value="estudiante">Estudiante</option></select></div>
+        <div class="campo campo--casilla">
+          <input type="checkbox" id="n-autorizo" name="autorizo" required>
+          <label for="n-autorizo">Autorizo a GEOMAGNI TECNOLOGÍAS S.A.S. a tratar mis datos para responder esta solicitud, según su <a href="privacidad.html">política de tratamiento de datos</a>.</label>
+        </div>
+        <button class="boton boton--naranja" type="submit">Avisarme</button>
+        <p class="formulario__nota" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+
   <section class="seccion seccion--suave">
     <div class="contenedor">
       <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Comparación</p><h2>Qué incluye cada plan</h2></header>
@@ -215,6 +238,10 @@
     </div>
   </div>
 </footer>
+<a class="whatsapp" href="https://wa.me/573117227083?text=Hola%20GEOMAGNI%2C%20quiero%20informaci%C3%B3n%20sobre%20TRAMA" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.6 3 15.5c0 2.5.8 4.9 2.1 6.9L3.6 29l6.8-1.7c1.7.9 3.6 1.4 5.6 1.4 7.2 0 13-5.6 13-12.5S23.2 3 16 3z" fill="currentColor"/><path d="M11.6 9.8c.3 0 .6 0 .8.6l1.1 2.6c.1.3 0 .6-.1.8l-.8 1c-.2.2-.2.5 0 .8.8 1.4 2.1 2.6 3.6 3.3.3.1.6.1.8-.1l1-1.2c.2-.3.5-.3.8-.2l2.5 1.2c.3.1.5.4.4.8-.2 1.3-1.4 2.4-2.8 2.4-4.4-.3-8.6-4.3-8.9-8.6 0-1.4 1-2.7 2.3-3h.3z" fill="#fff"/></svg>
+  <span>¿Hablamos?</span>
+</a>
 <script src="script.js"></script>
 </body>
 </html>

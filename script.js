@@ -223,7 +223,7 @@
 
   // Planes, precios y compra: cuenta.js (lee precios.json).
 
-  // ---------- Formularios (abren el correo con el mensaje armado) ----------
+  // ---------- Formularios: se guardan en Firebase (cuenta.js); si no es posible, abren el correo ----------
   var correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var asuntoUrl = new URLSearchParams(location.search).get("asunto");
   var selMotivo = $("#servicio");
@@ -257,9 +257,24 @@
       var msj = form.querySelector('[name="mensaje"]');
       var motivo = form.querySelector("select");
       var asunto = (form.dataset.asunto || "Mensaje web") + (motivo ? ": " + motivo.options[motivo.selectedIndex].text : "");
-      var cuerpo = lineas.join("\n") + "\n\n" + (msj ? msj.value.trim() : "");
-      window.location.href = "mailto:" + CORREO + "?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo);
-      avisar("Se abrió su programa de correo con el mensaje listo. Si no se abrió, escríbanos a " + CORREO + ".", "exito");
+      function abrirCorreo() {
+        var cuerpo = lineas.join("\n") + "\n\n" + (msj ? msj.value.trim() : "");
+        window.location.href = "mailto:" + CORREO + "?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo);
+        avisar("Se abrió su programa de correo con el mensaje listo. Si no se abrió, escríbanos a " + CORREO + ".", "exito");
+      }
+      var datos = {};
+      $$("input, select, textarea", form).forEach(function (c) {
+        if (c.name && c.type !== "checkbox" && c.type !== "hidden") datos[c.name] = c.value.trim();
+      });
+      if (typeof window.geomagniGuardarMensaje !== "function") { abrirCorreo(); return; }
+      var boton = form.querySelector('[type="submit"]');
+      boton.disabled = true;
+      avisar("Enviando…");
+      window.geomagniGuardarMensaje(form.dataset.tipo || "contacto", asunto, datos).then(function () {
+        form.reset();
+        avisar(form.dataset.tipo === "interes" ? "¡Listo! Le avisaremos a su correo cuando pueda comprar."
+          : "¡Recibido! Le responderemos pronto a su correo. Si es urgente, escríbanos por WhatsApp.", "exito");
+      }).catch(abrirCorreo).then(function () { boton.disabled = false; });
     });
   });
 })();

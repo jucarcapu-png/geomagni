@@ -126,6 +126,30 @@
 .lista-equipos small { color: var(--gris-600); }
 .licencia--vencida { background: linear-gradient(135deg, #4A4450, #262329); }
 
+/* Panel de administración (WEB-012) */
+.admin-cifras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.admin-cifras div { background: linear-gradient(135deg, var(--morado), var(--morado-osc)); color: #fff; border-radius: 14px; padding: 18px; }
+.admin-cifras strong { display: block; font: 700 2rem var(--f-titulo); color: #FFB273; }
+.admin-cifras span { color: rgba(255,255,255,.85); font-size: .9rem; }
+.pestanas--claras button { background: #fff; color: var(--gris-900); border-color: var(--gris-200); }
+.pestanas--claras button[aria-selected="true"] { background: var(--morado); color: #fff; border-color: var(--morado); }
+.admin-buscar { width: 100%; max-width: 420px; padding: 10px 14px; border: 1px solid var(--gris-200); border-radius: 10px; font: inherit; margin-bottom: 16px; }
+.tabla--admin td { vertical-align: top; font-size: .9rem; }
+.tabla--admin small { color: var(--gris-600); }
+.tabla--admin small.vencida { color: #C0262D; font-weight: 600; }
+.admin-acciones { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.admin-acciones input, .admin-acciones select { padding: 6px 8px; border: 1px solid var(--gris-200); border-radius: 8px; font: inherit; }
+.admin-acciones .boton { width: auto; padding: .5em 1em; }
+.lista-equipos li > span:first-child { flex: 1; }
+@media (max-width: 760px) { .admin-cifras { grid-template-columns: 1fr 1fr; } }
+
+/* Botón flotante de WhatsApp (WEB-011) */
+.whatsapp { position: fixed; right: 20px; bottom: 20px; z-index: 90; display: inline-flex; align-items: center; gap: 10px; background: #1FA855; color: #fff; text-decoration: none; font: 600 .95rem var(--f-titulo); padding: 12px 18px 12px 14px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.22); transition: transform .2s, box-shadow .2s; }
+.whatsapp:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.28); color: #fff; }
+.whatsapp svg { width: 26px; height: 26px; color: #fff; flex: none; }
+.whatsapp svg path:last-child { fill: #1FA855; }
+@media (max-width: 640px) { .whatsapp { right: 14px; bottom: 14px; padding: 12px; } .whatsapp span { display: none; } }
+
 @media (max-width: 980px) {
   .cifras--grandes { padding: 32px; }
   .licencia { grid-template-columns: 1fr; }

@@ -7,6 +7,11 @@ service cloud.firestore {
   match /databases/{base}/documents {
 
     function propio(uid) { return request.auth != null && request.auth.uid == uid; }
+    // Administrador del sitio (WEB-012): panel privado admin.html.
+    function admin() {
+      return request.auth != null && request.auth.token.email_verified == true
+        && request.auth.token.email == 'jucarcapu@gmail.com';
+    }
     function texto(v, max) { return v is string && v.size() <= max; }
     function correoAcademico() {
       return request.auth.token.email.matches('.*[.]edu([.][a-z]{2})?$')
@@ -15,7 +20,7 @@ service cloud.firestore {
 
     // Perfil del usuario (se crea al inscribirse)
     match /usuarios/{uid} {
-      allow read: if propio(uid);
+      allow read: if propio(uid) || admin();
       allow create: if propio(uid)
         && request.resource.data.correo == request.auth.token.email
         && request.resource.data.creado == request.time
@@ -41,7 +46,14 @@ service cloud.firestore {
     // Las licencias de pago (tipo 'pago', con vence, plan y equipos) solo las escribe Firebase
     // (functions/index.js) al confirmarse un pago: las reglas no las permiten desde el navegador.
     match /licencias/{uid} {
-      allow read: if propio(uid);
+      allow read: if propio(uid) || admin();
+      // El administrador asigna una licencia de cortesia (tipo 'pago', plan 'cortesia') con su vencimiento
+      // y cupo de equipos: extender, reactivar o desactivar (vence = ahora). TRAMA la lee como plan.
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['tipo', 'plan', 'periodo', 'equipos', 'vence', 'creado', 'pedido'])
+        && request.resource.data.tipo == 'pago' && request.resource.data.plan == 'cortesia'
+        && request.resource.data.vence is timestamp
+        && request.resource.data.equipos is int && request.resource.data.equipos >= 1 && request.resource.data.equipos <= 50;
       allow create: if propio(uid)
         && request.auth.token.email_verified == true
         && request.resource.data.creado == request.time
@@ -72,8 +84,8 @@ service cloud.firestore {
         return lic.get('equipos', 1);
       }
       function cuantos(s) { return s == '' ? 0 : s.split(';').size(); }
-      allow read: if propio(uid);
-      allow create, update: if propio(uid)
+      allow read: if propio(uid) || admin();
+      allow create, update: if (propio(uid) || admin())
         && request.auth.token.email_verified == true
         && request.resource.data.keys().hasOnly(['huellas', 'nombres', 'desde'])
         && texto(request.resource.data.huellas, 2000)
@@ -85,11 +97,28 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Mensajes de los formularios del sitio (WEB-010, WEB-014): cualquiera los crea, solo el administrador los lee.
+    match /mensajes/{id} {
+      allow read, update: if admin();
+      allow create: if request.resource.data.keys().hasOnly(['tipo', 'asunto', 'pagina', 'estado', 'creado', 'nombre', 'correo',
+                                                              'telefono', 'organizacion', 'servicio', 'area', 'plan', 'mensaje'])
+        && request.resource.data.tipo in ['contacto', 'postulacion', 'interes']
+        && request.resource.data.estado == 'nuevo'
+        && request.resource.data.creado == request.time
+        && texto(request.resource.data.asunto, 160) && texto(request.resource.data.pagina, 60)
+        && texto(request.resource.data.nombre, 200) && request.resource.data.nombre.size() > 1
+        && texto(request.resource.data.correo, 200) && request.resource.data.correo.matches('^[^@ ]+@[^@ ]+[.][^@ ]+$')
+        && texto(request.resource.data.get('telefono', ''), 200) && texto(request.resource.data.get('organizacion', ''), 200)
+        && texto(request.resource.data.get('servicio', ''), 200) && texto(request.resource.data.get('area', ''), 200)
+        && texto(request.resource.data.get('plan', ''), 200) && texto(request.resource.data.get('mensaje', ''), 4000);
+      allow delete: if admin();
+    }
+
     // Pedidos de compra (PAG-001). El cliente solo crea el suyo, pendiente y con un plan valido;
     // Firebase lo aprueba o rechaza al recibir la confirmacion de la pasarela y compara el valor
     // con precios.json. Nadie puede marcar un pedido como pagado desde el navegador.
     match /pedidos/{id} {
-      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow read: if (request.auth != null && resource.data.uid == request.auth.uid) || admin();
       allow create: if request.auth != null
         && request.auth.token.email_verified == true
         && request.resource.data.uid == request.auth.uid

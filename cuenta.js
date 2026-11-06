@@ -29,6 +29,8 @@ const CORREO_PERSONAL = /@(gmail|googlemail|hotmail|outlook|live|msn|yahoo|ymail
 // ({ id, plan, nombre, periodo, valor, moneda, correo }) y lleva al cliente a pagar con «id» como referencia.
 // La licencia la crea Firebase (functions/index.js) cuando la pasarela confirma el pago.
 const PASARELA = { nombre: "", iniciar: null };
+// Administrador del sitio (debe coincidir con la función admin() de firestore.rules).
+const ADMIN_CORREO = "jucarcapu@gmail.com";
 // =================================================
 
 const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
@@ -107,6 +109,17 @@ async function iniciar() {
   auth.languageCode = "es";
   const db = F.getFirestore(app);
   sesion = { auth, db, F };
+
+  // Formularios de contacto, postulación y lista de interesados (WEB-010, WEB-014).
+  // Los lee solo el administrador (firestore.rules, colección «mensajes»).
+  const CAMPOS_MENSAJE = ["nombre", "correo", "telefono", "organizacion", "servicio", "area", "plan", "mensaje"];
+  window.geomagniGuardarMensaje = (tipo, asunto, datos) => {
+    const m = { tipo, asunto: String(asunto).slice(0, 160), pagina: location.pathname.split("/").pop() || "index.html",
+                estado: "nuevo", creado: F.serverTimestamp() };
+    CAMPOS_MENSAJE.forEach((k) => { if (datos[k]) m[k] = String(datos[k]).slice(0, k === "mensaje" ? 4000 : 200); });
+    if (m.correo) m.correo = m.correo.toLowerCase();
+    return F.addDoc(F.collection(db, "mensajes"), m);
+  };
   const urlCuenta = new URL("cuenta.html", location.href).href;
 
   // ---------- Inscripción ----------
@@ -170,7 +183,8 @@ async function iniciar() {
       avisar(fIng, "Ingresando…");
       try {
         await A.signInWithEmailAndPassword(auth, fIng.correo.value.trim(), fIng.clave.value);
-        location.href = new URLSearchParams(location.search).get("volver") === "planes" ? "planes.html" : "cuenta.html";
+        const volver = new URLSearchParams(location.search).get("volver");
+        location.href = volver === "planes" ? "planes.html" : volver === "admin" ? "admin.html" : "cuenta.html";
       } catch (err) { avisar(fIng, mensajeError(err), "error"); ocupado(fIng, false); }
     });
     const olvido = $("#olvideClave");
@@ -188,6 +202,7 @@ async function iniciar() {
   A.onAuthStateChanged(auth, async (user) => {
     $$("[data-cuenta]").forEach((el) => (el.hidden = el.dataset.cuenta !== (user ? "dentro" : "fuera")));
     $$(".enlace-cuenta").forEach((a) => (a.textContent = user ? "Mi cuenta" : "Ingresar"));
+    if (user && $("#panelAdmin")) { await panelAdmin(user); return; }
     if (!panel || !user) return;
     $("#cuentaNombre").textContent = user.displayName || user.email;
     $("#cuentaCorreo").textContent = user.email;
@@ -203,6 +218,113 @@ async function iniciar() {
     $("#bloqueLicencia").hidden = false;
     await pintarLicencia(user);
   });
+
+  // ---------- Panel de administración (WEB-012) ----------
+  // La seguridad la dan las reglas de Firestore (función admin()); aquí solo se arma la vista.
+  async function panelAdmin(user) {
+    const est = $("#estadoAdmin");
+    if (user.email !== ADMIN_CORREO || !user.emailVerified) { est.textContent = "Esta página es solo para el administrador del sitio."; return; }
+    let datos;
+    try {
+      const leerTodo = async (c) => (await F.getDocs(F.collection(db, c))).docs.map((d) => Object.assign({ id: d.id }, d.data()));
+      const [usuarios, licencias, equipos, pedidos, mensajes] = await Promise.all(
+        ["usuarios", "licencias", "equipos", "pedidos", "mensajes"].map(leerTodo));
+      const porId = (l) => Object.fromEntries(l.map((x) => [x.id, x]));
+      datos = { usuarios, lic: porId(licencias), eq: porId(equipos), pedidos, mensajes };
+    } catch (err) {
+      est.textContent = "No se pudieron leer los datos. Revise que las reglas de Firestore con la función admin() estén publicadas.";
+      est.className = "error";
+      return;
+    }
+    est.textContent = "";
+    $("#contenidoAdmin").hidden = false;
+    const fecha = (ts) => (ts && ts.toDate ? ts.toDate().toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" }) : "");
+    const hoy = new Date();
+    const vigentes = datos.usuarios.filter((u) => datos.lic[u.id] && vencimiento(datos.lic[u.id]) > hoy).length;
+    const nuevos = datos.mensajes.filter((m) => m.estado === "nuevo").length;
+    $("#cifrasAdmin").innerHTML = [["Inscritos", datos.usuarios.length], ["Licencias vigentes", vigentes],
+      ["Mensajes nuevos", nuevos], ["Compras", datos.pedidos.length]]
+      .map(([t, n]) => `<div><strong>${n}</strong><span>${t}</span></div>`).join("");
+    let vista = "inscritos";
+    const pintar = () => {
+      const q = $("#buscarAdmin").value.trim().toLowerCase();
+      const coincide = (...v) => !q || v.join(" ").toLowerCase().includes(q);
+      const caja = $("#vistaAdmin");
+      if (vista === "inscritos") {
+        const filas = datos.usuarios.filter((u) => coincide(u.nombre, u.correo, u.ciudad, u.pais, u.empresa))
+          .sort((a, b) => (b.creado ? b.creado.toMillis() : 0) - (a.creado ? a.creado.toMillis() : 0));
+        caja.innerHTML = filas.length ? `<div class="tabla-envoltura"><table class="tabla tabla--admin"><thead><tr>
+          <th>Inscrito</th><th>Perfil</th><th>Licencia</th><th>Equipos</th><th>Asignar licencia de cortesía</th></tr></thead><tbody>
+          ${filas.map((u) => {
+            const l = datos.lic[u.id], e = datos.eq[u.id];
+            const v = l ? vencimiento(l) : null;
+            const tipo = !l ? "Sin licencia" : l.tipo === "pago" ? "Plan " + nombrePlan(l.plan) : l.tipo === "estudiante" ? "Estudiantil" : "Prueba";
+            const nEq = e && e.huellas ? e.huellas.split(";").length : 0;
+            const sugerida = new Date(Math.max(hoy, v || 0) + 30 * 86400000).toISOString().slice(0, 10);
+            return `<tr><td><strong>${esc(u.nombre)}</strong><br><small>${esc(u.correo)} · ${esc(u.ciudad)}, ${esc(u.pais)} · ${fecha(u.creado)}</small></td>
+              <td>${esc(u.perfil)}${u.empresa ? "<br><small>" + esc(u.empresa) + "</small>" : ""}${u.universidad ? "<br><small>" + esc(u.universidad) + "</small>" : ""}</td>
+              <td>${tipo}${v ? `<br><small class="${v > hoy ? "" : "vencida"}">${v > hoy ? "Vence" : "Venció"} el ${v.toLocaleDateString("es-CO")}</small>` : ""}</td>
+              <td>${nEq} de ${l && l.equipos ? l.equipos : 1}<br><small>${e && e.nombres ? esc(e.nombres.split(";").join(", ")) : ""}</small></td>
+              <td><div class="admin-acciones" data-uid="${u.id}">
+                <input type="date" value="${sugerida}" aria-label="Nuevo vencimiento">
+                <select aria-label="Equipos">${[1, 2, 3, 5, 10].map((n) => `<option ${n === (l && l.equipos ? l.equipos : 1) ? "selected" : ""}>${n}</option>`).join("")}</select>
+                <button class="boton boton--morado admin-asignar" type="button">Asignar</button>
+                ${l && v > hoy ? '<button class="boton-texto admin-desactivar" type="button">Desactivar</button>' : ""}
+              </div></td></tr>`;
+          }).join("")}</tbody></table></div>` : '<p class="ayuda">No hay inscritos que coincidan.</p>';
+      } else if (vista === "mensajes") {
+        const filas = datos.mensajes.filter((m) => coincide(m.nombre, m.correo, m.asunto, m.mensaje, m.tipo))
+          .sort((a, b) => (b.creado ? b.creado.toMillis() : 0) - (a.creado ? a.creado.toMillis() : 0));
+        const tipos = { contacto: "Contacto", postulacion: "Postulación", interes: "Interesado" };
+        caja.innerHTML = filas.length ? `<ul class="lista-equipos">${filas.map((m) => `<li><span>
+          <strong>${tipos[m.tipo] || esc(m.tipo)} · ${esc(m.nombre)}</strong>
+          <small>${fecha(m.creado)} · <a href="mailto:${esc(m.correo)}">${esc(m.correo)}</a>${m.telefono ? " · " + esc(m.telefono) : ""}${m.plan ? " · plan " + esc(m.plan) : ""}${m.organizacion ? " · " + esc(m.organizacion) : ""}</small>
+          <small>${esc(m.asunto)}</small>${m.mensaje ? `<p style="margin:6px 0 0">${esc(m.mensaje)}</p>` : ""}</span>
+          ${m.estado === "nuevo" ? `<button class="boton boton--contorno-oscuro admin-atendido" type="button" data-id="${m.id}">Marcar atendido</button>` : '<span class="insignia insignia--morada">Atendido</span>'}</li>`).join("")}</ul>`
+          : '<p class="ayuda">No hay mensajes.</p>';
+      } else {
+        const filas = datos.pedidos.filter((p) => coincide(p.correo, p.plan, p.estado))
+          .sort((a, b) => (b.creado ? b.creado.toMillis() : 0) - (a.creado ? a.creado.toMillis() : 0));
+        caja.innerHTML = filas.length ? `<ul class="lista-equipos">${filas.map((p) => `<li><span><strong>${esc(p.correo)} · Plan ${esc(nombrePlan(p.plan))} ${esc(p.periodo)}</strong>
+          <small>${fecha(p.creado)} · ${pesos(p.valor)} ${esc(p.moneda)} · Pedido ${esc(p.id.slice(0, 8).toUpperCase())}</small></span>
+          <span class="insignia ${p.estado === "aprobado" ? "insignia--morada" : "insignia--naranja"}">${esc(p.estado)}</span></li>`).join("")}</ul>`
+          : '<p class="ayuda">Todavía no hay compras.</p>';
+      }
+    };
+    $$("[data-admin]").forEach((b) => b.addEventListener("click", () => {
+      vista = b.dataset.admin;
+      $$("[data-admin]").forEach((o) => o.setAttribute("aria-selected", o === b ? "true" : "false"));
+      pintar();
+    }));
+    $("#buscarAdmin").addEventListener("input", pintar);
+    $("#vistaAdmin").addEventListener("click", async (ev) => {
+      const b = ev.target.closest("button");
+      if (!b) return;
+      if (b.classList.contains("admin-atendido")) {
+        b.disabled = true;
+        try { await F.updateDoc(F.doc(db, "mensajes", b.dataset.id), { estado: "atendido" });
+              datos.mensajes.find((m) => m.id === b.dataset.id).estado = "atendido"; pintar(); }
+        catch (err) { b.disabled = false; alert("No se pudo actualizar el mensaje."); }
+        return;
+      }
+      const caja = b.closest(".admin-acciones");
+      if (!caja) return;
+      const uid = caja.dataset.uid, u = datos.usuarios.find((x) => x.id === uid);
+      const desactivar = b.classList.contains("admin-desactivar");
+      const vence = desactivar ? new Date() : new Date($("input", caja).value + "T23:59:59-05:00");
+      const equipos = Number($("select", caja).value);
+      if (!desactivar && !(vence > new Date())) { alert("Elija una fecha futura."); return; }
+      const texto = desactivar ? `¿Desactivar la licencia de ${u.nombre}? TRAMA se cerrará en su próxima verificación.`
+        : `¿Asignar a ${u.nombre} una licencia de cortesía hasta el ${vence.toLocaleDateString("es-CO")} con ${equipos} equipo(s)? Reemplaza su licencia actual.`;
+      if (!confirm(texto)) return;
+      b.disabled = true;
+      const lic = { tipo: "pago", plan: "cortesia", periodo: "manual", equipos, vence: F.Timestamp.fromDate(vence),
+                    creado: F.serverTimestamp(), pedido: "admin" };
+      try { await F.setDoc(F.doc(db, "licencias", uid), lic); datos.lic[uid] = Object.assign({}, lic, { vence: F.Timestamp.fromDate(vence) }); pintar(); }
+      catch (err) { b.disabled = false; alert("No se pudo guardar la licencia: " + mensajeError(err)); }
+    });
+    pintar();
+  }
 
   async function pintarLicencia(user) {
     const caja = $("#licencia");
@@ -336,7 +458,7 @@ function esc(t) { return String(t || "").replace(/[&<>"']/g, (c) => ({ "&": "&am
 // Los precios salen de precios.json, la misma fuente con la que Firebase comprueba cada pago.
 let PRECIOS = null, periodo = "mensual", sesion = null;
 const pesos = (v) => "$" + Number(v || 0).toLocaleString("es-CO");
-const nombrePlan = (c) => (PRECIOS && PRECIOS.planes[c] && PRECIOS.planes[c].nombre) || (c ? c.charAt(0).toUpperCase() + c.slice(1) : "");
+const nombrePlan = (c) => c === "cortesia" ? "de cortesía" : (PRECIOS && PRECIOS.planes[c] && PRECIOS.planes[c].nombre) || (c ? c.charAt(0).toUpperCase() + c.slice(1) : "");
 
 async function planes() {
   try { PRECIOS = await (await fetch("precios.json", { cache: "no-cache" })).json(); } catch (err) { return; }
