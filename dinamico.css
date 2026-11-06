@@ -141,6 +141,7 @@
 .admin-acciones input, .admin-acciones select { padding: 6px 8px; border: 1px solid var(--gris-200); border-radius: 8px; font: inherit; }
 .admin-acciones .boton { width: auto; padding: .5em 1em; }
 .lista-equipos li > span:first-child { flex: 1; }
+.lista-equipos small { display: block; margin-top: 2px; }
 @media (max-width: 760px) { .admin-cifras { grid-template-columns: 1fr 1fr; } }
 
 /* Botón flotante de WhatsApp (WEB-011) */
