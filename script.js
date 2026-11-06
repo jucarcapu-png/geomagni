@@ -254,7 +254,8 @@
   var selMotivo = $("#servicio");
   if (asuntoUrl && selMotivo && $('option[value="' + asuntoUrl + '"]', selMotivo)) selMotivo.value = asuntoUrl;
 
-  $$("form.formulario").forEach(function (form) {
+  // Solo contacto y postulación (llevan data-asunto). Ingresar e inscripción los maneja cuenta.js.
+  $$("form.formulario[data-asunto]").forEach(function (form) {
     var nota = $(".formulario__nota", form);
     function avisar(t, c) { nota.textContent = t; nota.className = "formulario__nota" + (c ? " " + c : ""); }
     form.addEventListener("submit", function (e) {
