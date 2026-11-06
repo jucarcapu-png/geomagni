@@ -142,6 +142,7 @@ async function iniciar() {
       e.preventDefault();
       if (!validar(fIns)) return;
       const d = Object.fromEntries(new FormData(fIns));
+      if (d.sitio_web) { avisar(fIns, "Creando su cuenta…"); return; } // WEB-022: campo trampa
       d.correo = d.correo.trim().toLowerCase();
       if (esEst()) {
         if (CORREO_PERSONAL.test(d.correo)) { avisar(fIns, "Como estudiante no puede inscribirse con un correo personal. Use el correo institucional que le asignó su universidad (.edu o .edu.co).", "error"); fIns.correo.focus(); return; }
@@ -282,6 +283,9 @@ async function iniciar() {
           <small>${esc(m.asunto)}</small>${m.mensaje ? `<p style="margin:6px 0 0">${esc(m.mensaje)}</p>` : ""}</span>
           ${m.estado === "nuevo" ? `<button class="boton boton--contorno-oscuro admin-atendido" type="button" data-id="${m.id}">Marcar atendido</button>` : '<span class="insignia insignia--morada">Atendido</span>'}</li>`).join("")}</ul>`
           : '<p class="ayuda">No hay mensajes.</p>';
+      } else if (vista === "visitas") {
+        caja.innerHTML = '<p class="ayuda">Cargando visitas…</p>';
+        pintarVisitas(caja);
       } else {
         const filas = datos.pedidos.filter((p) => coincide(p.correo, p.plan, p.estado))
           .sort((a, b) => (b.creado ? b.creado.toMillis() : 0) - (a.creado ? a.creado.toMillis() : 0));
@@ -291,12 +295,39 @@ async function iniciar() {
           : '<p class="ayuda">Todavía no hay compras.</p>';
       }
     };
+    // Visitas de los últimos 30 días (WEB-024), agrupadas en el navegador.
+    let visitas = null;
+    async function pintarVisitas(caja) {
+      try {
+        if (!visitas) {
+          const desde = F.Timestamp.fromDate(new Date(Date.now() - 30 * 86400000));
+          const s = await F.getDocs(F.query(F.collection(db, "visitas"), F.where("creado", ">=", desde)));
+          visitas = s.docs.map((d) => d.data());
+        }
+      } catch (err) { caja.innerHTML = '<p class="ayuda">No se pudieron leer las visitas. Revise que las reglas de «visitas» estén publicadas.</p>'; return; }
+      if (vista !== "visitas") return;
+      const contar = (campo) => Object.entries(visitas.reduce((m, v) => { const k = v[campo] || "(directo)"; m[k] = (m[k] || 0) + 1; return m; }, {}))
+        .sort((a, b) => b[1] - a[1]);
+      const barras = (lista, max) => lista.slice(0, 12).map(([k, n]) =>
+        `<li><span class="barra__nombre">${esc(k)}</span><span class="barra"><span style="width:${Math.max(4, 100 * n / max)}%"></span></span><b>${n}</b></li>`).join("");
+      const dias = contar("dia").sort((a, b) => a[0] < b[0] ? 1 : -1);
+      const paginas = contar("pagina"), origenes = contar("origen"), disp = contar("dispositivo");
+      const max = (l) => Math.max(1, ...l.map((x) => x[1]));
+      caja.innerHTML = !visitas.length ? '<p class="ayuda">Todavía no hay visitas registradas en los últimos 30 días.</p>' : `
+        <p><strong>${visitas.length}</strong> páginas vistas en los últimos 30 días · ${disp.map(([k, n]) => esc(k) + " " + Math.round(100 * n / visitas.length) + " %").join(" · ")}</p>
+        <div class="visitas-grid">
+          <div><h3>Por día</h3><ul class="barras">${barras(dias, max(dias))}</ul></div>
+          <div><h3>Páginas</h3><ul class="barras">${barras(paginas, max(paginas))}</ul></div>
+          <div><h3>De dónde llegan</h3><ul class="barras">${barras(origenes, max(origenes))}</ul></div>
+        </div>`;
+    }
+
     $$("[data-admin]").forEach((b) => b.addEventListener("click", () => {
       vista = b.dataset.admin;
       $$("[data-admin]").forEach((o) => o.setAttribute("aria-selected", o === b ? "true" : "false"));
       pintar();
     }));
-    $("#buscarAdmin").addEventListener("input", pintar);
+    $("#buscarAdmin").addEventListener("input", () => { if (vista !== "visitas") pintar(); });
     $("#vistaAdmin").addEventListener("click", async (ev) => {
       const b = ev.target.closest("button");
       if (!b) return;

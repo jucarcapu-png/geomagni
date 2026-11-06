@@ -114,6 +114,17 @@ service cloud.firestore {
       allow delete: if admin();
     }
 
+    // Visitas del sitio (WEB-024): sin cookies ni identificadores; cualquiera registra una, solo el administrador las lee.
+    match /visitas/{id} {
+      allow read, delete: if admin();
+      allow create: if request.resource.data.keys().hasOnly(['pagina', 'origen', 'dispositivo', 'dia', 'creado'])
+        && texto(request.resource.data.pagina, 60) && texto(request.resource.data.origen, 100)
+        && request.resource.data.dispositivo in ['movil', 'escritorio']
+        && texto(request.resource.data.dia, 10)
+        && request.resource.data.creado == request.time;
+      allow update: if false;
+    }
+
     // Pedidos de compra (PAG-001). El cliente solo crea el suyo, pendiente y con un plan valido;
     // Firebase lo aprueba o rechaza al recibir la confirmacion de la pasarela y compara el valor
     // con precios.json. Nadie puede marcar un pedido como pagado desde el navegador.

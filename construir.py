@@ -169,6 +169,7 @@ PIE = """<footer class="pie">
           <li><a href="descargas.html">Descargas</a></li>
           <li><a href="planes.html#preguntas">Preguntas frecuentes</a></li>
           <li><a href="inscripcion.html">Inscripción y prueba gratis</a></li>
+          <li><a href="novedades.html">Novedades de TRAMA</a></li>
         </ul>
       </div>
       <div>
@@ -256,7 +257,8 @@ FRANJA = """  <section class="seccion">
   </section>
 """
 
-FORM_CASILLA = """        <div class="campo campo--casilla">
+FORM_CASILLA = """        <div class="trampa" aria-hidden="true"><label>No llene este campo <input name="sitio_web" tabindex="-1" autocomplete="off"></label></div>
+        <div class="campo campo--casilla">
           <input type="checkbox" id="%(id)s" name="autorizo" required>
           <label for="%(id)s">Autorizo a GEOMAGNI TECNOLOGÍAS S.A.S. a tratar mis datos para responder esta solicitud, según su <a href="privacidad.html">política de tratamiento de datos</a>.</label>
         </div>"""
@@ -1058,6 +1060,43 @@ def p_ingresar():
 """ % {"pronto": PRONTO}
     documento("ingresar.html", "Ingresar · GEOMAGNI TECNOLOGÍAS", "Inicie sesión en su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
 
+# ---------------------------------------------------------------- NOVEDADES (WEB-026)
+NOVEDADES = [
+    ("En desarrollo", "Próxima versión", "Cuenta GEOMAGNI y licencias", [
+        "TRAMA pide iniciar sesión con la cuenta del sitio y comprueba la licencia: prueba de 7 días, estudiantil o plan.",
+        "Una cuenta por equipo, con la opción de desconectar un equipo desde «Mi cuenta» o desde el propio TRAMA.",
+        "La licencia se comprueba con el servidor cada 7 días; sin conexión, TRAMA sigue funcionando hasta entonces.",
+        "Editor de perfiles y secciones en 3D: dibujo desde vistas frontal y oblicua, con guardado y reapertura sin perder geometría."]),
+    ("1.5.703", "31 de octubre de 2026", "Referencias CAD, Revit y niveles", [
+        "Importación de planos DWG y DXF por capas, con visibilidad de capas por vista, incluso en proyectos grandes.",
+        "Complemento TRAMA para Revit: exporta componentes con sus parámetros, tipos, fórmulas y geometría.",
+        "Navegador de proyecto organizado por categorías, con iconos nuevos para cada tipo de vista.",
+        "Niveles con tipos, simbología propia y cabeceras alineadas; marca de alzado con sus cuatro lados, como en Revit.",
+        "Recorrido «Paseo» con movimiento suave y cursores rediseñados."]),
+]
+
+def p_novedades():
+    bloques = []
+    for ver, fecha, titulo, items in NOVEDADES:
+        lista = "".join("<li>%s</li>" % x for x in items)
+        bloques.append("""      <article class="novedad">
+        <div class="novedad__cabeza"><span class="insignia %s">%s</span><span class="novedad__fecha">%s</span></div>
+        <h3>%s</h3>
+        <ul class="lista-chequeo lista-chequeo--clara">%s</ul>
+      </article>""" % ("insignia--naranja" if ver == "En desarrollo" else "insignia--morada",
+                      ver if ver == "En desarrollo" else "Versión " + ver, fecha, titulo, lista))
+    cuerpo = encabezado("Novedades", "TRAMA", "Novedades de TRAMA", "Lo que trae cada versión y lo que estamos preparando.")
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor novedades">
+%s
+      <p class="nota-centro">¿Quiere probar la versión actual? <a href="inscripcion.html">Inscríbase y active su prueba de 7 días</a>.</p>
+    </div>
+  </section>
+""" % "\n".join(bloques)
+    documento("novedades.html", "Novedades de TRAMA · GEOMAGNI TECNOLOGÍAS",
+              "Novedades de cada versión de TRAMA, el software BIM de GEOMAGNI TECNOLOGÍAS.", cuerpo)
+
 def p_admin():
     cuerpo = encabezado("Administración", "Solo administrador", "Panel de administración", "Inscritos, licencias, equipos, compras y mensajes del sitio.")
     cuerpo += """
@@ -1076,6 +1115,7 @@ def p_admin():
             <button type="button" role="tab" aria-selected="true" data-admin="inscritos">Inscritos</button>
             <button type="button" role="tab" aria-selected="false" data-admin="mensajes">Mensajes</button>
             <button type="button" role="tab" aria-selected="false" data-admin="pedidos">Compras</button>
+            <button type="button" role="tab" aria-selected="false" data-admin="visitas">Visitas</button>
           </div>
           <input class="admin-buscar" id="buscarAdmin" type="search" placeholder="Buscar por nombre, correo o ciudad" aria-label="Buscar">
           <div id="vistaAdmin"></div>
@@ -1120,7 +1160,7 @@ def p_cuenta():
     documento("cuenta.html", "Mi cuenta · GEOMAGNI TECNOLOGÍAS", "Licencia de TRAMA y datos de su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
 
 # ---------------------------------------------------------------- MAPA DEL SITIO (WEB-013)
-PAGINAS_PUBLICAS = ["index.html", "productos.html", "planes.html", "descargas.html", "nosotros.html",
+PAGINAS_PUBLICAS = ["index.html", "productos.html", "planes.html", "descargas.html", "novedades.html", "nosotros.html",
                     "trabaja.html", "contacto.html", "inscripcion.html", "terminos.html", "privacidad.html"]
 
 def mapa_del_sitio():
@@ -1137,6 +1177,6 @@ def mapa_del_sitio():
 if __name__ == "__main__":
     print("Generando páginas:")
     p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad(); p_terminos()
-    p_inscripcion(); p_ingresar(); p_cuenta(); p_admin()
+    p_inscripcion(); p_ingresar(); p_cuenta(); p_admin(); p_novedades()
     mapa_del_sitio()
     print("Listo.")

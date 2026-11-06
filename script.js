@@ -223,6 +223,34 @@
 
   // Planes, precios y compra: cuenta.js (lee precios.json).
 
+  // ---------- Visitas (WEB-024) ----------
+  // Una página vista = un documento en Firestore «visitas»: página, sitio de origen, tipo de dispositivo y día.
+  // Sin cookies, sin IP, sin identificadores. Respeta «No rastrear» del navegador. Solo el administrador las lee.
+  (function () {
+    try {
+      if (navigator.doNotTrack === "1" || window.doNotTrack === "1" || /admin\.html$/.test(location.pathname)) return;
+      if (!/github\.io$|geomagni/.test(location.hostname)) return; // no contar pruebas locales
+      var ref = "";
+      try { ref = document.referrer ? new URL(document.referrer).hostname : ""; } catch (e) {}
+      if (ref === location.hostname) ref = "";
+      var pagina = location.pathname.split("/").pop() || "index.html";
+      var movil = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+      var id = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+      var base = "projects/usuarios-geomagni/databases/(default)/documents";
+      var cuerpo = { writes: [{
+        update: { name: base + "/visitas/" + id, fields: {
+          pagina: { stringValue: pagina.slice(0, 60) },
+          origen: { stringValue: ref.slice(0, 100) },
+          dispositivo: { stringValue: movil ? "movil" : "escritorio" },
+          dia: { stringValue: new Date().toISOString().slice(0, 10) } } },
+        currentDocument: { exists: false },
+        updateTransforms: [{ fieldPath: "creado", setToServerValue: "REQUEST_TIME" }] }] };
+      fetch("https://firestore.googleapis.com/v1/" + base + ":commit?key=AIzaSyC82TKGq1keu-hpFquCLjNoxI9GxhXT0dY",
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo), keepalive: true })
+        .catch(function () {});
+    } catch (e) {}
+  })();
+
   // ---------- Formularios: se guardan en Firebase (cuenta.js); si no es posible, abren el correo ----------
   var correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var asuntoUrl = new URLSearchParams(location.search).get("asunto");
@@ -249,7 +277,7 @@
       }
       var lineas = [];
       $$("input, select, textarea", form).forEach(function (c) {
-        if (c.type === "checkbox" || c.type === "hidden" || !c.name || c.name === "mensaje") return;
+        if (c.type === "checkbox" || c.type === "hidden" || !c.name || c.name === "mensaje" || c.name === "sitio_web") return;
         var et = form.querySelector('label[for="' + c.id + '"]');
         var valor = c.tagName === "SELECT" ? c.options[c.selectedIndex].text : c.value.trim();
         lineas.push((et ? et.childNodes[0].textContent.trim() : c.name) + ": " + (valor || "-"));
@@ -262,9 +290,12 @@
         window.location.href = "mailto:" + CORREO + "?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo);
         avisar("Se abrió su programa de correo con el mensaje listo. Si no se abrió, escríbanos a " + CORREO + ".", "exito");
       }
+      // WEB-022: los robots llenan el campo trampa invisible; se les responde como si se hubiera enviado.
+      var trampa = form.querySelector('[name="sitio_web"]');
+      if (trampa && trampa.value) { form.reset(); avisar("¡Recibido! Le responderemos pronto.", "exito"); return; }
       var datos = {};
       $$("input, select, textarea", form).forEach(function (c) {
-        if (c.name && c.type !== "checkbox" && c.type !== "hidden") datos[c.name] = c.value.trim();
+        if (c.name && c.name !== "sitio_web" && c.type !== "checkbox" && c.type !== "hidden") datos[c.name] = c.value.trim();
       });
       if (typeof window.geomagniGuardarMensaje !== "function") { abrirCorreo(); return; }
       var boton = form.querySelector('[type="submit"]');
