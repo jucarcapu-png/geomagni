@@ -97,6 +97,16 @@ SIMBOLO_BLANCO = ('<svg viewBox="0 0 512 512" width="40" height="40" aria-hidden
     '<g mask="url(#ranurasPie)"><path fill="#FFFFFF" fill-rule="evenodd" d="M298.6 55.5 439.3 164.3 442 342.2 304.6 455.2 130.7 418.3 51 259.1 125.7 97.8ZM171 171V341H341V171Z"/>'
     '<path fill="#FF7400" d="M298.6 55.5 439.3 164.3 341 213.5 274 171Z"/></g></svg>')
 
+AVISO_TRAMA = """
+  <section class="seccion seccion--aviso">
+    <div class="contenedor">
+      <div class="aviso-desarrollo" role="note">
+        <strong>TRAMA está en desarrollo</strong>
+        <p>Todavía no está a la venta y aún no es un programa funcional: se encuentra en etapa de pruebas y es posible que no sea compatible con su sistema operativo. Muy pronto lo lanzaremos al mercado en una versión beta.</p>
+      </div>
+    </div>
+  </section>"""
+
 MENU = [
     ("planes.html", "Planes"),
     ("descargas.html", "Descargas"),
@@ -122,7 +132,7 @@ def cabecera(activa):
         clase = ' class="activo" aria-current="page"' if href == activa else ''
         enlaces.append('      <a href="%s"%s>%s</a>' % (href, clase, texto))
     activo_prod = ' activo' if activa == "productos.html" else ''
-    return """<div class="aviso-prueba" role="note"><strong>Sitio de prueba.</strong> Esta página está en construcción: precios, planes y descargas son demostrativos y pueden cambiar.</div>
+    return """<div class="aviso-prueba" role="note"><strong>TRAMA está en desarrollo.</strong> Aún no está a la venta ni es un programa funcional; está en etapa de pruebas y puede no ser compatible con su sistema operativo. Muy pronto, versión beta.</div>
 <header class="cabecera" id="cabecera">
   <div class="contenedor cabecera__fila">
     <a class="marca" href="index.html" aria-label="GEOMAGNI TECNOLOGÍAS, inicio">
@@ -306,7 +316,7 @@ def p_inicio():
         <p class="portada__bajada">GEOMAGNI conecta geometría, datos y decisiones para que los proyectos puedan comprenderse y gestionarse como un solo sistema.</p>
         <div class="portada__acciones">
           <a class="boton boton--naranja" href="productos.html">Ver productos y servicios</a>
-          <a class="boton boton--contorno" href="inscripcion.html">Pruebe TRAMA gratis</a>
+          <a class="boton boton--contorno" href="productos.html#trama">Conozca TRAMA</a>
         </div>
       </div>
       <div class="portada__grafico" aria-hidden="true">
@@ -454,6 +464,7 @@ def p_productos():
     cuerpo = encabezado("Productos y servicios", "Productos y servicios",
                         "Software propio e ingeniería sobre la misma información",
                         "Conozca TRAMA, nuestra plataforma BIM, y los servicios con los que acompañamos cada etapa del proyecto.")
+    cuerpo += AVISO_TRAMA
     cuerpo += """
   <section class="seccion seccion--oscura" id="trama">
     <div class="contenedor producto">
@@ -529,7 +540,8 @@ def p_planes():
     ]
     medios = "\n".join('        <div class="pago">%s<strong>%s</strong><span>%s</span></div>' % (icono(i), t, d) for i, t, d in pagos)
     cuerpo = encabezado("Planes", "Planes y precios", "Elija el plan de TRAMA para su forma de trabajar",
-                        "TRAMA está en desarrollo. Los precios que ve son valores de muestra; los definitivos se anunciarán con el lanzamiento.")
+                        "TRAMA todavía no está a la venta. Los precios que ve son valores de muestra; los definitivos se anunciarán con el lanzamiento de la versión beta.")
+    cuerpo += AVISO_TRAMA
     cuerpo += """
   <section class="seccion">
     <div class="contenedor" style="text-align:center">
@@ -542,7 +554,7 @@ def p_planes():
       <div class="planes" style="text-align:left">
 %s
       </div>
-      <p class="nota-centro" id="notaPago" role="status">Para comprar necesita una cuenta GEOMAGNI con el correo confirmado; la licencia se activa sola al aprobarse el pago. Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto, <a href="inscripcion.html">inscríbase y pruebe TRAMA 7 días gratis</a>, o si es estudiante <a href="inscripcion.html?perfil=estudiante">obtenga su licencia estudiantil</a>.</p>
+      <p class="nota-centro" id="notaPago" role="status">Para comprar necesita una cuenta GEOMAGNI con el correo confirmado; la licencia se activa sola al aprobarse el pago. TRAMA todavía no está a la venta: los pagos en línea se activarán con el lanzamiento de la versión beta.</p>
     </div>
   </section>
 <!--INTERES-->
@@ -578,8 +590,8 @@ def p_planes():
     <div class="contenedor" style="max-width:820px">
       <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Preguntas frecuentes</p><h2>Antes de elegir</h2></header>
       <div class="faq">
-        <details><summary>¿Puedo probar TRAMA antes de comprar?</summary><p>Sí. Inscríbase, confirme su correo y active una licencia de prueba de 7 días; la descarga queda disponible en «Mi cuenta». Sin cuenta y licencia vigente no es posible descargar ni usar TRAMA.</p></details>
-        <details><summary>¿Cuándo se publican los precios?</summary><p>Con el lanzamiento comercial de TRAMA. Si quiere recibir el aviso, escríbanos desde la página de contacto.</p></details>
+        <details><summary>¿Ya puedo comprar o usar TRAMA?</summary><p>Todavía no. TRAMA está en desarrollo y en etapa de pruebas: no está a la venta y aún no es un programa funcional para trabajar en proyectos reales. Muy pronto lo lanzaremos en una versión beta. Si quiere recibir el aviso, déjenos su correo en «Avíseme cuando pueda comprar».</p></details>
+        <details><summary>¿Cuándo se publican los precios?</summary><p>Con el lanzamiento de la versión beta de TRAMA. Si quiere recibir el aviso, escríbanos desde la página de contacto.</p></details>
         <details><summary>¿Qué necesito para instalarlo?</summary><p>Un equipo con Windows 10 u 11 de 64 bits. Los requisitos completos están en la página de descargas.</p></details>
         <details><summary>¿Emiten factura electrónica?</summary><p>Sí. GEOMAGNI TECNOLOGÍAS S.A.S. está registrada en Colombia con NIT 902.113.610-0 y factura cada compra.</p></details>
         <details><summary>¿Ofrecen planes para universidades o empresas grandes?</summary><p>Sí. Para licencias por volumen, instituciones educativas o servicios de implementación, solicite una cotización.</p></details>
@@ -649,7 +661,8 @@ def p_descargas():
           <a class="boton boton--morado" href="%s" download>%s</a>
         </article>""" % (icono(ico), titulo, color, ins, desc, meta, archivo, boton))
     cuerpo = encabezado("Descargas", "Descargas", "Software, documentos y material de marca",
-                        "Descargue la versión de prueba de TRAMA, los documentos de la empresa y el kit de marca.")
+                        "Documentos de la empresa, kit de marca y la versión de pruebas de TRAMA, que todavía no es funcional.")
+    cuerpo += AVISO_TRAMA
     cuerpo += """
   <section class="seccion">
     <div class="contenedor">
@@ -660,16 +673,16 @@ def p_descargas():
       <div class="descargas">
 %s
       </div>
-      <p class="formulario__nota" style="margin-top:20px">La versión de prueba de TRAMA se entrega para evaluación, sin garantía y sujeta a cambios. Puede comprobar la integridad del archivo con su huella SHA-256.</p>
+      <p class="formulario__nota" style="margin-top:20px">La versión de pruebas de TRAMA no es todavía un programa funcional: se entrega solo para evaluación, sin garantía, sujeta a cambios y puede no ser compatible con su sistema operativo. Puede comprobar la integridad del archivo con su huella SHA-256.</p>
     </div>
   </section>
 
   <section class="seccion seccion--suave" id="requisitos">
     <div class="contenedor" style="max-width:880px">
-      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Requisitos</p><h2>Requisitos del sistema para TRAMA</h2></header>
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Requisitos</p><h2>Requisitos previstos para TRAMA</h2></header>
       <div class="requisitos">
         <dl>
-          <dt>Sistema operativo</dt><dd>Windows 10 u 11 de 64 bits</dd>
+          <dt>Sistema operativo</dt><dd>Windows 10 u 11 de 64 bits (en pruebas: la compatibilidad no está garantizada)</dd>
           <dt>Procesador</dt><dd>Doble núcleo de 2 GHz o superior</dd>
           <dt>Memoria</dt><dd>8 GB de RAM (16 GB recomendados para modelos grandes)</dd>
           <dt>Tarjeta gráfica</dt><dd>Compatible con OpenGL; sin tarjeta dedicada funciona en modo compatible por procesador</dd>
@@ -692,7 +705,7 @@ def p_descargas():
   </section>
 %s""" % ("\n".join(items), FRANJA)
     documento("descargas.html", "Descargas · GEOMAGNI TECNOLOGÍAS",
-              "Descargue la versión de prueba de TRAMA para Windows, el portafolio de servicios, la ficha técnica y el kit de marca de GEOMAGNI.", cuerpo)
+              "Versión de pruebas de TRAMA (en desarrollo, aún no funcional), portafolio de servicios, la ficha técnica y el kit de marca de GEOMAGNI.", cuerpo)
 
 # ---------------------------------------------------------------- NOSOTROS
 def p_nosotros():
@@ -944,7 +957,7 @@ ARTICULO_TERMINOS = """    <article class="contenedor legal">
     <p>TRAMA, su código, sus interfaces, la marca GEOMAGNI, sus logotipos y los contenidos de este sitio son propiedad de GEOMAGNI y están protegidos por la Decisión Andina 351 de 1993, la Ley 23 de 1982 y las demás normas de derecho de autor y propiedad industrial. Los proyectos, modelos y archivos que usted cree con TRAMA son suyos.</p>
 
     <h2>6. Versiones de prueba y garantía</h2>
-    <p>TRAMA está en desarrollo activo y este sitio es una versión de prueba. El software se entrega «tal como está». Aunque trabajamos para que sea confiable, puede contener errores. Revise los resultados de sus diseños y cálculos antes de usarlos en obra y conserve copias de seguridad de sus archivos.</p>
+    <p>TRAMA está en desarrollo y en etapa de pruebas: todavía no está a la venta, aún no es un programa funcional y es posible que no sea compatible con su sistema operativo. Será lanzado al mercado en una versión beta. Este sitio también es una versión de prueba. El software se entrega «tal como está». Aunque trabajamos para que sea confiable, puede contener errores. Revise los resultados de sus diseños y cálculos antes de usarlos en obra y conserve copias de seguridad de sus archivos.</p>
 
     <h2>7. Responsabilidad</h2>
     <p>En la medida en que la ley lo permita, GEOMAGNI no responde por lucro cesante, pérdida de datos ni daños indirectos derivados del uso o de la imposibilidad de usar TRAMA o el sitio. Esta limitación no afecta los derechos que le reconoce el Estatuto del Consumidor (Ley 1480 de 2011) ni la responsabilidad que no pueda excluirse legalmente.</p>
@@ -980,13 +993,14 @@ PRONTO = """      <div class="vacio" data-cuenta="pronto" hidden>
 def p_inscripcion():
     cuerpo = encabezado("Inscripción", "Cuenta GEOMAGNI", "Inscríbase y pruebe TRAMA",
                         "Cree su cuenta y active una licencia de prueba de 7 días. Si es estudiante, obtenga una licencia estudiantil por la duración de su carrera.")
+    cuerpo += AVISO_TRAMA
     cuerpo += """
   <section class="seccion">
     <div class="contenedor contacto">
       <div class="contacto__texto">
         <h2>Qué recibe</h2>
         <ul class="lista-chequeo lista-chequeo--clara">
-          <li><strong>Licencia de prueba:</strong> 7 días de TRAMA con todas las funciones.</li>
+          <li><strong>Licencia de prueba:</strong> 7 días para evaluar la versión de pruebas de TRAMA, que todavía está en desarrollo y no es funcional.</li>
           <li><strong>Licencia estudiantil:</strong> válida hasta la fecha estimada de grado, con su correo institucional.</li>
           <li>Acceso a las descargas y a las novedades de TRAMA.</li>
         </ul>
@@ -1086,11 +1100,12 @@ def p_novedades():
       </article>""" % ("insignia--naranja" if ver == "En desarrollo" else "insignia--morada",
                       ver if ver == "En desarrollo" else "Versión " + ver, fecha, titulo, lista))
     cuerpo = encabezado("Novedades", "TRAMA", "Novedades de TRAMA", "Lo que trae cada versión y lo que estamos preparando.")
+    cuerpo += AVISO_TRAMA
     cuerpo += """
   <section class="seccion">
     <div class="contenedor novedades">
 %s
-      <p class="nota-centro">¿Quiere probar la versión actual? <a href="inscripcion.html">Inscríbase y active su prueba de 7 días</a>.</p>
+      <p class="nota-centro">Muy pronto, la versión beta. <a href="planes.html#interes">Déjenos su correo</a> y le avisamos.</p>
     </div>
   </section>
 """ % "\n".join(bloques)
@@ -1129,6 +1144,7 @@ def p_admin():
 
 def p_cuenta():
     cuerpo = encabezado("Mi cuenta", "Cuenta GEOMAGNI", "Mi cuenta", "Consulte su licencia de TRAMA y sus datos.")
+    cuerpo += AVISO_TRAMA
     cuerpo += """
   <section class="seccion">
     <div class="contenedor" style="max-width:880px">
