@@ -60,16 +60,27 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
-    // Equipo donde se usa TRAMA: una cuenta, un equipo (LIC-001).
-    // TRAMA lo registra la primera vez; para cambiar de equipo, el administrador borra el documento en la consola.
+    // Equipos donde se usa TRAMA (LIC-001). Tres textos paralelos separados por «;»:
+    // huellas, nombres y desde. Nunca mas equipos que el cupo de la licencia: campo «equipos»
+    // de licencias/{uid}, que solo pone el administrador (1 si no existe).
+    // TRAMA o «Mi cuenta» desconectan equipos reescribiendo la lista.
     match /equipos/{uid} {
+      function cupo() {
+        let lic = get(/databases/$(base)/documents/licencias/$(uid)).data;
+        return lic.get('equipos', 1);
+      }
+      function cuantos(s) { return s == '' ? 0 : s.split(';').size(); }
       allow read: if propio(uid);
-      allow create: if propio(uid)
+      allow create, update: if propio(uid)
         && request.auth.token.email_verified == true
-        && request.resource.data.keys().hasOnly(['huella', 'equipo'])
-        && request.resource.data.huella is string && request.resource.data.huella.size() == 64
-        && texto(request.resource.data.equipo, 80);
-      allow update, delete: if false;
+        && request.resource.data.keys().hasOnly(['huellas', 'nombres', 'desde'])
+        && texto(request.resource.data.huellas, 2000)
+        && texto(request.resource.data.nombres, 2000)
+        && texto(request.resource.data.desde, 2000)
+        && cuantos(request.resource.data.huellas) <= cupo()
+        && cuantos(request.resource.data.nombres) == cuantos(request.resource.data.huellas)
+        && cuantos(request.resource.data.desde) == cuantos(request.resource.data.huellas);
+      allow delete: if false;
     }
   }
 }

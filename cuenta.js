@@ -222,9 +222,45 @@ async function iniciar() {
       ${vigente
         ? `<h3>Descargar TRAMA</h3><div class="botones-descarga">${INSTALADORES.map((f, i) =>
             `<button class="boton ${i ? "boton--contorno-oscuro" : "boton--morado"} descargar-trama" type="button" data-ruta="${f.ruta}">${f.texto}<small>${f.detalle}</small></button>`).join("")}</div>
-           <p class="ayuda" id="estadoDescarga">Al abrir TRAMA, inicie sesión con este correo y su contraseña.</p>`
+           <p class="ayuda" id="estadoDescarga">Al abrir TRAMA, inicie sesión con este correo y su contraseña.</p>
+           <h3 style="margin-top:28px">Equipos conectados</h3>
+           <div id="equiposCuenta"><p class="ayuda">Cargando…</p></div>`
         : '<p>Su licencia venció: ya no puede descargar ni usar TRAMA. Conozca los planes para continuar.</p><a class="boton boton--naranja" href="planes.html">Ver planes</a>'}`;
     $$(".descargar-trama").forEach((b) => b.addEventListener("click", () => descargar(b)));
+    if (vigente) await pintarEquipos(user, Number(l.equipos) || 1);
+  }
+
+  // Equipos donde la cuenta usa TRAMA (los registra el programa al iniciar sesión).
+  async function pintarEquipos(user, cupo) {
+    const caja = $("#equiposCuenta");
+    if (!caja) return;
+    const ref = F.doc(db, "equipos", user.uid);
+    let d = { huellas: "", nombres: "", desde: "" };
+    try { const s = await F.getDoc(ref); if (s.exists()) d = Object.assign(d, s.data()); }
+    catch (err) { caja.innerHTML = '<p class="ayuda">No se pudo leer la lista de equipos.</p>'; return; }
+    const lista = (t) => (t ? String(t).split(";") : []);
+    const H = lista(d.huellas), N = lista(d.nombres), D = lista(d.desde);
+    const limite = `Su licencia permite usar TRAMA en ${cupo === 1 ? "un solo equipo" : cupo + " equipos"} a la vez.`;
+    if (!H.length) {
+      caja.innerHTML = `<p>Todavía no ha abierto TRAMA en ningún equipo. ${limite}</p>`;
+      return;
+    }
+    caja.innerHTML = `<p class="ayuda">${limite} Si abre TRAMA en otro equipo, el programa le pedirá desconectar uno.</p>
+      <ul class="lista-equipos">${H.map((h, i) => {
+        const f = D[i] ? new Date(D[i]).toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" }) : "";
+        return `<li><span><strong>${esc(N[i] || "Equipo")}</strong>${f ? "<small>Conectado desde el " + f + "</small>" : ""}</span>
+          <button class="boton boton--contorno-oscuro quitar-equipo" type="button" data-i="${i}">Desconectar</button></li>`;
+      }).join("")}</ul>`;
+    $$(".quitar-equipo", caja).forEach((b) => b.addEventListener("click", async () => {
+      const i = Number(b.dataset.i);
+      if (!confirm(`¿Desconectar «${N[i]}»? Ese equipo ya no podrá abrir TRAMA con esta cuenta hasta que vuelva a iniciar sesión.`)) return;
+      b.disabled = true;
+      const quitar = (arr) => arr.filter((_, j) => j !== i).join(";");
+      try {
+        await F.setDoc(ref, { huellas: quitar(H), nombres: quitar(N), desde: quitar(D) });
+        await pintarEquipos(user, cupo);
+      } catch (err) { b.disabled = false; alert("No fue posible desconectar el equipo. Inténtelo de nuevo."); }
+    }));
   }
 
   async function descargar(boton) {
