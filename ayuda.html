@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Centro de ayuda · GEOMAGNI TECNOLOGÍAS</title>
+  <meta name="description" content="Requisitos, instalación, primer inicio de sesión y solución de problemas de TRAMA.">
+  <meta name="theme-color" content="#5B2A86">
+  <link rel="canonical" href="https://jucarcapu-png.github.io/geomagni/ayuda.html">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:site_name" content="GEOMAGNI TECNOLOGÍAS">
+  <meta property="og:title" content="Centro de ayuda · GEOMAGNI TECNOLOGÍAS">
+  <meta property="og:description" content="Requisitos, instalación, primer inicio de sesión y solución de problemas de TRAMA.">
+  <meta property="og:url" content="https://jucarcapu-png.github.io/geomagni/ayuda.html">
+  <meta property="og:image" content="https://jucarcapu-png.github.io/geomagni/img/og-geomagni.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="paginas.css">
+  <link rel="stylesheet" href="dinamico.css">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<div class="aviso-prueba" role="note"><strong>TRAMA está en desarrollo.</strong> Aún no está a la venta ni es un programa funcional; está en etapa de pruebas y puede no ser compatible con su sistema operativo. Muy pronto, versión beta.</div>
+<header class="cabecera" id="cabecera">
+  <div class="contenedor cabecera__fila">
+    <a class="marca" href="index.html" aria-label="GEOMAGNI TECNOLOGÍAS, inicio">
+      <img src="img/geomagni-firma.svg" alt="GEOMAGNI TECNOLOGÍAS" width="200" height="50">
+    </a>
+    <button class="menu-boton" id="menuBoton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="menu" id="menu" aria-label="Principal">
+      <div class="menu__grupo">
+        <button class="menu__abrir" id="abrirProductos" aria-expanded="false" aria-controls="desplegableProductos">Productos</button>
+        <div class="desplegable" id="desplegableProductos">
+          <a class="destacado" href="productos.html#trama"><strong>TRAMA</strong><span>Plataforma BIM y gestión integral de proyectos</span></a>
+          <h4>Servicios</h4>
+          <a href="productos.html#gestion"><strong>Gestión de proyectos</strong><span>Alcance, cronograma, costos y control</span></a>
+          <a href="productos.html#bim"><strong>Modelación BIM</strong><span>Modelos coordinados de arquitectura y estructura</span></a>
+          <a href="productos.html#estructural"><strong>Diseño estructural</strong><span>Análisis, diseño y memorias de cálculo</span></a>
+          <a href="productos.html#coordinacion"><strong>Coordinación técnica</strong><span>Interferencias, incidencias y disciplinas</span></a>
+          <a href="productos.html#software"><strong>Software a la medida</strong><span>Herramientas y automatización para el sector</span></a>
+          <a href="productos.html#capacitacion"><strong>Consultoría y capacitación</strong><span>Adopción de flujos digitales y BIM</span></a>
+        </div>
+      </div>
+      <a href="planes.html">Planes</a>
+      <a href="descargas.html">Descargas</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html">Contacto</a>
+      <a class="enlace-cuenta" href="cuenta.html">Mi cuenta</a>
+      <a class="boton boton--naranja" href="inscripcion.html">Inscribirse</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+  <section class="encabezado">
+    <div class="contenedor">
+      <p class="migas"><a href="index.html">Inicio</a> / Ayuda</p>
+      <p class="etiqueta">TRAMA</p>
+      <h1>Centro de ayuda</h1>
+      <p>Requisitos, instalación, primer inicio de sesión y respuestas a los problemas más comunes.</p>
+    </div>
+  </section>
+
+  <section class="seccion seccion--aviso">
+    <div class="contenedor">
+      <div class="aviso-desarrollo" role="note">
+        <strong>TRAMA está en desarrollo</strong>
+        <p>Todavía no está a la venta y aún no es un programa funcional: se encuentra en etapa de pruebas y es posible que no sea compatible con su sistema operativo. Muy pronto lo lanzaremos al mercado en una versión beta.</p>
+      </div>
+    </div>
+  </section>
+  <section class="seccion">
+    <div class="contenedor" style="max-width:880px">
+      <nav class="ayuda-indice" aria-label="Contenido">
+        <a href="#requisitos">Requisitos</a><a href="#instalar">Instalación</a><a href="#sesion">Primer inicio de sesión</a><a href="#equipos">Equipos y licencia</a><a href="#problemas">Problemas frecuentes</a><a href="#reportar">Reportar un error</a>
+      </nav>
+
+      <h2 id="requisitos">Requisitos previstos</h2>
+      <p>La versión de pruebas se está evaluando en estos equipos; la compatibilidad con su sistema todavía no está garantizada.</p>
+      <ul class="lista-chequeo lista-chequeo--clara">
+        <li>Windows 10 u 11 de 64 bits.</li>
+        <li>Procesador de doble núcleo de 2 GHz o superior y 8 GB de memoria (16 GB para modelos grandes).</li>
+        <li>Tarjeta gráfica compatible con OpenGL. Sin tarjeta dedicada, TRAMA usa el modo compatible por procesador, más lento.</li>
+        <li>500 MB libres en disco y conexión a internet para iniciar sesión.</li>
+      </ul>
+
+      <h2 id="instalar">Instalación paso a paso</h2>
+      <ol class="ayuda-pasos">
+        <li><strong>Inscríbase</strong> en <a href="inscripcion.html">Inscripción</a> con su nombre, correo y una contraseña.</li>
+        <li><strong>Confirme su correo</strong> con el enlace que le enviamos y vuelva a «Mi cuenta». Si no lo ve, revise la carpeta de correo no deseado.</li>
+        <li><strong>Active su licencia</strong> en <a href="cuenta.html">Mi cuenta</a>: prueba de 7 días o estudiantil, si tiene correo institucional.</li>
+        <li><strong>Descargue</strong> el instalador desde «Mi cuenta» (la descarga solo aparece con licencia vigente).</li>
+        <li><strong>Ábralo.</strong> El instalador aún no tiene firma digital: si Windows muestra «Windows protegió su PC», elija «Más información» y «Ejecutar de todas formas».</li>
+        <li>Al terminar, TRAMA queda en el escritorio y en el menú Inicio. La versión portátil se descomprime y se abre con <code>IniciarTRAMA.exe</code>.</li>
+      </ol>
+
+      <h2 id="sesion">Primer inicio de sesión</h2>
+      <p>Al abrir TRAMA aparece la ventana de inicio de sesión. Escriba el mismo correo y la misma contraseña de su cuenta del sitio. TRAMA comprueba su licencia y registra el equipo a su nombre; puede verlo en «Mi cuenta», en la lista de equipos.</p>
+
+      <h2 id="equipos">Equipos y licencia</h2>
+      <ul class="lista-chequeo lista-chequeo--clara">
+        <li>Cada licencia admite un equipo, salvo que su plan incluya más. Si abre TRAMA en otro equipo, el programa le pedirá desconectar uno; también puede hacerlo en «Mi cuenta».</li>
+        <li>TRAMA comprueba la licencia con nuestros servidores al menos cada 7 días. Sin conexión sigue funcionando hasta esa fecha.</li>
+        <li>Cuando la licencia vence, TRAMA se cierra. Guarde su trabajo con frecuencia.</li>
+      </ul>
+
+      <h2 id="problemas">Problemas frecuentes</h2>
+      <div class="faq">
+        <details><summary>No me llega el correo de confirmación</summary><p>Revise las carpetas de correo no deseado y promociones. En «Mi cuenta» puede pedir que se lo enviemos de nuevo. Si sigue sin llegar, escríbanos.</p></details>
+        <details><summary>Olvidé mi contraseña</summary><p>En <a href="ingresar.html">Ingresar</a>, escriba su correo y pulse «Olvidé mi contraseña». La contraseña nueva sirve en el sitio y en TRAMA.</p></details>
+        <details><summary>No aparece el botón de descarga</summary><p>La descarga solo se muestra con el correo confirmado y una licencia vigente. Revise el estado de su licencia en «Mi cuenta».</p></details>
+        <details><summary>Windows no deja abrir el instalador</summary><p>Elija «Más información» y luego «Ejecutar de todas formas». Si su antivirus lo bloquea, escríbanos antes de desactivarlo: le confirmamos que el archivo es el original.</p></details>
+        <details><summary>TRAMA dice que mi licencia venció o que el equipo no está registrado</summary><p>Revise en «Mi cuenta» la fecha de su licencia y la lista de equipos. Si el equipo fue desconectado, vuelva a iniciar sesión en TRAMA.</p></details>
+        <details><summary>TRAMA se ve lento o no abre las vistas 3D</summary><p>En equipos sin tarjeta gráfica dedicada TRAMA trabaja en modo compatible por procesador y es más lento. Como está en etapa de pruebas, cuéntenos qué equipo usa: nos ayuda a mejorar la compatibilidad.</p></details>
+      </div>
+
+      <h2 id="reportar">Reportar un error</h2>
+      <p>TRAMA está en pruebas y sus comentarios son muy valiosos. Escríbanos desde <a href="contacto.html">Contacto</a> o por WhatsApp con: qué estaba haciendo, qué esperaba que pasara, qué pasó, la versión de TRAMA y su versión de Windows. Si puede, adjunte una captura de pantalla.</p>
+    </div>
+  </section>
+  <section class="seccion">
+    <div class="contenedor">
+      <div class="franja">
+        <div><h2>¿Tiene un proyecto en mente?</h2><p>Cuéntenos el alcance y le enviamos una propuesta de trabajo.</p></div>
+        <a class="boton boton--naranja" href="contacto.html">Hablemos</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="pie__columnas">
+      <div>
+        <div class="pie__marca"><svg viewBox="0 0 512 512" width="40" height="40" aria-hidden="true"><mask id="ranurasPie" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g stroke="#000" stroke-width="18"><line x1="274" y1="171" x2="302.3" y2="38.2"/><line x1="341" y1="213.5" x2="454" y2="156.9"/></g></mask><g mask="url(#ranurasPie)"><path fill="#FFFFFF" fill-rule="evenodd" d="M298.6 55.5 439.3 164.3 442 342.2 304.6 455.2 130.7 418.3 51 259.1 125.7 97.8ZM171 171V341H341V171Z"/><path fill="#FF7400" d="M298.6 55.5 439.3 164.3 341 213.5 274 171Z"/></g></svg>
+          <div><strong>GEOMAGNI TECNOLOGÍAS S.A.S.</strong><span>NIT 902.113.610-0</span></div>
+        </div>
+        <p class="pie__descripcion">Ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena de Indias, Colombia.</p>
+      </div>
+      <div>
+        <h4>Productos</h4>
+        <ul>
+          <li><a href="productos.html#trama">TRAMA</a></li>
+          <li><a href="productos.html#bim">Modelación BIM</a></li>
+          <li><a href="productos.html#estructural">Diseño estructural</a></li>
+          <li><a href="productos.html#software">Software a la medida</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Recursos</h4>
+        <ul>
+          <li><a href="planes.html">Planes y precios</a></li>
+          <li><a href="planes.html#pagos">Formas de pago</a></li>
+          <li><a href="descargas.html">Descargas</a></li>
+          <li><a href="planes.html#preguntas">Preguntas frecuentes</a></li>
+          <li><a href="inscripcion.html">Inscripción</a></li>
+          <li><a href="ayuda.html">Centro de ayuda</a></li>
+          <li><a href="novedades.html">Novedades de TRAMA</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="trabaja.html">Trabaja con nosotros</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="privacidad.html">Tratamiento de datos</a></li>
+          <li><a href="terminos.html">Términos de uso</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__fila">
+      <p class="pie__copy" style="margin:0">© <span class="anio">2026</span> GEOMAGNI TECNOLOGÍAS S.A.S. Todos los derechos reservados. · Sitio de prueba.
+        <span class="visitas-pie" hidden> · <b class="visitas-numero">0</b> visitas</span></p>
+      <p class="pie__lema">La medida da forma.</p>
+    </div>
+  </div>
+</footer>
+<a class="whatsapp" href="https://wa.me/573117227083?text=Hola%20GEOMAGNI%2C%20quiero%20informaci%C3%B3n%20sobre%20TRAMA" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.6 3 15.5c0 2.5.8 4.9 2.1 6.9L3.6 29l6.8-1.7c1.7.9 3.6 1.4 5.6 1.4 7.2 0 13-5.6 13-12.5S23.2 3 16 3z" fill="currentColor"/><path d="M11.6 9.8c.3 0 .6 0 .8.6l1.1 2.6c.1.3 0 .6-.1.8l-.8 1c-.2.2-.2.5 0 .8.8 1.4 2.1 2.6 3.6 3.3.3.1.6.1.8-.1l1-1.2c.2-.3.5-.3.8-.2l2.5 1.2c.3.1.5.4.4.8-.2 1.3-1.4 2.4-2.8 2.4-4.4-.3-8.6-4.3-8.9-8.6 0-1.4 1-2.7 2.3-3h.3z" fill="#fff"/></svg>
+  <span>¿Hablamos?</span>
+</a>
+<script src="script.js"></script>
+</body>
+</html>

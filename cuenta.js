@@ -14,6 +14,9 @@ const FIREBASE_CONFIG = {
   storageBucket: "",
   appId: "1:1008376057828:web:a7d38ebc53b046322741f1"
 };
+// App Check (WEB-027): pegue aquí la «clave del sitio» de reCAPTCHA v3 registrada en Firebase › App Check.
+// Vacía = App Check apagado. Activar la aplicación obligatoria en la consola solo después de ver métricas «verificadas».
+const RECAPTCHA_CLAVE = "";
 const DIAS_PRUEBA = 7;
 // Archivos de TRAMA en Firebase Storage (carpeta «instaladores»). Solo se entregan con licencia vigente (storage.rules).
 const INSTALADORES = [
@@ -105,6 +108,12 @@ async function iniciar() {
     import(SDK + "firebase-app.js"), import(SDK + "firebase-auth.js"), import(SDK + "firebase-firestore.js")
   ]);
   const app = initializeApp(FIREBASE_CONFIG);
+  if (RECAPTCHA_CLAVE) {
+    try {
+      const C = await import(SDK + "firebase-app-check.js");
+      C.initializeAppCheck(app, { provider: new C.ReCaptchaV3Provider(RECAPTCHA_CLAVE), isTokenAutoRefreshEnabled: true });
+    } catch (e) { console.warn("App Check no disponible", e); }
+  }
   const auth = A.getAuth(app);
   auth.languageCode = "es";
   const db = F.getFirestore(app);

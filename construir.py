@@ -147,7 +147,7 @@ def cabecera(activa):
       </div>
 %s
       <a class="enlace-cuenta" href="cuenta.html">Mi cuenta</a>
-      <a class="boton boton--naranja" href="inscripcion.html">Pruebe gratis</a>
+      <a class="boton boton--naranja" href="inscripcion.html">Inscribirse</a>
     </nav>
   </div>
 </header>
@@ -178,7 +178,8 @@ PIE = """<footer class="pie">
           <li><a href="planes.html#pagos">Formas de pago</a></li>
           <li><a href="descargas.html">Descargas</a></li>
           <li><a href="planes.html#preguntas">Preguntas frecuentes</a></li>
-          <li><a href="inscripcion.html">Inscripción y prueba gratis</a></li>
+          <li><a href="inscripcion.html">Inscripción</a></li>
+          <li><a href="ayuda.html">Centro de ayuda</a></li>
           <li><a href="novedades.html">Novedades de TRAMA</a></li>
         </ul>
       </div>
@@ -698,7 +699,7 @@ def p_descargas():
       <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Instalación</p><h2>Cómo instalar TRAMA</h2></header>
       <ol class="pasos" style="grid-template-columns:repeat(3,1fr)">
         <li><span class="pasos__num">01</span><h3>Inscríbase</h3><p>Cree su cuenta, confirme su correo y active su licencia en «Mi cuenta».</p></li>
-        <li><span class="pasos__num">02</span><h3>Descargue e instale</h3><p>Descargue el instalador desde «Mi cuenta» y ábralo. Si Windows muestra un aviso, elija «Más información» y «Ejecutar de todas formas»: el instalador aún no tiene firma digital.</p></li>
+        <li><span class="pasos__num">02</span><h3>Descargue e instale</h3><p>Descargue el instalador desde «Mi cuenta» y ábralo. Si Windows muestra un aviso, elija «Más información» y «Ejecutar de todas formas»: el instalador aún no tiene firma digital. Más detalles en el <a href="ayuda.html">centro de ayuda</a>.</p></li>
         <li><span class="pasos__num">03</span><h3>Inicie sesión</h3><p>Abra TRAMA e ingrese con el correo y la contraseña de su cuenta.</p></li>
       </ol>
     </div>
@@ -1175,8 +1176,67 @@ def p_cuenta():
 """ % {"pronto": PRONTO}
     documento("cuenta.html", "Mi cuenta · GEOMAGNI TECNOLOGÍAS", "Licencia de TRAMA y datos de su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
 
+# ---------------------------------------------------------------- CENTRO DE AYUDA (WEB-028)
+def p_ayuda():
+    cuerpo = encabezado("Ayuda", "TRAMA", "Centro de ayuda",
+                        "Requisitos, instalación, primer inicio de sesión y respuestas a los problemas más comunes.")
+    cuerpo += AVISO_TRAMA
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor" style="max-width:880px">
+      <nav class="ayuda-indice" aria-label="Contenido">
+        <a href="#requisitos">Requisitos</a><a href="#instalar">Instalación</a><a href="#sesion">Primer inicio de sesión</a><a href="#equipos">Equipos y licencia</a><a href="#problemas">Problemas frecuentes</a><a href="#reportar">Reportar un error</a>
+      </nav>
+
+      <h2 id="requisitos">Requisitos previstos</h2>
+      <p>La versión de pruebas se está evaluando en estos equipos; la compatibilidad con su sistema todavía no está garantizada.</p>
+      <ul class="lista-chequeo lista-chequeo--clara">
+        <li>Windows 10 u 11 de 64 bits.</li>
+        <li>Procesador de doble núcleo de 2 GHz o superior y 8 GB de memoria (16 GB para modelos grandes).</li>
+        <li>Tarjeta gráfica compatible con OpenGL. Sin tarjeta dedicada, TRAMA usa el modo compatible por procesador, más lento.</li>
+        <li>500 MB libres en disco y conexión a internet para iniciar sesión.</li>
+      </ul>
+
+      <h2 id="instalar">Instalación paso a paso</h2>
+      <ol class="ayuda-pasos">
+        <li><strong>Inscríbase</strong> en <a href="inscripcion.html">Inscripción</a> con su nombre, correo y una contraseña.</li>
+        <li><strong>Confirme su correo</strong> con el enlace que le enviamos y vuelva a «Mi cuenta». Si no lo ve, revise la carpeta de correo no deseado.</li>
+        <li><strong>Active su licencia</strong> en <a href="cuenta.html">Mi cuenta</a>: prueba de 7 días o estudiantil, si tiene correo institucional.</li>
+        <li><strong>Descargue</strong> el instalador desde «Mi cuenta» (la descarga solo aparece con licencia vigente).</li>
+        <li><strong>Ábralo.</strong> El instalador aún no tiene firma digital: si Windows muestra «Windows protegió su PC», elija «Más información» y «Ejecutar de todas formas».</li>
+        <li>Al terminar, TRAMA queda en el escritorio y en el menú Inicio. La versión portátil se descomprime y se abre con <code>IniciarTRAMA.exe</code>.</li>
+      </ol>
+
+      <h2 id="sesion">Primer inicio de sesión</h2>
+      <p>Al abrir TRAMA aparece la ventana de inicio de sesión. Escriba el mismo correo y la misma contraseña de su cuenta del sitio. TRAMA comprueba su licencia y registra el equipo a su nombre; puede verlo en «Mi cuenta», en la lista de equipos.</p>
+
+      <h2 id="equipos">Equipos y licencia</h2>
+      <ul class="lista-chequeo lista-chequeo--clara">
+        <li>Cada licencia admite un equipo, salvo que su plan incluya más. Si abre TRAMA en otro equipo, el programa le pedirá desconectar uno; también puede hacerlo en «Mi cuenta».</li>
+        <li>TRAMA comprueba la licencia con nuestros servidores al menos cada 7 días. Sin conexión sigue funcionando hasta esa fecha.</li>
+        <li>Cuando la licencia vence, TRAMA se cierra. Guarde su trabajo con frecuencia.</li>
+      </ul>
+
+      <h2 id="problemas">Problemas frecuentes</h2>
+      <div class="faq">
+        <details><summary>No me llega el correo de confirmación</summary><p>Revise las carpetas de correo no deseado y promociones. En «Mi cuenta» puede pedir que se lo enviemos de nuevo. Si sigue sin llegar, escríbanos.</p></details>
+        <details><summary>Olvidé mi contraseña</summary><p>En <a href="ingresar.html">Ingresar</a>, escriba su correo y pulse «Olvidé mi contraseña». La contraseña nueva sirve en el sitio y en TRAMA.</p></details>
+        <details><summary>No aparece el botón de descarga</summary><p>La descarga solo se muestra con el correo confirmado y una licencia vigente. Revise el estado de su licencia en «Mi cuenta».</p></details>
+        <details><summary>Windows no deja abrir el instalador</summary><p>Elija «Más información» y luego «Ejecutar de todas formas». Si su antivirus lo bloquea, escríbanos antes de desactivarlo: le confirmamos que el archivo es el original.</p></details>
+        <details><summary>TRAMA dice que mi licencia venció o que el equipo no está registrado</summary><p>Revise en «Mi cuenta» la fecha de su licencia y la lista de equipos. Si el equipo fue desconectado, vuelva a iniciar sesión en TRAMA.</p></details>
+        <details><summary>TRAMA se ve lento o no abre las vistas 3D</summary><p>En equipos sin tarjeta gráfica dedicada TRAMA trabaja en modo compatible por procesador y es más lento. Como está en etapa de pruebas, cuéntenos qué equipo usa: nos ayuda a mejorar la compatibilidad.</p></details>
+      </div>
+
+      <h2 id="reportar">Reportar un error</h2>
+      <p>TRAMA está en pruebas y sus comentarios son muy valiosos. Escríbanos desde <a href="contacto.html">Contacto</a> o por WhatsApp con: qué estaba haciendo, qué esperaba que pasara, qué pasó, la versión de TRAMA y su versión de Windows. Si puede, adjunte una captura de pantalla.</p>
+    </div>
+  </section>
+%s""" % FRANJA
+    documento("ayuda.html", "Centro de ayuda · GEOMAGNI TECNOLOGÍAS",
+              "Requisitos, instalación, primer inicio de sesión y solución de problemas de TRAMA.", cuerpo)
+
 # ---------------------------------------------------------------- MAPA DEL SITIO (WEB-013)
-PAGINAS_PUBLICAS = ["index.html", "productos.html", "planes.html", "descargas.html", "novedades.html", "nosotros.html",
+PAGINAS_PUBLICAS = ["index.html", "productos.html", "planes.html", "descargas.html", "novedades.html", "ayuda.html", "nosotros.html",
                     "trabaja.html", "contacto.html", "inscripcion.html", "terminos.html", "privacidad.html"]
 
 def mapa_del_sitio():
@@ -1193,6 +1253,6 @@ def mapa_del_sitio():
 if __name__ == "__main__":
     print("Generando páginas:")
     p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad(); p_terminos()
-    p_inscripcion(); p_ingresar(); p_cuenta(); p_admin(); p_novedades()
+    p_inscripcion(); p_ingresar(); p_cuenta(); p_admin(); p_novedades(); p_ayuda()
     mapa_del_sitio()
     print("Listo.")
