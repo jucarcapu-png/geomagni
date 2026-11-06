@@ -178,6 +178,7 @@ PIE = """<footer class="pie">
           <li><a href="trabaja.html">Trabaja con nosotros</a></li>
           <li><a href="contacto.html">Contacto</a></li>
           <li><a href="privacidad.html">Tratamiento de datos</a></li>
+          <li><a href="terminos.html">Términos de uso</a></li>
         </ul>
       </div>
     </div>
@@ -872,6 +873,72 @@ def p_privacidad():
     documento("privacidad.html", "Política de tratamiento de datos · GEOMAGNI TECNOLOGÍAS",
               "Política de tratamiento de datos personales de GEOMAGNI TECNOLOGÍAS S.A.S., conforme a la Ley 1581 de 2012.", cuerpo)
 
+# ---------------------------------------------------------------- TERMINOS DE USO
+ARTICULO_TERMINOS = """    <article class="contenedor legal">
+    <p class="etiqueta etiqueta--morada">Información legal</p>
+    <h1>Términos y condiciones de uso</h1>
+    <p class="legal__fecha">Vigentes desde el 6 de noviembre de 2026 · Versión de prueba del sitio</p>
+
+    <h2>1. Quiénes somos y qué regulan estos términos</h2>
+    <p><strong>GEOMAGNI TECNOLOGÍAS S.A.S.</strong>, NIT 902.113.610-0, con domicilio en Cartagena, Bolívar, Colombia («GEOMAGNI»), es la titular de este sitio web y del software <strong>TRAMA</strong>. Estos términos regulan el uso del sitio, de la cuenta GEOMAGNI y de las licencias de TRAMA. Al crear una cuenta, descargar o usar TRAMA, usted declara haberlos leído y aceptado. Si no está de acuerdo, no use el sitio ni el software.</p>
+
+    <h2>2. Cuenta GEOMAGNI</h2>
+    <ul>
+      <li>Para descargar y usar TRAMA necesita una cuenta con su correo confirmado y una licencia vigente.</li>
+      <li>Los datos que registra deben ser verdaderos y estar actualizados. La cuenta es personal: no comparta su contraseña.</li>
+      <li>Usted responde por lo que se haga con su cuenta. Si sospecha un uso no autorizado, cambie su contraseña y avísenos.</li>
+      <li>Debe ser mayor de edad o contar con autorización de su representante legal.</li>
+    </ul>
+
+    <h2>3. Licencias de TRAMA</h2>
+    <p>TRAMA no se vende: GEOMAGNI le concede una licencia de uso <strong>personal, no exclusiva, intransferible y revocable</strong>, en los términos de la modalidad que tenga activa:</p>
+    <ul>
+      <li><strong>Licencia de prueba:</strong> gratuita, una por cuenta, por 7 días calendario desde su activación, para evaluar el programa.</li>
+      <li><strong>Licencia estudiantil:</strong> gratuita, para estudiantes con correo institucional de su universidad, hasta la fecha estimada de grado que declaró. Es solo para fines académicos: no puede usarse en trabajos remunerados ni en proyectos comerciales.</li>
+      <li><strong>Licencias de pago:</strong> se regirán por el plan contratado cuando estén disponibles.</li>
+    </ul>
+    <p>Cada licencia permite usar TRAMA en <strong>un equipo a la vez</strong>, salvo que haya adquirido más equipos para su cuenta. Si inicia sesión en otro equipo, el anterior queda desconectado. TRAMA comprueba la licencia con nuestros servidores al menos cada 7 días; sin esa comprobación, o al vencer la licencia, el programa se cierra. Guarde su trabajo con frecuencia.</p>
+
+    <h2>4. Usos no permitidos</h2>
+    <ul>
+      <li>Copiar, vender, alquilar, sublicenciar o distribuir TRAMA o sus instaladores.</li>
+      <li>Descompilar, desensamblar o aplicar ingeniería inversa, salvo en lo que la ley lo permita expresamente.</li>
+      <li>Eludir o alterar la verificación de licencia, la identificación de equipos o cualquier medida técnica de protección.</li>
+      <li>Crear varias cuentas para obtener nuevas licencias de prueba, o registrar datos académicos falsos.</li>
+      <li>Usar el sitio o el software para actividades ilícitas o que afecten a terceros o a nuestros servidores.</li>
+    </ul>
+    <p>El incumplimiento permite a GEOMAGNI suspender o cancelar la cuenta y la licencia, sin perjuicio de las acciones legales que procedan.</p>
+
+    <h2>5. Propiedad intelectual</h2>
+    <p>TRAMA, su código, sus interfaces, la marca GEOMAGNI, sus logotipos y los contenidos de este sitio son propiedad de GEOMAGNI y están protegidos por la Decisión Andina 351 de 1993, la Ley 23 de 1982 y las demás normas de derecho de autor y propiedad industrial. Los proyectos, modelos y archivos que usted cree con TRAMA son suyos.</p>
+
+    <h2>6. Versiones de prueba y garantía</h2>
+    <p>TRAMA está en desarrollo activo y este sitio es una versión de prueba. El software se entrega «tal como está». Aunque trabajamos para que sea confiable, puede contener errores. Revise los resultados de sus diseños y cálculos antes de usarlos en obra y conserve copias de seguridad de sus archivos.</p>
+
+    <h2>7. Responsabilidad</h2>
+    <p>En la medida en que la ley lo permita, GEOMAGNI no responde por lucro cesante, pérdida de datos ni daños indirectos derivados del uso o de la imposibilidad de usar TRAMA o el sitio. Esta limitación no afecta los derechos que le reconoce el Estatuto del Consumidor (Ley 1480 de 2011) ni la responsabilidad que no pueda excluirse legalmente.</p>
+
+    <h2>8. Datos personales</h2>
+    <p>Tratamos sus datos según nuestra <a href="privacidad.html">política de tratamiento de datos</a>, conforme a la Ley 1581 de 2012. Para verificar la licencia, TRAMA envía a nuestros servidores su cuenta, el nombre del equipo y una huella cifrada del equipo; no envía sus proyectos ni sus archivos.</p>
+
+    <h2>9. Cambios, terminación y ley aplicable</h2>
+    <p>Podemos modificar estos términos; publicaremos la nueva versión en esta página con su fecha. Si sigue usando el sitio o TRAMA después del cambio, se entiende que la acepta. Usted puede cerrar su cuenta cuando quiera escribiéndonos. Estos términos se rigen por las leyes de la República de Colombia.</p>
+
+    <h2>10. Contacto</h2>
+    <p>Correo: <a href="mailto:jucarcapu@gmail.com">jucarcapu@gmail.com</a> · Teléfono: <a href="tel:+573117227083">+57 311 722 7083</a> · Cartagena, Colombia.</p>
+    </article>
+"""
+
+def p_terminos():
+    cuerpo = '  <section class="seccion">\n' + ARTICULO_TERMINOS + '  </section>\n'
+    documento("terminos.html", "Términos y condiciones de uso · GEOMAGNI TECNOLOGÍAS",
+              "Términos y condiciones de uso del sitio, de la cuenta GEOMAGNI y de las licencias de TRAMA.", cuerpo)
+
+FORM_TERMINOS = """        <div class="campo campo--casilla">
+          <input type="checkbox" id="i-terminos" name="terminos" required>
+          <label for="i-terminos">Acepto los <a href="terminos.html" target="_blank" rel="noopener">términos y condiciones de uso</a> de GEOMAGNI y de la licencia de TRAMA.</label>
+        </div>"""
+
 # ---------------------------------------------------------------- CUENTAS
 MODULO_CUENTA = '\n  <script type="module" src="cuenta.js"></script>'
 PRONTO = """      <div class="vacio" data-cuenta="pronto" hidden>
@@ -931,6 +998,7 @@ def p_inscripcion():
           <p class="ayuda">La licencia vence en la fecha estimada de grado (inicio + duración). Solo se acepta el correo institucional de su universidad; no se aceptan correos personales.</p>
         </div>
 %(casilla)s
+%(terminos)s
         <button class="boton boton--naranja" type="submit">Crear cuenta</button>
         <p class="formulario__nota" role="status">Al crear la cuenta le enviaremos un correo para confirmar su dirección.</p>
       </form>
@@ -938,7 +1006,7 @@ def p_inscripcion():
       </div>
     </div>
   </section>
-""" % {"pronto": PRONTO, "casilla": FORM_CASILLA % {"id": "i-autorizo"}}
+""" % {"pronto": PRONTO, "casilla": FORM_CASILLA % {"id": "i-autorizo"}, "terminos": FORM_TERMINOS}
     documento("inscripcion.html", "Inscripción · GEOMAGNI TECNOLOGÍAS",
               "Cree su cuenta GEOMAGNI y active una licencia de prueba de TRAMA por 7 días o una licencia estudiantil.", cuerpo, MODULO_CUENTA)
 
@@ -995,6 +1063,6 @@ def p_cuenta():
 
 if __name__ == "__main__":
     print("Generando páginas:")
-    p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad()
+    p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad(); p_terminos()
     p_inscripcion(); p_ingresar(); p_cuenta()
     print("Listo.")

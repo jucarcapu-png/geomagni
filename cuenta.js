@@ -64,7 +64,8 @@ function validar(form) {
     if (malo && !primero) primero = c;
   });
   if (primero) {
-    const t = primero.type === "checkbox" ? "Debe aceptar la política de tratamiento de datos."
+    const t = primero.type === "checkbox"
+      ? (primero.name === "terminos" ? "Debe aceptar los términos y condiciones de uso." : "Debe aceptar la política de tratamiento de datos.")
       : primero.name === "clave" ? "La contraseña debe tener al menos 8 caracteres."
       : primero.name === "clave2" ? "Las contraseñas no coinciden." : "Revise los campos marcados.";
     avisar(form, t, "error");
