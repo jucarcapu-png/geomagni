@@ -891,7 +891,7 @@ ARTICULO_TERMINOS = """    <article class="contenedor legal">
     </ul>
 
     <h2>3. Licencias de TRAMA</h2>
-    <p>TRAMA no se vende: GEOMAGNI le concede una licencia de uso <strong>personal, no exclusiva, intransferible y revocable</strong>, en los términos de la modalidad que tenga activa:</p>
+    <p>Al obtener TRAMA, gratis o mediante un plan de pago, usted adquiere una <strong>licencia de uso</strong> y no la propiedad del programa, que sigue siendo de GEOMAGNI. Pagar un plan le da derecho a usar TRAMA en las condiciones de ese plan; no le transfiere el software, su código ni el derecho a copiarlo, revenderlo o cederlo. La licencia es <strong>personal, no exclusiva, intransferible y revocable</strong>, en los términos de la modalidad que tenga activa:</p>
     <ul>
       <li><strong>Licencia de prueba:</strong> gratuita, una por cuenta, por 7 días calendario desde su activación, para evaluar el programa.</li>
       <li><strong>Licencia estudiantil:</strong> gratuita, para estudiantes con correo institucional de su universidad, hasta la fecha estimada de grado que declaró. Es solo para fines académicos: no puede usarse en trabajos remunerados ni en proyectos comerciales.</li>
