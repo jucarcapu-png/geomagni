@@ -46,6 +46,24 @@ Mientras Storage no esté configurado, «Mi cuenta» muestra «La descarga se ha
 
 Si prefiere, envíeme los cinco valores y yo los pongo y subo el cambio.
 
+## 6. Pagos y licencias de pago (PAG-001)
+
+Piezas ya preparadas:
+
+- `precios.json`: única fuente de precios. Mientras tenga `"muestra": true`, la página los marca como valores de muestra y Firebase **no activa** ninguna licencia.
+- Página de planes (`cuenta.js`, sección «Planes y compra»): pide iniciar sesión y correo confirmado, guarda un pedido `pendiente` en `pedidos/{id}` y llama a `PASARELA.iniciar(pedido)`. Mientras `PASARELA.iniciar` sea `null`, los botones dicen «Pago en línea próximamente».
+- `firestore.rules`: el cliente solo puede crear su pedido pendiente; nadie puede marcarlo como pagado desde el navegador. Las licencias `pago` solo las escribe Firebase.
+- `functions/index.js`: `resolverPedido()` compara el valor pagado con `precios.json` y crea o extiende `licencias/{uid}` con `tipo: "pago"`, `plan`, `periodo`, `equipos` y `vence`. Un valor que no coincide deja el pedido «en revisión».
+- TRAMA (desde 1.5.987) acepta licencias `pago` y vence en la fecha `vence`.
+
+Pasos que faltan, cuando se elija la pasarela:
+
+1. Completar `PASARELA.iniciar` en `cuenta.js` (llevar al cliente a pagar con el id del pedido como referencia).
+2. Agregar en `functions/index.js` la función que recibe el aviso de la pasarela, verifica su firma con el secreto de eventos y llama a `resolverPedido()`.
+3. Instalar Node.js 20 y las herramientas de Firebase (`npm install -g firebase-tools`), `firebase login`, guardar el secreto con `firebase functions:secrets:set PASARELA_SECRETO_EVENTOS` y publicar con `firebase deploy --only functions,firestore:rules,storage` desde esta carpeta.
+4. Registrar la dirección de la función en el panel de la pasarela como URL de eventos.
+5. Poner los precios reales en `precios.json` y cambiar `"muestra"` a `false`.
+
 ## Cómo funciona
 
 | Paso | Qué pasa |

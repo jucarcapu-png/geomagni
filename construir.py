@@ -492,8 +492,8 @@ def p_planes():
         tarjetas.append("""        <article class="plan%s">
           %s<h3>%s</h3>
           <p class="plan__para">%s</p>
-          <p class="plan__precio" data-mensual="Por anunciar" data-anual="Por anunciar">Por anunciar</p>
-          <p class="plan__periodo" data-mensual="Precio mensual por usuario" data-anual="Precio anual por usuario">Precio mensual por usuario</p>
+          <p class="plan__precio">Por anunciar</p>
+          <p class="plan__periodo">Precio por usuario</p>
           <ul>%s</ul>
           <button class="boton %s boton-pago" type="button" data-plan="%s">Comprar</button>
         </article>""" % (" plan--recomendado" if recom else "", sello, nombre, para, lista,
@@ -522,7 +522,7 @@ def p_planes():
     ]
     medios = "\n".join('        <div class="pago">%s<strong>%s</strong><span>%s</span></div>' % (icono(i), t, d) for i, t, d in pagos)
     cuerpo = encabezado("Planes", "Planes y precios", "Elija el plan de TRAMA para su forma de trabajar",
-                        "TRAMA está en desarrollo. Los planes se muestran como referencia; los precios se anunciarán con el lanzamiento.")
+                        "TRAMA está en desarrollo. Los precios que ve son valores de muestra; los definitivos se anunciarán con el lanzamiento.")
     cuerpo += """
   <section class="seccion">
     <div class="contenedor" style="text-align:center">
@@ -535,7 +535,7 @@ def p_planes():
       <div class="planes" style="text-align:left">
 %s
       </div>
-      <p class="nota-centro" id="notaPago">Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto, <a href="inscripcion.html">inscríbase y pruebe TRAMA 7 días gratis</a>, o si es estudiante <a href="inscripcion.html?perfil=estudiante">obtenga su licencia estudiantil</a>.</p>
+      <p class="nota-centro" id="notaPago" role="status">Para comprar necesita una cuenta GEOMAGNI con el correo confirmado; la licencia se activa sola al aprobarse el pago. Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto, <a href="inscripcion.html">inscríbase y pruebe TRAMA 7 días gratis</a>, o si es estudiante <a href="inscripcion.html?perfil=estudiante">obtenga su licencia estudiantil</a>.</p>
     </div>
   </section>
 
@@ -580,7 +580,7 @@ def p_planes():
   </section>
 %s""" % ("\n".join(tarjetas), tabla, medios, FRANJA)
     documento("planes.html", "Planes, precios y formas de pago · GEOMAGNI TECNOLOGÍAS",
-              "Planes Estudiante, Profesional y Empresa de TRAMA, comparación de funciones, formas de pago (tarjeta, PSE, Nequi, transferencia) y preguntas frecuentes.", cuerpo)
+              "Planes Estudiante, Profesional y Empresa de TRAMA, comparación de funciones, formas de pago (tarjeta, PSE, Nequi, transferencia) y preguntas frecuentes.", cuerpo, MODULO_CUENTA)
 
 # ---------------------------------------------------------------- DESCARGAS
 # TRAMA no se publica en el sitio: se descarga desde «Mi cuenta» con licencia vigente

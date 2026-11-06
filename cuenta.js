@@ -24,6 +24,11 @@ const INSTALADORES = [
 const CORREO_ACADEMICO = /\.edu(\.[a-z]{2})?$/i;
 // Proveedores de correo personal: nunca valen para la licencia estudiantil.
 const CORREO_PERSONAL = /@(gmail|googlemail|hotmail|outlook|live|msn|yahoo|ymail|icloud|me|mac|aol|proton|protonmail|gmx|zoho|yandex|mail)\./i;
+// Pasarela de pagos (PAG-001). Mientras «iniciar» sea null los botones dicen «Pago en línea próximamente».
+// Al elegir la pasarela se completa esta función: recibe el pedido ya guardado en Firestore
+// ({ id, plan, nombre, periodo, valor, moneda, correo }) y lleva al cliente a pagar con «id» como referencia.
+// La licencia la crea Firebase (functions/index.js) cuando la pasarela confirma el pago.
+const PASARELA = { nombre: "", iniciar: null };
 // =================================================
 
 const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
@@ -77,6 +82,7 @@ function validar(form) {
 
 // Fecha de vencimiento de una licencia (misma regla que aplica TRAMA)
 export function vencimiento(lic) {
+  if (lic.tipo === "pago") return lic.vence && lic.vence.toDate ? lic.vence.toDate() : new Date(lic.vence);
   const creado = lic.creado && lic.creado.toDate ? lic.creado.toDate() : new Date(lic.creado);
   if (lic.tipo === "estudiante") {
     const ini = lic.inicio.toDate ? lic.inicio.toDate() : new Date(lic.inicio);
@@ -100,6 +106,7 @@ async function iniciar() {
   const auth = A.getAuth(app);
   auth.languageCode = "es";
   const db = F.getFirestore(app);
+  sesion = { auth, db, F };
   const urlCuenta = new URL("cuenta.html", location.href).href;
 
   // ---------- Inscripción ----------
@@ -163,7 +170,7 @@ async function iniciar() {
       avisar(fIng, "Ingresando…");
       try {
         await A.signInWithEmailAndPassword(auth, fIng.correo.value.trim(), fIng.clave.value);
-        location.href = "cuenta.html";
+        location.href = new URLSearchParams(location.search).get("volver") === "planes" ? "planes.html" : "cuenta.html";
       } catch (err) { avisar(fIng, mensajeError(err), "error"); ocupado(fIng, false); }
     });
     const olvido = $("#olvideClave");
@@ -215,7 +222,7 @@ async function iniciar() {
     caja.innerHTML = `
       <div class="licencia ${vigente ? "" : "licencia--vencida"}">
         <div><span class="insignia ${vigente ? "insignia--morada" : "insignia--naranja"}">${vigente ? "Vigente" : "Vencida"}</span>
-          <h3>${l.tipo === "estudiante" ? "Licencia estudiantil" : "Licencia de prueba"} de TRAMA</h3>
+          <h3>${l.tipo === "pago" ? "Plan " + esc(nombrePlan(l.plan)) : l.tipo === "estudiante" ? "Licencia estudiantil" : "Licencia de prueba"} de TRAMA</h3>
           <p>${vigente ? "Vence el " + vence.toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" }) + " · quedan " + dias + " días" : "Venció el " + vence.toLocaleDateString("es-CO")}</p>
           ${l.tipo === "estudiante" && u.universidad ? "<p>" + esc(u.programa) + " · " + esc(u.universidad) + "</p>" : ""}</div>
         <dl><dt>Cuenta para TRAMA</dt><dd>${esc(user.email)}</dd><dt>Código de licencia</dt><dd class="codigo">${user.uid.slice(0, 4).toUpperCase()}-${user.uid.slice(4, 8).toUpperCase()}-${user.uid.slice(8, 12).toUpperCase()}</dd></dl>
@@ -226,9 +233,29 @@ async function iniciar() {
            <p class="ayuda" id="estadoDescarga">Al abrir TRAMA, inicie sesión con este correo y su contraseña.</p>
            <h3 style="margin-top:28px">Equipos conectados</h3>
            <div id="equiposCuenta"><p class="ayuda">Cargando…</p></div>`
-        : '<p>Su licencia venció: ya no puede descargar ni usar TRAMA. Conozca los planes para continuar.</p><a class="boton boton--naranja" href="planes.html">Ver planes</a>'}`;
+        : `<p>Su licencia venció: ya no puede descargar ni usar TRAMA. ${l.tipo === "pago" ? "Renueve su plan" : "Conozca los planes"} para continuar.</p><a class="boton boton--naranja" href="planes.html">${l.tipo === "pago" ? "Renovar plan" : "Ver planes"}</a>`}
+      <h3 style="margin-top:28px">Mis compras</h3>
+      <div id="comprasCuenta"><p class="ayuda">Cargando…</p></div>`;
     $$(".descargar-trama").forEach((b) => b.addEventListener("click", () => descargar(b)));
     if (vigente) await pintarEquipos(user, Number(l.equipos) || 1);
+    await pintarCompras(user);
+  }
+
+  // Pedidos de la cuenta (PAG-001). Solo los lee su dueño; los aprueba Firebase al confirmarse el pago.
+  async function pintarCompras(user) {
+    const caja = $("#comprasCuenta");
+    if (!caja) return;
+    let pedidos = [];
+    try {
+      const s = await F.getDocs(F.query(F.collection(db, "pedidos"), F.where("uid", "==", user.uid)));
+      pedidos = s.docs.map((d) => Object.assign({ id: d.id }, d.data()))
+        .sort((a, b) => (b.creado ? b.creado.toMillis() : 0) - (a.creado ? a.creado.toMillis() : 0));
+    } catch (err) { caja.innerHTML = '<p class="ayuda">No se pudo leer el historial de compras.</p>'; return; }
+    if (!pedidos.length) { caja.innerHTML = '<p class="ayuda">Todavía no ha comprado ningún plan. <a href="planes.html">Ver planes</a>.</p>'; return; }
+    const estados = { pendiente: "Pendiente de pago", aprobado: "Pagado", rechazado: "Rechazado", revisar: "En revisión" };
+    caja.innerHTML = `<ul class="lista-equipos">${pedidos.map((p) => `<li><span><strong>Plan ${esc(nombrePlan(p.plan))} · ${p.periodo === "anual" ? "anual" : "mensual"}</strong>
+      <small>${p.creado ? p.creado.toDate().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" }) : ""} · ${pesos(p.valor)} ${esc(p.moneda)} · Pedido ${esc(p.id.slice(0, 8).toUpperCase())}</small></span>
+      <span class="insignia ${p.estado === "aprobado" ? "insignia--morada" : "insignia--naranja"}">${estados[p.estado] || esc(p.estado)}</span></li>`).join("")}</ul>`;
   }
 
   // Equipos donde la cuenta usa TRAMA (los registra el programa al iniciar sesión).
@@ -305,4 +332,66 @@ async function iniciar() {
 
 function esc(t) { return String(t || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 
+// ---------- Planes y compra (PAG-001) ----------
+// Los precios salen de precios.json, la misma fuente con la que Firebase comprueba cada pago.
+let PRECIOS = null, periodo = "mensual", sesion = null;
+const pesos = (v) => "$" + Number(v || 0).toLocaleString("es-CO");
+const nombrePlan = (c) => (PRECIOS && PRECIOS.planes[c] && PRECIOS.planes[c].nombre) || (c ? c.charAt(0).toUpperCase() + c.slice(1) : "");
+
+async function planes() {
+  try { PRECIOS = await (await fetch("precios.json", { cache: "no-cache" })).json(); } catch (err) { return; }
+  if (!$(".planes")) return;
+  $$(".conmutador button").forEach((b) => b.addEventListener("click", () => {
+    periodo = b.dataset.periodo;
+    $$(".conmutador button").forEach((o) => o.setAttribute("aria-pressed", o === b ? "true" : "false"));
+    pintarPlanes();
+  }));
+  $$(".boton-pago").forEach((b) => b.addEventListener("click", () => comprar(b.dataset.plan, b)));
+  pintarPlanes();
+}
+
+function pintarPlanes() {
+  $$(".plan").forEach((tarjeta) => {
+    const b = $(".boton-pago", tarjeta);
+    const p = b && PRECIOS.planes[b.dataset.plan];
+    if (!p) return;
+    const precio = $(".plan__precio", tarjeta), per = $(".plan__periodo", tarjeta);
+    const eq = p.equipos === 1 ? "1 equipo" : p.equipos + " equipos";
+    if (p.gratis) {
+      precio.textContent = "Gratis";
+      per.textContent = "Con correo institucional · " + eq;
+      b.disabled = false; b.textContent = "Obtener licencia estudiantil";
+      return;
+    }
+    precio.innerHTML = pesos(p[periodo]) + " <small>" + esc(PRECIOS.moneda) + "</small>";
+    per.textContent = (periodo === "anual" ? "Por año" : "Por mes") + " · " + eq + (PRECIOS.muestra ? " · valor de muestra" : "");
+    b.disabled = !PASARELA.iniciar;
+    b.textContent = PASARELA.iniciar ? "Comprar" : "Pago en línea próximamente";
+  });
+}
+
+async function comprar(plan, boton) {
+  const p = PRECIOS && PRECIOS.planes[plan];
+  const nota = $("#notaPago");
+  if (!p) return;
+  if (p.gratis) { location.href = "inscripcion.html?perfil=estudiante"; return; }
+  if (!PASARELA.iniciar || PRECIOS.muestra) { nota.textContent = "El pago en línea todavía no está disponible."; return; }
+  if (!sesion) { nota.textContent = "Cargando su sesión… vuelva a pulsar en un momento."; return; }
+  const user = sesion.auth.currentUser;
+  if (!user) { location.href = "ingresar.html?volver=planes"; return; }
+  if (!user.emailVerified) { nota.textContent = "Confirme primero su correo desde «Mi cuenta» para poder comprar."; return; }
+  boton.disabled = true;
+  nota.textContent = "Preparando su pedido…";
+  try {
+    const pedido = { uid: user.uid, correo: user.email, plan, periodo, valor: p[periodo], moneda: PRECIOS.moneda,
+                     estado: "pendiente", creado: sesion.F.serverTimestamp() };
+    const ref = await sesion.F.addDoc(sesion.F.collection(sesion.db, "pedidos"), pedido);
+    await PASARELA.iniciar({ id: ref.id, plan, nombre: p.nombre, periodo, valor: p[periodo], moneda: PRECIOS.moneda, correo: user.email });
+  } catch (err) {
+    nota.textContent = "No fue posible iniciar el pago. Inténtelo de nuevo.";
+    boton.disabled = false;
+  }
+}
+
+planes().then(() => { if (PRECIOS && $(".planes")) pintarPlanes(); });
 iniciar().catch(() => sinConfigurar());

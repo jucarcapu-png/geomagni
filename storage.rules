@@ -17,6 +17,7 @@ service firebase.storage {
           (licencia().tipo == 'prueba' && licencia().creado + duration.value(7, 'd') > request.time)
           || (licencia().tipo == 'estudiante'
               && licencia().inicio + duration.value(licencia().duracionAnios * 365, 'd') > request.time)
+          || (licencia().tipo == 'pago' && licencia().vence > request.time)
         );
     }
 

@@ -38,6 +38,8 @@ service cloud.firestore {
     }
 
     // Licencia de TRAMA: una por cuenta, solo con correo confirmado, no editable.
+    // Las licencias de pago (tipo 'pago', con vence, plan y equipos) solo las escribe Firebase
+    // (functions/index.js) al confirmarse un pago: las reglas no las permiten desde el navegador.
     match /licencias/{uid} {
       allow read: if propio(uid);
       allow create: if propio(uid)
@@ -81,6 +83,25 @@ service cloud.firestore {
         && cuantos(request.resource.data.nombres) == cuantos(request.resource.data.huellas)
         && cuantos(request.resource.data.desde) == cuantos(request.resource.data.huellas);
       allow delete: if false;
+    }
+
+    // Pedidos de compra (PAG-001). El cliente solo crea el suyo, pendiente y con un plan valido;
+    // Firebase lo aprueba o rechaza al recibir la confirmacion de la pasarela y compara el valor
+    // con precios.json. Nadie puede marcar un pedido como pagado desde el navegador.
+    match /pedidos/{id} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow create: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.correo == request.auth.token.email
+        && request.resource.data.keys().hasOnly(['uid', 'correo', 'plan', 'periodo', 'valor', 'moneda', 'estado', 'creado'])
+        && request.resource.data.estado == 'pendiente'
+        && request.resource.data.plan in ['profesional', 'empresa']
+        && request.resource.data.periodo in ['mensual', 'anual']
+        && request.resource.data.valor is int && request.resource.data.valor > 0
+        && request.resource.data.moneda == 'COP'
+        && request.resource.data.creado == request.time;
+      allow update, delete: if false;
     }
   }
 }

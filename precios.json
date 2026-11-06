@@ -1,0 +1,10 @@
+{
+  "_nota": "Unica fuente de precios. La lee la pagina de planes y la usa Firebase para comprobar cada pago. Valores en pesos colombianos, sin decimales. Mientras muestra=true la pagina los marca como valores de muestra.",
+  "muestra": true,
+  "moneda": "COP",
+  "planes": {
+    "estudiante": { "nombre": "Estudiante", "gratis": true, "equipos": 1 },
+    "profesional": { "nombre": "Profesional", "equipos": 1, "mensual": 150000, "anual": 1500000 },
+    "empresa": { "nombre": "Empresa", "equipos": 3, "mensual": 400000, "anual": 4000000 }
+  }
+}

@@ -12,11 +12,6 @@
 
   // Pagos en línea: pegue aquí el enlace de pago de cada plan creado en su pasarela
   // (Wompi «Links de pago», Mercado Pago o PayU). Vacío = botón «Próximamente».
-  var ENLACES_PAGO = {
-    estudiante: { mensual: "", anual: "" },
-    profesional: { mensual: "", anual: "" },
-    empresa: { mensual: "", anual: "" }
-  };
   // =================================================
 
   var quieto = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -226,27 +221,7 @@
     function detener() { if (auto) { clearInterval(auto); auto = null; } }
   });
 
-  // ---------- Planes: periodo y pagos ----------
-  var periodo = "mensual";
-  function pintarPlanes() {
-    $$("[data-mensual]").forEach(function (el) { el.textContent = el.getAttribute("data-" + periodo); });
-    $$(".boton-pago").forEach(function (b) {
-      var enlace = (ENLACES_PAGO[b.dataset.plan] || {})[periodo];
-      if (enlace) { b.disabled = false; b.textContent = "Comprar"; b.dataset.enlace = enlace; }
-      else { b.disabled = true; b.textContent = "Pago en línea próximamente"; b.dataset.enlace = ""; }
-    });
-  }
-  $$(".conmutador button").forEach(function (b) {
-    b.addEventListener("click", function () {
-      periodo = b.dataset.periodo;
-      $$(".conmutador button").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
-      pintarPlanes();
-    });
-  });
-  $$(".boton-pago").forEach(function (b) {
-    b.addEventListener("click", function () { if (b.dataset.enlace) window.open(b.dataset.enlace, "_blank", "noopener"); });
-  });
-  pintarPlanes();
+  // Planes, precios y compra: cuenta.js (lee precios.json).
 
   // ---------- Formularios (abren el correo con el mensaje armado) ----------
   var correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

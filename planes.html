@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="estilos.css">
   <link rel="stylesheet" href="paginas.css">
   <link rel="stylesheet" href="dinamico.css">
+  <script type="module" src="cuenta.js"></script>
 </head>
 <body>
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -65,7 +66,7 @@
       <p class="migas"><a href="index.html">Inicio</a> / Planes</p>
       <p class="etiqueta">Planes y precios</p>
       <h1>Elija el plan de TRAMA para su forma de trabajar</h1>
-      <p>TRAMA está en desarrollo. Los planes se muestran como referencia; los precios se anunciarán con el lanzamiento.</p>
+      <p>TRAMA está en desarrollo. Los precios que ve son valores de muestra; los definitivos se anunciarán con el lanzamiento.</p>
     </div>
   </section>
 
@@ -81,29 +82,29 @@
         <article class="plan">
           <h3>Estudiante</h3>
           <p class="plan__para">Para aprender y hacer proyectos académicos.</p>
-          <p class="plan__precio" data-mensual="Por anunciar" data-anual="Por anunciar">Por anunciar</p>
-          <p class="plan__periodo" data-mensual="Precio mensual por usuario" data-anual="Precio anual por usuario">Precio mensual por usuario</p>
+          <p class="plan__precio">Por anunciar</p>
+          <p class="plan__periodo">Precio por usuario</p>
           <ul><li>TRAMA para un equipo</li><li>Modelado 3D, vistas y planos</li><li>Importación DWG y DXF</li><li>Comunidad y tutoriales</li><li>Uso no comercial</li></ul>
           <button class="boton boton--morado boton-pago" type="button" data-plan="estudiante">Comprar</button>
         </article>
         <article class="plan plan--recomendado">
           <span class="plan__sello">Recomendado</span><h3>Profesional</h3>
           <p class="plan__para">Para profesionales independientes y pequeños equipos.</p>
-          <p class="plan__precio" data-mensual="Por anunciar" data-anual="Por anunciar">Por anunciar</p>
-          <p class="plan__periodo" data-mensual="Precio mensual por usuario" data-anual="Precio anual por usuario">Precio mensual por usuario</p>
+          <p class="plan__precio">Por anunciar</p>
+          <p class="plan__periodo">Precio por usuario</p>
           <ul><li>Todo lo del plan Estudiante</li><li>Uso comercial</li><li>Componentes paramétricos</li><li>Exportación DWG y DXF</li><li>Renderizado y recorridos</li><li>Soporte por correo</li></ul>
           <button class="boton boton--naranja boton-pago" type="button" data-plan="profesional">Comprar</button>
         </article>
         <article class="plan">
           <h3>Empresa</h3>
           <p class="plan__para">Para organizaciones con varios proyectos y equipos.</p>
-          <p class="plan__precio" data-mensual="Por anunciar" data-anual="Por anunciar">Por anunciar</p>
-          <p class="plan__periodo" data-mensual="Precio mensual por usuario" data-anual="Precio anual por usuario">Precio mensual por usuario</p>
+          <p class="plan__precio">Por anunciar</p>
+          <p class="plan__periodo">Precio por usuario</p>
           <ul><li>Todo lo del plan Profesional</li><li>Licencias para varios usuarios</li><li>Gestión de portafolio y programas</li><li>Capacitación del equipo</li><li>Soporte prioritario</li><li>Acompañamiento en la implementación</li></ul>
           <button class="boton boton--morado boton-pago" type="button" data-plan="empresa">Comprar</button>
         </article>
       </div>
-      <p class="nota-centro" id="notaPago">Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto, <a href="inscripcion.html">inscríbase y pruebe TRAMA 7 días gratis</a>, o si es estudiante <a href="inscripcion.html?perfil=estudiante">obtenga su licencia estudiantil</a>.</p>
+      <p class="nota-centro" id="notaPago" role="status">Para comprar necesita una cuenta GEOMAGNI con el correo confirmado; la licencia se activa sola al aprobarse el pago. Los pagos en línea se activarán con el lanzamiento comercial. Mientras tanto, <a href="inscripcion.html">inscríbase y pruebe TRAMA 7 días gratis</a>, o si es estudiante <a href="inscripcion.html?perfil=estudiante">obtenga su licencia estudiantil</a>.</p>
     </div>
   </section>
 
