@@ -12,7 +12,7 @@
 .menu__abrir.activo { color: var(--morado); }
 .desplegable { position: absolute; top: calc(100% + 24px); left: 50%; transform: translateX(-50%); width: 660px; background: #fff; border: 1px solid var(--gris-200); border-radius: 14px; box-shadow: 0 18px 48px rgba(17,17,17,.14); padding: 20px; display: none; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
 .desplegable.abierto { display: grid; }
-.desplegable h4 { grid-column: 1 / -1; margin: 10px 0 2px 12px; font: 600 .72rem var(--f-titulo); letter-spacing: .14em; text-transform: uppercase; color: var(--gris-600); }
+.desplegable h4, .desplegable__titulo { grid-column: 1 / -1; margin: 10px 0 2px 12px; font: 600 .72rem var(--f-titulo); letter-spacing: .14em; text-transform: uppercase; color: var(--gris-600); }
 .menu .desplegable a { display: block; padding: 10px 12px; border-radius: 8px; text-decoration: none; }
 .menu .desplegable a::after { display: none; }
 .desplegable a:hover { background: var(--gris-050); }
@@ -140,7 +140,7 @@
 
 /* Pie de varias columnas */
 .pie__columnas { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 32px; }
-.pie__columnas h4 { color: #fff; font: 600 .8rem var(--f-titulo); letter-spacing: .12em; text-transform: uppercase; margin: 0 0 14px; }
+.pie__columnas h2 { color: #fff; font: 600 .8rem var(--f-titulo); letter-spacing: .12em; text-transform: uppercase; margin: 0 0 14px; }
 .pie__columnas ul { list-style: none; padding: 0; margin: 0; }
 .pie__columnas li { margin-bottom: 8px; }
 .pie__columnas a { color: rgba(255,255,255,.75); text-decoration: none; }

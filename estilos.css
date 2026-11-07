@@ -1,8 +1,8 @@
 /* GEOMAGNI TECNOLOGÍAS · sitio corporativo
    Colores y tipografías del paquete corporativo (morado domina, naranja para acción). */
 
-@font-face { font-family: "Sora"; src: url("fuentes/Sora-Variable.ttf") format("truetype"); font-weight: 100 800; font-display: swap; }
-@font-face { font-family: "Inter"; src: url("fuentes/Inter-Variable.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Sora"; src: url("fuentes/Sora-Variable.woff2") format("woff2"), url("fuentes/Sora-Variable.ttf") format("truetype"); font-weight: 100 800; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fuentes/Inter-Variable.woff2") format("woff2"), url("fuentes/Inter-Variable.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
 
 :root {
   --morado: #5B2A86;

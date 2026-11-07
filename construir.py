@@ -8,6 +8,8 @@ import os
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
 URL = "https://jucarcapu-png.github.io/geomagni/"
+# Google Search Console (WEB-025): pegue aquí el valor «content» de la etiqueta meta de verificación.
+GOOGLE_VERIFICACION = ""
 CORREO = "jucarcapu@gmail.com"
 TEL = "+57 311 722 7083"
 TEL_ENLACE = "+573117227083"
@@ -117,7 +119,7 @@ MENU = [
 DESPLEGABLE = """
         <div class="desplegable" id="desplegableProductos">
           <a class="destacado" href="productos.html#trama"><strong>TRAMA</strong><span>Plataforma BIM y gestión integral de proyectos</span></a>
-          <h4>Servicios</h4>
+          <p class="desplegable__titulo">Servicios</p>
           <a href="productos.html#gestion"><strong>Gestión de proyectos</strong><span>Alcance, cronograma, costos y control</span></a>
           <a href="productos.html#bim"><strong>Modelación BIM</strong><span>Modelos coordinados de arquitectura y estructura</span></a>
           <a href="productos.html#estructural"><strong>Diseño estructural</strong><span>Análisis, diseño y memorias de cálculo</span></a>
@@ -163,7 +165,7 @@ PIE = """<footer class="pie">
         <p class="pie__descripcion">Ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena de Indias, Colombia.</p>
       </div>
       <div>
-        <h4>Productos</h4>
+        <h2>Productos</h2>
         <ul>
           <li><a href="productos.html#trama">TRAMA</a></li>
           <li><a href="productos.html#bim">Modelación BIM</a></li>
@@ -172,7 +174,7 @@ PIE = """<footer class="pie">
         </ul>
       </div>
       <div>
-        <h4>Recursos</h4>
+        <h2>Recursos</h2>
         <ul>
           <li><a href="planes.html">Planes y precios</a></li>
           <li><a href="planes.html#pagos">Formas de pago</a></li>
@@ -184,7 +186,7 @@ PIE = """<footer class="pie">
         </ul>
       </div>
       <div>
-        <h4>Empresa</h4>
+        <h2>Empresa</h2>
         <ul>
           <li><a href="nosotros.html">Nosotros</a></li>
           <li><a href="trabaja.html">Trabaja con nosotros</a></li>
@@ -225,13 +227,17 @@ def documento(archivo, titulo, descripcion, cuerpo, extra_head=""):
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="preload" href="fuentes/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fuentes/Sora-Variable.woff2" as="font" type="font/woff2" crossorigin>%(google)s
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_CO">
   <meta property="og:site_name" content="GEOMAGNI TECNOLOGÍAS">
   <meta property="og:title" content="%(titulo)s">
   <meta property="og:description" content="%(desc)s">
   <meta property="og:url" content="%(canon)s">
-  <meta property="og:image" content="%(url)simg/og-geomagni.png">
+  <meta property="og:image" content="%(url)simg/og-geomagni.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="GEOMAGNI TECNOLOGÍAS · La medida da forma">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -241,7 +247,8 @@ def documento(archivo, titulo, descripcion, cuerpo, extra_head=""):
 </head>
 <body>
 <a class="saltar" href="#contenido">Saltar al contenido</a>
-""" % {"titulo": titulo, "desc": descripcion, "canon": canon, "url": URL, "extra": extra_head}
+""" % {"titulo": titulo, "desc": descripcion, "canon": canon, "url": URL, "extra": extra_head,
+       "google": ('\n  <meta name="google-site-verification" content="%s">' % GOOGLE_VERIFICACION) if GOOGLE_VERIFICACION else ""}
     html += cabecera(archivo) + '\n<main id="contenido">\n' + cuerpo + '\n</main>\n\n' + PIE
     with open(os.path.join(RAIZ, archivo), "w", encoding="utf-8", newline="\n") as f:
         f.write(html)
@@ -321,7 +328,7 @@ def p_inicio():
         </div>
       </div>
       <div class="portada__grafico" aria-hidden="true">
-        <svg viewBox="0 0 480 480" class="isometria">
+        <svg viewBox="0 0 480 480" class="isometria" aria-hidden="true">
           <defs><pattern id="malla" width="40" height="23.09" patternUnits="userSpaceOnUse" patternTransform="skewX(-30)"><path d="M0 0H40M0 0V23.09" stroke="rgba(255,255,255,.10)" stroke-width="1" fill="none"/></pattern></defs>
           <rect width="480" height="480" fill="url(#malla)"/>
           <g class="bloque b1"><path d="M150 250 210 215 270 250 210 285Z" fill="#A583C2"/><path d="M150 250 210 285V365L150 330Z" fill="#7A4AA8"/><path d="M210 285 270 250V330L210 365Z" fill="#3A195B"/></g>
@@ -492,7 +499,8 @@ def p_productos():
 %s
 %s""" % (ventana_trama(), "\n".join(bloques), FRANJA)
     documento("productos.html", "Productos y servicios · GEOMAGNI TECNOLOGÍAS",
-              "TRAMA, plataforma BIM de GEOMAGNI, y servicios de gestión de proyectos, modelación BIM, diseño estructural, coordinación técnica y software a la medida.", cuerpo)
+              "TRAMA, plataforma BIM de GEOMAGNI, y servicios de gestión de proyectos, modelación BIM, diseño estructural, coordinación técnica y software a la medida.", cuerpo,
+              '\n  <script type="application/ld+json">\n  {\n    "@context": "https://schema.org",\n    "@type": "SoftwareApplication",\n    "name": "TRAMA",\n    "applicationCategory": "DesignApplication",\n    "applicationSubCategory": "BIM",\n    "operatingSystem": "Windows 10, Windows 11",\n    "softwareVersion": "En desarrollo (versión de pruebas)",\n    "description": "Plataforma BIM de GEOMAGNI para modelar, documentar y gestionar proyectos de construcción. En desarrollo: pronto en versión beta.",\n    "inLanguage": "es",\n    "url": "https://jucarcapu-png.github.io/geomagni/productos.html#trama",\n    "image": "https://jucarcapu-png.github.io/geomagni/img/og-geomagni.jpg",\n    "publisher": { "@type": "Organization", "name": "GEOMAGNI TECNOLOGÍAS S.A.S.", "url": "https://jucarcapu-png.github.io/geomagni/" }\n  }\n  </script>')
 
 # ---------------------------------------------------------------- PLANES Y PAGOS
 def p_planes():

@@ -10,13 +10,17 @@
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="preload" href="fuentes/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fuentes/Sora-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_CO">
   <meta property="og:site_name" content="GEOMAGNI TECNOLOGÍAS">
   <meta property="og:title" content="GEOMAGNI TECNOLOGÍAS · Ingeniería, BIM y software para proyectos">
   <meta property="og:description" content="GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia. Plataforma BIM TRAMA, modelación BIM, diseño estructural, coordinación técnica y software especializado para construcción e infraestructura.">
   <meta property="og:url" content="https://jucarcapu-png.github.io/geomagni/">
-  <meta property="og:image" content="https://jucarcapu-png.github.io/geomagni/img/og-geomagni.png">
+  <meta property="og:image" content="https://jucarcapu-png.github.io/geomagni/img/og-geomagni.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="GEOMAGNI TECNOLOGÍAS · La medida da forma">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -59,7 +63,7 @@
         <button class="menu__abrir" id="abrirProductos" aria-expanded="false" aria-controls="desplegableProductos">Productos</button>
         <div class="desplegable" id="desplegableProductos">
           <a class="destacado" href="productos.html#trama"><strong>TRAMA</strong><span>Plataforma BIM y gestión integral de proyectos</span></a>
-          <h4>Servicios</h4>
+          <p class="desplegable__titulo">Servicios</p>
           <a href="productos.html#gestion"><strong>Gestión de proyectos</strong><span>Alcance, cronograma, costos y control</span></a>
           <a href="productos.html#bim"><strong>Modelación BIM</strong><span>Modelos coordinados de arquitectura y estructura</span></a>
           <a href="productos.html#estructural"><strong>Diseño estructural</strong><span>Análisis, diseño y memorias de cálculo</span></a>
@@ -91,7 +95,7 @@
         </div>
       </div>
       <div class="portada__grafico" aria-hidden="true">
-        <svg viewBox="0 0 480 480" class="isometria">
+        <svg viewBox="0 0 480 480" class="isometria" aria-hidden="true">
           <defs><pattern id="malla" width="40" height="23.09" patternUnits="userSpaceOnUse" patternTransform="skewX(-30)"><path d="M0 0H40M0 0V23.09" stroke="rgba(255,255,255,.10)" stroke-width="1" fill="none"/></pattern></defs>
           <rect width="480" height="480" fill="url(#malla)"/>
           <g class="bloque b1"><path d="M150 250 210 215 270 250 210 285Z" fill="#A583C2"/><path d="M150 250 210 285V365L150 330Z" fill="#7A4AA8"/><path d="M210 285 270 250V330L210 365Z" fill="#3A195B"/></g>
@@ -230,7 +234,7 @@
         <p class="pie__descripcion">Ingeniería, BIM y software para proyectos de construcción e infraestructura. Cartagena de Indias, Colombia.</p>
       </div>
       <div>
-        <h4>Productos</h4>
+        <h2>Productos</h2>
         <ul>
           <li><a href="productos.html#trama">TRAMA</a></li>
           <li><a href="productos.html#bim">Modelación BIM</a></li>
@@ -239,7 +243,7 @@
         </ul>
       </div>
       <div>
-        <h4>Recursos</h4>
+        <h2>Recursos</h2>
         <ul>
           <li><a href="planes.html">Planes y precios</a></li>
           <li><a href="planes.html#pagos">Formas de pago</a></li>
@@ -251,7 +255,7 @@
         </ul>
       </div>
       <div>
-        <h4>Empresa</h4>
+        <h2>Empresa</h2>
         <ul>
           <li><a href="nosotros.html">Nosotros</a></li>
           <li><a href="trabaja.html">Trabaja con nosotros</a></li>
