@@ -56,13 +56,20 @@ Piezas ya preparadas:
 - `functions/index.js`: `resolverPedido()` compara el valor pagado con `precios.json` y crea o extiende `licencias/{uid}` con `tipo: "pago"`, `plan`, `periodo`, `equipos` y `vence`. Un valor que no coincide deja el pedido «en revisión».
 - TRAMA (desde 1.5.987) acepta licencias `pago` y vence en la fecha `vence`.
 
-Pasos que faltan, cuando se elija la pasarela:
+Pasarela elegida: **Wompi** (07/11/2026). El código está escrito y apagado:
 
-1. Completar `PASARELA.iniciar` en `cuenta.js` (llevar al cliente a pagar con el id del pedido como referencia).
-2. Agregar en `functions/index.js` la función que recibe el aviso de la pasarela, verifica su firma con el secreto de eventos y llama a `resolverPedido()`.
-3. Instalar Node.js 20 y las herramientas de Firebase (`npm install -g firebase-tools`), `firebase login`, guardar el secreto con `firebase functions:secrets:set PASARELA_SECRETO_EVENTOS` y publicar con `firebase deploy --only functions,firestore:rules,storage` desde esta carpeta.
-4. Registrar la dirección de la función en el panel de la pasarela como URL de eventos.
-5. Poner los precios reales en `precios.json` y cambiar `"muestra"` a `false`.
+- `cuenta.js`: `WOMPI_LLAVE_PUBLICA` (vacía = botones «Pago en línea próximamente») e `iniciarWompi()`, que pide la firma a Firebase y lleva al checkout `checkout.wompi.co/p/` con el id del pedido como referencia; al terminar, Wompi devuelve a `cuenta.html?pago=…` («Mis compras»).
+- `functions/index.js`: `firmarPagoWompi` (calcula valor en centavos desde `precios.json` y la firma de integridad) y `avisoWompi` (verifica el checksum del evento `transaction.updated` y llama a `resolverPedido()`).
+
+Pasos que faltan, en este orden (primero todo en **modo de pruebas** de Wompi, sin dinero real):
+
+1. El usuario crea la cuenta de comercio en Wompi (RUT, Cámara de Comercio, cuenta bancaria de GEOMAGNI). En Wompi › Desarrolladores, con el modo **Pruebas** activo, copia: llave pública `pub_test_…`, **secreto de integridad** y **secreto de eventos**. Las dos últimas no se envían por chat ni se pegan en el sitio.
+2. Instalar Node.js 20 y las herramientas de Firebase (`npm install -g firebase-tools`), `firebase login`, y guardar los secretos: `firebase functions:secrets:set WOMPI_INTEGRIDAD` y `firebase functions:secrets:set WOMPI_EVENTOS` (los pega el usuario cuando la consola los pide).
+3. Publicar desde esta carpeta: `firebase deploy --only functions`.
+4. En Wompi › Desarrolladores › **URL de eventos** (pruebas): `https://us-central1-usuarios-geomagni.cloudfunctions.net/avisoWompi`.
+5. Pegar la llave pública en `WOMPI_LLAVE_PUBLICA` y publicar el sitio.
+6. Poner precios de prueba en `precios.json` con `"muestra": false` y comprar con las tarjetas de prueba de Wompi: una aprobada (debe crear la licencia de pago) y una rechazada (pedido «rechazado», sin licencia).
+7. Al aprobar las pruebas: repetir 1, 2 y 4 con las llaves de **producción** (`pub_prod_…`), poner los precios reales y publicar.
 
 ## Cómo funciona
 

@@ -35,7 +35,11 @@ const CORREO_PERSONAL = /@(gmail|googlemail|hotmail|outlook|live|msn|yahoo|ymail
 // Al elegir la pasarela se completa esta función: recibe el pedido ya guardado en Firestore
 // ({ id, plan, nombre, periodo, valor, moneda, correo }) y lleva al cliente a pagar con «id» como referencia.
 // La licencia la crea Firebase (functions/index.js) cuando la pasarela confirma el pago.
-const PASARELA = { nombre: "", iniciar: null };
+// Wompi (Bancolombia): llave PÚBLICA de Wompi › Desarrolladores (pub_test_… en pruebas, pub_prod_… en producción).
+// Vacía = pago apagado. La llave de integridad y el secreto de eventos NUNCA van aquí: se guardan como
+// secretos de Firebase (WOMPI_INTEGRIDAD, WOMPI_EVENTOS) y los usa functions/index.js.
+const WOMPI_LLAVE_PUBLICA = "";
+const PASARELA = { nombre: "Wompi", iniciar: WOMPI_LLAVE_PUBLICA ? iniciarWompi : null };
 // Administrador del sitio (debe coincidir con la función admin() de firestore.rules).
 const ADMIN_CORREO = "jucarcapu@gmail.com";
 // =================================================
@@ -121,7 +125,7 @@ async function iniciar() {
   const auth = A.getAuth(app);
   auth.languageCode = "es";
   const db = F.getFirestore(app);
-  sesion = { auth, db, F };
+  sesion = { app, auth, db, F };
 
   // Formularios de contacto, postulación y lista de interesados (WEB-010, WEB-014).
   // Los lee solo el administrador (firestore.rules, colección «mensajes»).
@@ -559,6 +563,20 @@ async function comprar(plan, boton) {
     nota.textContent = "No fue posible iniciar el pago. Inténtelo de nuevo.";
     boton.disabled = false;
   }
+}
+
+// Lleva al cliente al checkout de Wompi. El valor y la firma de integridad los calcula Firebase
+// (firmarPagoWompi) a partir de precios.json: el navegador nunca decide cuánto se cobra.
+async function iniciarWompi(p) {
+  const Fn = await import(SDK + "firebase-functions.js");
+  const firmar = Fn.httpsCallable(Fn.getFunctions(sesion.app), "firmarPagoWompi");
+  const { data } = await firmar({ pedido: p.id });
+  const volver = new URL("cuenta.html?pago=" + encodeURIComponent(p.id), location.href).href;
+  const q = [["public-key", WOMPI_LLAVE_PUBLICA], ["currency", data.moneda], ["amount-in-cents", data.centavos],
+             ["reference", p.id], ["signature:integrity", data.firma], ["redirect-url", volver],
+             ["customer-data:email", p.correo]]
+    .map(([k, v]) => k + "=" + encodeURIComponent(String(v))).join("&");
+  location.href = "https://checkout.wompi.co/p/?" + q;
 }
 
 planes().then(() => { if (PRECIOS && $(".planes")) pintarPlanes(); });
