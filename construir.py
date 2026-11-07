@@ -9,7 +9,7 @@ import os
 RAIZ = os.path.dirname(os.path.abspath(__file__))
 URL = "https://jucarcapu-png.github.io/geomagni/"
 # Google Search Console (WEB-025): pegue aquí el valor «content» de la etiqueta meta de verificación.
-GOOGLE_VERIFICACION = ""
+GOOGLE_VERIFICACION = "4HdDgzZ_7SyuMDOe_kCQrv2M9CRD1Omf2blhxTBnKvc"
 CORREO = "jucarcapu@gmail.com"
 TEL = "+57 311 722 7083"
 TEL_ENLACE = "+573117227083"
