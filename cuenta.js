@@ -428,6 +428,25 @@ async function iniciar() {
     caja.innerHTML = `<ul class="lista-equipos">${pedidos.map((p) => `<li><span><strong>Plan ${esc(nombrePlan(p.plan))} · ${p.periodo === "anual" ? "anual" : "mensual"}</strong>
       <small>${p.creado ? p.creado.toDate().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" }) : ""} · ${pesos(p.valor)} ${esc(p.moneda)} · Pedido ${esc(p.id.slice(0, 8).toUpperCase())}</small></span>
       <span class="insignia ${p.estado === "aprobado" ? "insignia--morada" : "insignia--naranja"}">${estados[p.estado] || esc(p.estado)}</span></li>`).join("")}</ul>`;
+    // Regreso desde Wompi (cuenta.html?pago=<pedido>): aviso del resultado. Mientras siga pendiente,
+    // se vuelve a consultar unas veces, porque el aviso de Wompi a Firebase puede tardar unos segundos.
+    const vuelto = new URLSearchParams(location.search).get("pago");
+    const p = vuelto && pedidos.find((x) => x.id === vuelto);
+    if (p) {
+      const textos = { aprobado: "Pago aprobado: su licencia ya está activa. Actualice la página para ver la nueva fecha de vencimiento.",
+                       rechazado: "El pago fue rechazado o cancelado. Puede intentarlo de nuevo desde Planes.",
+                       revisar: "Recibimos su pago y lo estamos revisando. Le escribiremos a su correo.",
+                       pendiente: "Estamos esperando la confirmación de Wompi. Esta página se actualizará sola en unos segundos." };
+      caja.insertAdjacentHTML("afterbegin", `<p class="nota-pago nota-pago--${esc(p.estado)}" role="status">${textos[p.estado] || ""}</p>`);
+      let intentos = 0;
+      try { intentos = Number(sessionStorage.getItem("intentosPago") || 0); } catch (e) { intentos = 6; }
+      if (p.estado === "pendiente" && intentos < 6) {
+        try { sessionStorage.setItem("intentosPago", String(intentos + 1)); } catch (e) { /* sin almacenamiento */ }
+        setTimeout(() => pintarCompras(user), 5000);
+      } else {
+        try { sessionStorage.removeItem("intentosPago"); } catch (e) { /* sin almacenamiento */ }
+      }
+    }
   }
 
   // Equipos donde la cuenta usa TRAMA (los registra el programa al iniciar sesión).

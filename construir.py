@@ -201,6 +201,7 @@ PIE = """<footer class="pie">
         <span class="visitas-pie" hidden> · <b class="visitas-numero">0</b> visitas</span></p>
       <p class="pie__lema">La medida da forma.</p>
     </div>
+    <p class="pie__recaptcha">Este sitio está protegido por reCAPTCHA; se aplican la <a href="https://policies.google.com/privacy?hl=es" target="_blank" rel="noopener">política de privacidad</a> y las <a href="https://policies.google.com/terms?hl=es" target="_blank" rel="noopener">condiciones del servicio</a> de Google.</p>
   </div>
 </footer>
 <a class="whatsapp" href="https://wa.me/%(wa)s?text=%(wa_texto)s" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp">

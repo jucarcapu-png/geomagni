@@ -201,3 +201,13 @@
 
 /* Descarga bloqueada hasta la beta (WEB-030) */
 .boton--bloqueado, .boton--bloqueado:hover { background: #E6E1EC; color: #6B6475; border: 1px dashed #A79DB4; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* reCAPTCHA (WEB-027): el sello flotante chocaba con WhatsApp; se oculta y el aviso exigido por Google va en el pie */
+.grecaptcha-badge { visibility: hidden; }
+.pie__recaptcha { margin: 14px 0 0; font-size: .78rem; opacity: .7; }
+.pie__recaptcha a { color: inherit; text-decoration: underline; }
+
+/* Resultado del pago al volver de Wompi (PAG-001) */
+.nota-pago { margin: 0 0 14px; padding: 12px 16px; border-radius: 12px; background: #FFF1E6; border-left: 4px solid var(--naranja); }
+.nota-pago--aprobado { background: #EBE1F4; border-left-color: var(--morado); }
+.nota-pago--rechazado { background: #FDECEC; border-left-color: #C0262D; }
