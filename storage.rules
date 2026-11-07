@@ -21,8 +21,10 @@ service firebase.storage {
         );
     }
 
+    // WEB-030: lectura cerrada hasta el lanzamiento de la beta, para que nadie descargue la versión de pruebas.
+    // Al lanzarla, cambiar «false» por «licenciaVigente()» y publicar de nuevo.
     match /instaladores/{archivo} {
-      allow read: if licenciaVigente();
+      allow read: if false;
       allow write: if false; // se suben solo desde la consola de Firebase
     }
 

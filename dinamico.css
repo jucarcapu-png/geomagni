@@ -198,3 +198,6 @@
 .contenedor h2[id] { scroll-margin-top: 110px; margin-top: 40px; }
 .ayuda-pasos { padding-left: 22px; }
 .ayuda-pasos li { margin-bottom: 10px; }
+
+/* Descarga bloqueada hasta la beta (WEB-030) */
+.boton--bloqueado, .boton--bloqueado:hover { background: #E6E1EC; color: #6B6475; border: 1px dashed #A79DB4; cursor: not-allowed; box-shadow: none; transform: none; }

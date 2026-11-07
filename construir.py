@@ -649,8 +649,8 @@ def p_descargas():
     for ico, titulo, desc, meta in INSTALADORES:
         items.append("""        <article class="descarga">
           <div class="descarga__icono">%s</div>
-          <div><h3>%s <span class="insignia insignia--naranja">Requiere licencia</span></h3><p>%s</p><p class="descarga__meta">%s</p></div>
-          <div class="descarga__acciones"><a class="boton boton--naranja" href="inscripcion.html">Inscribirme</a><a class="boton-texto" href="ingresar.html">Ya tengo cuenta</a></div>
+          <div><h3>%s <span class="insignia insignia--naranja">Disponible con la beta</span></h3><p>%s</p><p class="descarga__meta">%s</p></div>
+          <div class="descarga__acciones"><button class="boton boton--bloqueado" type="button" disabled aria-disabled="true">Descarga no disponible</button><a class="boton-texto" href="planes.html#interes">Avisarme del lanzamiento</a></div>
         </article>""" % (icono(ico), titulo, desc, meta))
     for ico, titulo, (ins, color), desc, archivo, boton in DESCARGAS:
         meta = tamano(archivo)
@@ -668,8 +668,8 @@ def p_descargas():
   <section class="seccion">
     <div class="contenedor">
       <div class="aviso-licencia">
-        <strong>Para descargar y usar TRAMA necesita una cuenta con licencia.</strong>
-        Inscríbase, confirme su correo y active su licencia de prueba de 7 días o su licencia estudiantil. La descarga queda disponible en «Mi cuenta», y TRAMA le pedirá iniciar sesión con esa cuenta al abrir.
+        <strong>La descarga de TRAMA estará disponible con el lanzamiento de la versión beta.</strong>
+        Mientras tanto mostramos aquí los archivos de la versión de pruebas, pero no se pueden descargar. Inscríbase o déjenos su correo y le avisaremos en cuanto se habilite; entonces la descarga quedará en «Mi cuenta» y TRAMA le pedirá iniciar sesión con esa cuenta al abrir.
       </div>
       <div class="descargas">
 %s
@@ -699,7 +699,7 @@ def p_descargas():
       <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Instalación</p><h2>Cómo instalar TRAMA</h2></header>
       <ol class="pasos" style="grid-template-columns:repeat(3,1fr)">
         <li><span class="pasos__num">01</span><h3>Inscríbase</h3><p>Cree su cuenta, confirme su correo y active su licencia en «Mi cuenta».</p></li>
-        <li><span class="pasos__num">02</span><h3>Descargue e instale</h3><p>Descargue el instalador desde «Mi cuenta» y ábralo. Si Windows muestra un aviso, elija «Más información» y «Ejecutar de todas formas»: el instalador aún no tiene firma digital. Más detalles en el <a href="ayuda.html">centro de ayuda</a>.</p></li>
+        <li><span class="pasos__num">02</span><h3>Descargue e instale</h3><p>Con el lanzamiento de la beta, descargue el instalador desde «Mi cuenta» y ábralo. Si Windows muestra un aviso, elija «Más información» y «Ejecutar de todas formas»: el instalador aún no tiene firma digital. Más detalles en el <a href="ayuda.html">centro de ayuda</a>.</p></li>
         <li><span class="pasos__num">03</span><h3>Inicie sesión</h3><p>Abra TRAMA e ingrese con el correo y la contraseña de su cuenta.</p></li>
       </ol>
     </div>
@@ -1202,7 +1202,7 @@ def p_ayuda():
         <li><strong>Inscríbase</strong> en <a href="inscripcion.html">Inscripción</a> con su nombre, correo y una contraseña.</li>
         <li><strong>Confirme su correo</strong> con el enlace que le enviamos y vuelva a «Mi cuenta». Si no lo ve, revise la carpeta de correo no deseado.</li>
         <li><strong>Active su licencia</strong> en <a href="cuenta.html">Mi cuenta</a>: prueba de 7 días o estudiantil, si tiene correo institucional.</li>
-        <li><strong>Descargue</strong> el instalador desde «Mi cuenta» (la descarga solo aparece con licencia vigente).</li>
+        <li><strong>Descargue</strong> el instalador desde «Mi cuenta» (la descarga se habilitará con el lanzamiento de la versión beta y solo con licencia vigente).</li>
         <li><strong>Ábralo.</strong> El instalador aún no tiene firma digital: si Windows muestra «Windows protegió su PC», elija «Más información» y «Ejecutar de todas formas».</li>
         <li>Al terminar, TRAMA queda en el escritorio y en el menú Inicio. La versión portátil se descomprime y se abre con <code>IniciarTRAMA.exe</code>.</li>
       </ol>
@@ -1221,7 +1221,7 @@ def p_ayuda():
       <div class="faq">
         <details><summary>No me llega el correo de confirmación</summary><p>Revise las carpetas de correo no deseado y promociones. En «Mi cuenta» puede pedir que se lo enviemos de nuevo. Si sigue sin llegar, escríbanos.</p></details>
         <details><summary>Olvidé mi contraseña</summary><p>En <a href="ingresar.html">Ingresar</a>, escriba su correo y pulse «Olvidé mi contraseña». La contraseña nueva sirve en el sitio y en TRAMA.</p></details>
-        <details><summary>No aparece el botón de descarga</summary><p>La descarga solo se muestra con el correo confirmado y una licencia vigente. Revise el estado de su licencia en «Mi cuenta».</p></details>
+        <details><summary>No puedo descargar TRAMA</summary><p>La descarga se habilitará con el lanzamiento de la versión beta; hasta entonces el archivo se muestra, pero no se puede descargar. Después solo se entrega con el correo confirmado y una licencia vigente. Revise el estado de su licencia en «Mi cuenta».</p></details>
         <details><summary>Windows no deja abrir el instalador</summary><p>Elija «Más información» y luego «Ejecutar de todas formas». Si su antivirus lo bloquea, escríbanos antes de desactivarlo: le confirmamos que el archivo es el original.</p></details>
         <details><summary>TRAMA dice que mi licencia venció o que el equipo no está registrado</summary><p>Revise en «Mi cuenta» la fecha de su licencia y la lista de equipos. Si el equipo fue desconectado, vuelva a iniciar sesión en TRAMA.</p></details>
         <details><summary>TRAMA se ve lento o no abre las vistas 3D</summary><p>En equipos sin tarjeta gráfica dedicada TRAMA trabaja en modo compatible por procesador y es más lento. Como está en etapa de pruebas, cuéntenos qué equipo usa: nos ayuda a mejorar la compatibilidad.</p></details>

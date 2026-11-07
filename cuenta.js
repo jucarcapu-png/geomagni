@@ -17,6 +17,9 @@ const FIREBASE_CONFIG = {
 // App Check (WEB-027): pegue aquí la «clave del sitio» de reCAPTCHA v3 registrada en Firebase › App Check.
 // Vacía = App Check apagado. Activar la aplicación obligatoria en la consola solo después de ver métricas «verificadas».
 const RECAPTCHA_CLAVE = "";
+// Descarga de TRAMA (WEB-030): false hasta el lanzamiento de la beta. El archivo se muestra, pero no se descarga.
+// Al lanzarla, cambiar a true y publicar storage.rules con la lectura de «instaladores» habilitada.
+const DESCARGA_HABILITADA = false;
 const DIAS_PRUEBA = 7;
 // Archivos de TRAMA en Firebase Storage (carpeta «instaladores»). Solo se entregan con licencia vigente (storage.rules).
 const INSTALADORES = [
@@ -391,8 +394,10 @@ async function iniciar() {
       </div>
       ${vigente
         ? `<h3>Descargar TRAMA</h3><div class="botones-descarga">${INSTALADORES.map((f, i) =>
-            `<button class="boton ${i ? "boton--contorno-oscuro" : "boton--morado"} descargar-trama" type="button" data-ruta="${f.ruta}">${f.texto}<small>${f.detalle}</small></button>`).join("")}</div>
-           <p class="ayuda" id="estadoDescarga">Al abrir TRAMA, inicie sesión con este correo y su contraseña.</p>
+            (DESCARGA_HABILITADA
+              ? `<button class="boton ${i ? "boton--contorno-oscuro" : "boton--morado"} descargar-trama" type="button" data-ruta="${f.ruta}">${f.texto}<small>${f.detalle}</small></button>`
+              : `<button class="boton boton--bloqueado" type="button" disabled aria-disabled="true">${f.texto}<small>${f.detalle} · disponible con la beta</small></button>`)).join("")}</div>
+           <p class="ayuda" id="estadoDescarga">${DESCARGA_HABILITADA ? "Al abrir TRAMA, inicie sesión con este correo y su contraseña." : "TRAMA está en etapa de pruebas: la descarga se habilitará con el lanzamiento de la versión beta. Le avisaremos a su correo."}</p>
            <h3 style="margin-top:28px">Equipos conectados</h3>
            <div id="equiposCuenta"><p class="ayuda">Cargando…</p></div>`
         : `<p>Su licencia venció: ya no puede descargar ni usar TRAMA. ${l.tipo === "pago" ? "Renueve su plan" : "Conozca los planes"} para continuar.</p><a class="boton boton--naranja" href="planes.html">${l.tipo === "pago" ? "Renovar plan" : "Ver planes"}</a>`}
@@ -455,7 +460,7 @@ async function iniciar() {
 
   async function descargar(boton) {
     const est = $("#estadoDescarga");
-    if (!FIREBASE_CONFIG.storageBucket) { est.textContent = "La descarga se habilitará muy pronto. Le avisaremos a su correo."; return; }
+    if (!DESCARGA_HABILITADA || !FIREBASE_CONFIG.storageBucket) { est.textContent = "La descarga se habilitará muy pronto. Le avisaremos a su correo."; return; }
     boton.disabled = true;
     est.textContent = "Preparando la descarga…";
     try {
