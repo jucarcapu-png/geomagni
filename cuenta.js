@@ -16,7 +16,8 @@ const FIREBASE_CONFIG = {
 };
 // App Check (WEB-027): pegue aquí la «clave del sitio» de reCAPTCHA v3 registrada en Firebase › App Check.
 // Vacía = App Check apagado. Activar la aplicación obligatoria en la consola solo después de ver métricas «verificadas».
-const RECAPTCHA_CLAVE = "";
+// Firebase ya no admite reCAPTCHA v3 clásico (07/11/2026): la clave es de Fraud Defense / reCAPTCHA Enterprise.
+const RECAPTCHA_CLAVE = "6Lf10xQuAAAAAPl1nDAUSsdT9myNfJoxF5W4ivJ5";
 // Descarga de TRAMA (WEB-030): false hasta el lanzamiento de la beta. El archivo se muestra, pero no se descarga.
 // Al lanzarla, cambiar a true y publicar storage.rules con la lectura de «instaladores» habilitada.
 const DESCARGA_HABILITADA = false;
@@ -114,7 +115,7 @@ async function iniciar() {
   if (RECAPTCHA_CLAVE) {
     try {
       const C = await import(SDK + "firebase-app-check.js");
-      C.initializeAppCheck(app, { provider: new C.ReCaptchaV3Provider(RECAPTCHA_CLAVE), isTokenAutoRefreshEnabled: true });
+      C.initializeAppCheck(app, { provider: new C.ReCaptchaEnterpriseProvider(RECAPTCHA_CLAVE), isTokenAutoRefreshEnabled: true });
     } catch (e) { console.warn("App Check no disponible", e); }
   }
   const auth = A.getAuth(app);

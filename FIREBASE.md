@@ -82,8 +82,8 @@ Cada cuenta puede tener una sola licencia. Para ver los inscritos: Firestore Dat
 
 ## 7. App Check y alerta de presupuesto (WEB-027)
 
-1. Registre el sitio en reCAPTCHA v3 (https://www.google.com/recaptcha/admin): tipo **reCAPTCHA v3**, dominio `jucarcapu-png.github.io` (y el dominio propio cuando exista). Copie la **clave del sitio** y la **clave secreta**.
-2. Consola de Firebase › **App Check** › Apps › la app web › **reCAPTCHA v3** › pegue la clave secreta y guarde.
+1. Firebase ya no acepta reCAPTCHA v3 clásico («reCAPTCHA Classic está obsoleto», 07/11/2026). Cree una clave de **Fraud Defense (reCAPTCHA Enterprise)** en Google Cloud › Seguridad › reCAPTCHA (proyecto usuarios-geomagni): plataforma **Sitio web**, dominio `jucarcapu-png.github.io`, sin desafío de casilla. Copie el **ID de la clave**.
+2. Consola de Firebase › **App Check** › Apps › geomagni-web › **Fraud Defense** › pegue el ID de la clave y guarde. El uso tiene una cuota mensual gratuita; confirme el precio vigente en la página de reCAPTCHA de Google Cloud y tenga activa la alerta de presupuesto (paso 6).
 3. Pegue la clave del sitio en `cuenta.js`, constante `RECAPTCHA_CLAVE`, y publique (Claude lo hace al recibir la clave).
 4. Deje App Check en **modo de supervisión** unos días. En App Check › APIs revise que las solicitudes salgan «verificadas».
 5. Aplique la obligación solo a **Storage** (descargas). No la aplique a Firestore mientras el contador de visitas use la API REST sin token: dejaría de registrar visitas.
