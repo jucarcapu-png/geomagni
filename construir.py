@@ -428,7 +428,7 @@ def p_inicio():
     cinta = "".join("<span>%s</span>" % w for w in palabras * 2)
     cuerpo = cuerpo % {"cards": cards, "ventana": ventana_trama(), "franja": FRANJA, "cinta": cinta}
     documento("index.html", "GEOMAGNI TECNOLOGÍAS · Ingeniería, BIM y software para proyectos",
-              "GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia. Plataforma BIM TRAMA, modelación BIM, diseño estructural, coordinación técnica y software especializado para construcción e infraestructura.",
+              "GEOMAGNI TECNOLOGÍAS S.A.S., Cartagena, Colombia: gestión de proyectos, modelación BIM, diseño estructural, software a la medida y TRAMA, nuestra plataforma BIM.",
               cuerpo, JSON_LD)
 
 # ---------------------------------------------------------------- PRODUCTOS
@@ -571,7 +571,7 @@ def p_planes():
   <section class="seccion seccion--suave">
     <div class="contenedor">
       <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Comparación</p><h2>Qué incluye cada plan</h2></header>
-      <div class="tabla-envoltura">
+      <div class="tabla-envoltura" role="region" aria-label="Comparación de planes (deslice para ver todas las columnas)" tabindex="0">
         <table class="tabla">
           <thead><tr><th scope="col">Función</th><th scope="col">Estudiante</th><th scope="col">Profesional</th><th scope="col">Empresa</th></tr></thead>
           <tbody>
@@ -1081,7 +1081,8 @@ def p_ingresar():
     </div>
   </section>
 """ % {"pronto": PRONTO}
-    documento("ingresar.html", "Ingresar · GEOMAGNI TECNOLOGÍAS", "Inicie sesión en su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
+    documento("ingresar.html", "Ingresar · GEOMAGNI TECNOLOGÍAS", "Inicie sesión en su cuenta GEOMAGNI para ver su licencia de TRAMA.", cuerpo,
+              '\n  <meta name="robots" content="noindex, follow">' + MODULO_CUENTA)
 
 # ---------------------------------------------------------------- NOVEDADES (WEB-026)
 NOVEDADES = [
@@ -1182,7 +1183,8 @@ def p_cuenta():
     </div>
   </section>
 """ % {"pronto": PRONTO}
-    documento("cuenta.html", "Mi cuenta · GEOMAGNI TECNOLOGÍAS", "Licencia de TRAMA y datos de su cuenta GEOMAGNI.", cuerpo, MODULO_CUENTA)
+    documento("cuenta.html", "Mi cuenta · GEOMAGNI TECNOLOGÍAS", "Licencia de TRAMA y datos de su cuenta GEOMAGNI.", cuerpo,
+              '\n  <meta name="robots" content="noindex, follow">' + MODULO_CUENTA)
 
 # ---------------------------------------------------------------- CENTRO DE AYUDA (WEB-028)
 def p_ayuda():

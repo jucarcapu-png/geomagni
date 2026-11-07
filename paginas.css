@@ -180,3 +180,10 @@
   .encabezado { padding: 48px 0 40px; }
   .persona { padding: 22px; }
 }
+
+/* Tabla de planes en celular: la primera columna queda fija al deslizar (WEB-032) */
+.tabla-envoltura:focus-visible { outline: 3px solid var(--naranja); outline-offset: 2px; }
+@media (max-width: 720px) {
+  .tabla th:first-child, .tabla td:first-child { position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 var(--gris-200); min-width: 150px; }
+  .tabla thead th:first-child { background: var(--gris-050); }
+}
