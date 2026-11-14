@@ -488,6 +488,7 @@ def p_productos():
           <li>Niveles, ejes, plantas, alzados, secciones y cajas de sección.</li>
           <li>Composición de planos con formatos y rótulos.</li>
           <li>Importación y exportación de archivos CAD (DXF y DWG).</li>
+          <li>Importación de modelos y componentes de Revit con el complemento TRAMA para Revit. Requiere tener Revit instalado en su equipo (probado con Revit 2023) e instalar el complemento, que se descarga desde «Mi cuenta» con la beta. <a href="descargas.html#revit" style="color:#fff">Cómo funciona</a>.</li>
           <li>Recorridos de cámara y renderizado del modelo.</li>
         </ul>
         <div class="portada__acciones">
@@ -624,6 +625,9 @@ INSTALADORES = [
     ("caja", "TRAMA portátil",
      "La misma versión en un archivo comprimido que se ejecuta sin instalar. Descomprima y abra IniciarTRAMA.exe.",
      "46,4 MB · SHA-256: 0238665BFA65F9070A272CF2917BBCB04BCE01BAD2099830E761D9C004339F59"),
+    ("caja", "Complemento TRAMA para Revit",
+     "Agrega en Revit la pestaña TRAMA con «Exportar a TRAMA» y «Convertir carpeta». Necesita Revit instalado en su equipo (probado con Revit 2023).",
+     "Se publica con la beta, junto con el instalador de TRAMA"),
 ]
 
 DESCARGAS = [
@@ -699,8 +703,26 @@ def p_descargas():
           <dt>Tarjeta gráfica</dt><dd>Compatible con OpenGL; sin tarjeta dedicada funciona en modo compatible por procesador</dd>
           <dt>Espacio en disco</dt><dd>500 MB libres</dd>
           <dt>Formatos</dt><dd>Proyectos .ptrm, componentes .ctrm, importación y exportación DWG y DXF</dd>
+          <dt>Importar de Revit</dt><dd>Revit instalado en el mismo equipo (probado con Revit 2023) y el complemento TRAMA para Revit</dd>
         </dl>
       </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave" id="revit">
+    <div class="contenedor" style="max-width:880px">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Revit</p><h2>Importar modelos de Revit</h2></header>
+      <p>TRAMA no lee directamente los archivos de Revit (.rvt y .rfa). Para traerlos se usa el <strong>complemento TRAMA para Revit</strong>, que trabaja dentro de su propio Revit. Por eso hay dos condiciones:</p>
+      <ul class="lista-chequeo lista-chequeo--clara">
+        <li><strong>Revit instalado en su equipo</strong>, con su licencia de Autodesk. El complemento se ha probado con Revit 2023.</li>
+        <li><strong>El complemento instalado en ese Revit.</strong> Se descarga desde «Mi cuenta» con el lanzamiento de la beta, igual que el instalador de TRAMA.</li>
+      </ul>
+      <ol class="pasos" style="grid-template-columns:repeat(3,1fr);margin-top:24px">
+        <li><span class="pasos__num">01</span><h3>Instale el complemento</h3><p>Descárguelo desde «Mi cuenta», cierre Revit y ejecute el instalador del complemento. Al abrir Revit, acepte cargar el complemento la primera vez.</p></li>
+        <li><span class="pasos__num">02</span><h3>Exporte desde Revit</h3><p>En la pestaña TRAMA de Revit use «Exportar a TRAMA» para la familia abierta o «Convertir carpeta» para varias a la vez. Cada componente sale como archivo .ctrm con un informe de lo que no se pudo convertir.</p></li>
+        <li><span class="pasos__num">03</span><h3>Ábralo en TRAMA</h3><p>En TRAMA cargue el archivo .ctrm: conserva parámetros, tipos, fórmulas, materiales, planos de referencia y la geometría de sólidos y vacíos.</p></li>
+      </ol>
+      <p class="formulario__nota" style="margin-top:20px">Sin Revit instalado no es posible importar estos modelos. Algunas partes todavía no se convierten (por ejemplo, cotas angulares y radiales y los barridos con camino 3D) y aparecen en el informe de cada componente.</p>
     </div>
   </section>
 

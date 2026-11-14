@@ -25,7 +25,8 @@ const DIAS_PRUEBA = 7;
 // Archivos de TRAMA en Firebase Storage (carpeta «instaladores»). Solo se entregan con licencia vigente (storage.rules).
 const INSTALADORES = [
   { ruta: "instaladores/Instalar-TRAMA-1.5.703.exe", texto: "Descargar instalador", detalle: "Windows 10/11 · 46,5 MB" },
-  { ruta: "instaladores/TRAMA-1.5.703-portable.zip", texto: "Descargar versión portátil", detalle: "Sin instalar · 46,4 MB" }
+  { ruta: "instaladores/TRAMA-1.5.703-portable.zip", texto: "Descargar versión portátil", detalle: "Sin instalar · 46,4 MB" },
+  { ruta: "instaladores/TRAMA-complemento-Revit.zip", texto: "Descargar complemento para Revit", detalle: "Requiere Revit instalado (probado con 2023)" }
 ];
 // Dominios aceptados para la licencia estudiantil (correo institucional).
 const CORREO_ACADEMICO = /\.edu(\.[a-z]{2})?$/i;

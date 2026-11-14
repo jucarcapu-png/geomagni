@@ -100,6 +100,11 @@
           <div class="descarga__acciones"><button class="boton boton--bloqueado" type="button" disabled aria-disabled="true">Descarga no disponible</button><a class="boton-texto" href="planes.html#interes">Avisarme del lanzamiento</a></div>
         </article>
         <article class="descarga">
+          <div class="descarga__icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></div>
+          <div><h3>Complemento TRAMA para Revit <span class="insignia insignia--naranja">Disponible con la beta</span></h3><p>Agrega en Revit la pestaña TRAMA con «Exportar a TRAMA» y «Convertir carpeta». Necesita Revit instalado en su equipo (probado con Revit 2023).</p><p class="descarga__meta">Se publica con la beta, junto con el instalador de TRAMA</p></div>
+          <div class="descarga__acciones"><button class="boton boton--bloqueado" type="button" disabled aria-disabled="true">Descarga no disponible</button><a class="boton-texto" href="planes.html#interes">Avisarme del lanzamiento</a></div>
+        </article>
+        <article class="descarga">
           <div class="descarga__icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5M9 13h6M9 17h6"/></svg></div>
           <div><h3>Portafolio de servicios <span class="insignia insignia--morada">PDF</span></h3><p>Presentación de GEOMAGNI: servicios, método de trabajo y datos de contacto.</p><p class="descarga__meta">250 KB</p></div>
           <a class="boton boton--morado" href="descargas/GEOMAGNI-portafolio-de-servicios.pdf" download>Descargar PDF</a>
@@ -130,8 +135,26 @@
           <dt>Tarjeta gráfica</dt><dd>Compatible con OpenGL; sin tarjeta dedicada funciona en modo compatible por procesador</dd>
           <dt>Espacio en disco</dt><dd>500 MB libres</dd>
           <dt>Formatos</dt><dd>Proyectos .ptrm, componentes .ctrm, importación y exportación DWG y DXF</dd>
+          <dt>Importar de Revit</dt><dd>Revit instalado en el mismo equipo (probado con Revit 2023) y el complemento TRAMA para Revit</dd>
         </dl>
       </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion--suave" id="revit">
+    <div class="contenedor" style="max-width:880px">
+      <header class="seccion__cabeza"><p class="etiqueta etiqueta--morada">Revit</p><h2>Importar modelos de Revit</h2></header>
+      <p>TRAMA no lee directamente los archivos de Revit (.rvt y .rfa). Para traerlos se usa el <strong>complemento TRAMA para Revit</strong>, que trabaja dentro de su propio Revit. Por eso hay dos condiciones:</p>
+      <ul class="lista-chequeo lista-chequeo--clara">
+        <li><strong>Revit instalado en su equipo</strong>, con su licencia de Autodesk. El complemento se ha probado con Revit 2023.</li>
+        <li><strong>El complemento instalado en ese Revit.</strong> Se descarga desde «Mi cuenta» con el lanzamiento de la beta, igual que el instalador de TRAMA.</li>
+      </ul>
+      <ol class="pasos" style="grid-template-columns:repeat(3,1fr);margin-top:24px">
+        <li><span class="pasos__num">01</span><h3>Instale el complemento</h3><p>Descárguelo desde «Mi cuenta», cierre Revit y ejecute el instalador del complemento. Al abrir Revit, acepte cargar el complemento la primera vez.</p></li>
+        <li><span class="pasos__num">02</span><h3>Exporte desde Revit</h3><p>En la pestaña TRAMA de Revit use «Exportar a TRAMA» para la familia abierta o «Convertir carpeta» para varias a la vez. Cada componente sale como archivo .ctrm con un informe de lo que no se pudo convertir.</p></li>
+        <li><span class="pasos__num">03</span><h3>Ábralo en TRAMA</h3><p>En TRAMA cargue el archivo .ctrm: conserva parámetros, tipos, fórmulas, materiales, planos de referencia y la geometría de sólidos y vacíos.</p></li>
+      </ol>
+      <p class="formulario__nota" style="margin-top:20px">Sin Revit instalado no es posible importar estos modelos. Algunas partes todavía no se convierten (por ejemplo, cotas angulares y radiales y los barridos con camino 3D) y aparecen en el informe de cada componente.</p>
     </div>
   </section>
 
