@@ -39,10 +39,14 @@ const CORREO_PERSONAL = /@(gmail|googlemail|hotmail|outlook|live|msn|yahoo|ymail
 // Wompi (Bancolombia): llave PÚBLICA de Wompi › Desarrolladores (pub_test_… en pruebas, pub_prod_… en producción).
 // Vacía = pago apagado. La llave de integridad y el secreto de eventos NUNCA van aquí: se guardan como
 // secretos de Firebase (WOMPI_INTEGRIDAD, WOMPI_EVENTOS) y los usa functions/index.js.
-const WOMPI_LLAVE_PUBLICA = "";
+// Pruebas (sandbox). Produccion, al final de las pruebas: pub_prod_jaYz8U2QJ0nXej0OBZo3zoY2RlTULxWf
+const WOMPI_LLAVE_PUBLICA = "pub_test_q7aN7krVPU2UYHIAi2FmRX7j2HnKUp9f";
 const PASARELA = { nombre: "Wompi", iniciar: WOMPI_LLAVE_PUBLICA ? iniciarWompi : null };
 // Administrador del sitio (debe coincidir con la función admin() de firestore.rules).
 const ADMIN_CORREO = "jucarcapu@gmail.com";
+// Pruebas de pagos (opción A del usuario, 18/11/2026): mientras sea true, solo el administrador ve el
+// botón de compra activo (y Firebase solo firma sus pedidos). Al pasar a producción: false.
+const PAGOS_SOLO_ADMIN = true;
 // =================================================
 
 const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
@@ -221,6 +225,7 @@ async function iniciar() {
   A.onAuthStateChanged(auth, async (user) => {
     $$("[data-cuenta]").forEach((el) => (el.hidden = el.dataset.cuenta !== (user ? "dentro" : "fuera")));
     $$(".enlace-cuenta").forEach((a) => (a.textContent = user ? "Mi cuenta" : "Ingresar"));
+    if (PRECIOS && $(".planes")) pintarPlanes();
     if (user && $("#panelAdmin")) { await panelAdmin(user); return; }
     if (!panel || !user) return;
     $("#cuentaNombre").textContent = user.displayName || user.email;
@@ -557,9 +562,21 @@ function pintarPlanes() {
     }
     precio.innerHTML = pesos(p[periodo]) + " <small>" + esc(PRECIOS.moneda) + "</small>";
     per.textContent = (periodo === "anual" ? "Por año" : "Por mes") + " · " + eq + (PRECIOS.muestra ? " · valor de muestra" : "");
-    b.disabled = !PASARELA.iniciar;
-    b.textContent = PASARELA.iniciar ? "Comprar" : "Pago en línea próximamente";
+    const activo = puedeComprar();
+    b.disabled = !activo;
+    b.textContent = activo ? (PAGOS_SOLO_ADMIN ? "Comprar (prueba)" : "Comprar") : "Pago en línea próximamente";
   });
+}
+
+function esAdmin() {
+  const u = sesion && sesion.auth.currentUser;
+  return !!(u && u.email === ADMIN_CORREO && u.emailVerified);
+}
+
+// Durante las pruebas solo compra el administrador; en producción, cualquiera si los precios son reales.
+function puedeComprar() {
+  if (!PASARELA.iniciar) return false;
+  return PAGOS_SOLO_ADMIN ? esAdmin() : !PRECIOS.muestra;
 }
 
 async function comprar(plan, boton) {
@@ -567,11 +584,12 @@ async function comprar(plan, boton) {
   const nota = $("#notaPago");
   if (!p) return;
   if (p.gratis) { location.href = "inscripcion.html?perfil=estudiante"; return; }
-  if (!PASARELA.iniciar || PRECIOS.muestra) { nota.textContent = "El pago en línea todavía no está disponible."; return; }
+  if (!PASARELA.iniciar || (PRECIOS.muestra && !PAGOS_SOLO_ADMIN)) { nota.textContent = "El pago en línea todavía no está disponible."; return; }
   if (!sesion) { nota.textContent = "Cargando su sesión… vuelva a pulsar en un momento."; return; }
   const user = sesion.auth.currentUser;
   if (!user) { location.href = "ingresar.html?volver=planes"; return; }
   if (!user.emailVerified) { nota.textContent = "Confirme primero su correo desde «Mi cuenta» para poder comprar."; return; }
+  if (!puedeComprar()) { nota.textContent = "El pago en línea todavía no está disponible."; return; }
   boton.disabled = true;
   nota.textContent = "Preparando su pedido…";
   try {

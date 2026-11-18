@@ -18,6 +18,10 @@ const db = getFirestore();
 
 // Misma fuente de precios que muestra la página de planes.
 const PRECIOS_URL = "https://jucarcapu-png.github.io/geomagni/precios.json";
+// Pruebas de pagos (opción A del usuario, 18/11/2026): mientras tenga un correo, solo esa cuenta puede
+// pagar y sus pedidos se marcan «prueba» (se aceptan aunque precios.json diga muestra:true).
+// En producción dejarlo vacío ("") y volver a publicar las funciones.
+const PRUEBAS_SOLO_CORREO = "jucarcapu@gmail.com";
 
 async function leerPrecios() {
   const r = await fetch(PRECIOS_URL, { cache: "no-store" });
@@ -57,7 +61,7 @@ async function resolverPedido(pedidoId, pago) {
     }
     const plan = precios.planes[p.plan];
     const esperado = plan && !plan.gratis ? plan[p.periodo] : null;
-    if (precios.muestra || !esperado || p.valor !== esperado || Number(pago.valor) !== esperado || pago.moneda !== precios.moneda) {
+    if ((precios.muestra && !p.prueba) || !esperado || p.valor !== esperado || Number(pago.valor) !== esperado || pago.moneda !== precios.moneda) {
       // Nunca se activa una licencia con un valor distinto al publicado: queda para revisión manual.
       tx.update(refPedido, Object.assign({ estado: "revisar", motivo: "El valor o el plan no coinciden con precios.json" }, comun));
       return "revisar";
@@ -112,11 +116,15 @@ exports.firmarPagoWompi = onCall({ secrets: [WOMPI_INTEGRIDAD], enforceAppCheck:
   const p = sp.data();
   if (p.uid !== req.auth.uid) throw new HttpsError("permission-denied", "El pedido no es suyo.");
   if (p.estado !== "pendiente") throw new HttpsError("failed-precondition", "El pedido ya fue resuelto.");
+  const enPruebas = PRUEBAS_SOLO_CORREO !== "";
+  if (enPruebas && !(req.auth.token.email === PRUEBAS_SOLO_CORREO && req.auth.token.email_verified === true))
+    throw new HttpsError("failed-precondition", "El pago en línea todavía no está disponible.");
   const precios = await leerPrecios();
   const plan = precios.planes[p.plan];
   const valor = plan && !plan.gratis ? plan[p.periodo] : null;
-  if (precios.muestra || !valor || p.valor !== valor || precios.moneda !== "COP")
+  if ((precios.muestra && !enPruebas) || !valor || p.valor !== valor || precios.moneda !== "COP")
     throw new HttpsError("failed-precondition", "El pago en línea todavía no está disponible para este plan.");
+  if (enPruebas) await sp.ref.update({ prueba: true });
   const centavos = Math.round(valor * 100);
   return { centavos, moneda: "COP", firma: sha256(id + centavos + "COP" + WOMPI_INTEGRIDAD.value()) };
 });
