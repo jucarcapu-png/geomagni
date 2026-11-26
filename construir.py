@@ -210,6 +210,7 @@ PIE = """<footer class="pie">
   <span>¿Hablamos?</span>
 </a>
 <script src="script.js"></script>
+<script src="fondo.js" defer></script>
 </body>
 </html>
 """ % {"simbolo": SIMBOLO_BLANCO, "wa": TEL_ENLACE.lstrip("+"),
