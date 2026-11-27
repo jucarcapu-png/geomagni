@@ -521,14 +521,13 @@ def p_planes():
         sello = '<span class="plan__sello">Recomendado</span>' if recom else ''
         lista = "".join("<li>%s</li>" % x for x in items)
         tarjetas.append("""        <article class="plan%s">
-          %s<h3>%s</h3>
+          <div class="plan__cabeza"><h3>%s</h3>%s</div>
           <p class="plan__para">%s</p>
-          <p class="plan__precio">Por anunciar</p>
-          <p class="plan__periodo">Precio por usuario</p>
+          <div class="plan__valor"><p class="plan__precio">Por anunciar</p><p class="plan__periodo">Precio por usuario</p></div>
+          <button class="boton plan__boton boton-pago" type="button" data-plan="%s">Comprar</button>
+          <p class="plan__incluye">Qué incluye:</p>
           <ul>%s</ul>
-          <button class="boton %s boton-pago" type="button" data-plan="%s">Comprar</button>
-        </article>""" % (" plan--recomendado" if recom else "", sello, nombre, para, lista,
-                         "boton--naranja" if recom else "boton--morado", clave))
+        </article>""" % (" plan--recomendado" if recom else "", nombre, sello, para, clave, lista))
     filas = [
         ("Modelado 3D, vistas y planos", 1, 1, 1),
         ("Importación DWG y DXF", 1, 1, 1),
@@ -552,11 +551,18 @@ def p_planes():
         ("transferencia", "Transferencia", "Bancaria, para planes empresariales y servicios"),
     ]
     medios = "\n".join('        <div class="pago">%s<strong>%s</strong><span>%s</span></div>' % (icono(i), t, d) for i, t, d in pagos)
-    cuerpo = encabezado("Planes", "Planes y precios", "Elija el plan de TRAMA para su forma de trabajar",
-                        "TRAMA todavía no está a la venta. Los precios que ve son valores de muestra; los definitivos se anunciarán con el lanzamiento de la versión beta.")
+    cuerpo = """  <section class="precios-cabeza">
+    <div class="contenedor">
+      <p class="migas"><a href="index.html">Inicio</a> / Planes</p>
+      <p class="precios-cabeza__marca">TRAMA</p>
+      <h1>Precios</h1>
+      <p>Elija el plan de TRAMA para su forma de trabajar. Los precios que ve son valores de muestra; los definitivos se anunciarán con el lanzamiento de la versión beta.</p>
+    </div>
+  </section>
+"""
     cuerpo += AVISO_TRAMA
     cuerpo += """
-  <section class="seccion">
+  <section class="seccion seccion--planes">
     <div class="contenedor" style="text-align:center">
       <div class="conmutador" role="group" aria-label="Periodo de pago">
         <button type="button" data-periodo="mensual" aria-pressed="true">Mensual</button>
