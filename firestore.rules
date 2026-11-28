@@ -166,6 +166,46 @@ service cloud.firestore {
         && miembrosValidos(request.resource.data)
         && request.resource.data.actualizado == request.time;
       allow delete: if correoVerificado() && resource.data.propietario == request.auth.uid;
+
+      // WEB-036: conjuntos de versiones (una subida con nombre y fecha) y sus hojas.
+      // Leen los miembros; crean administradores y editores. Los PDF están en Storage proyectos/{pid}/conjuntos/{cid}/.
+      function elProyecto() { return get(/databases/$(base)/documents/proyectos/$(pid)).data; }
+      function miembro() { return correoVerificado() && yo() in elProyecto().correos; }
+      function sube() {
+        return correoVerificado() && (yo() in elProyecto().admins || yo() in elProyecto().editores);
+      }
+      match /conjuntos/{cid} {
+        allow read: if miembro();
+        allow create: if sube()
+          && request.resource.data.keys().hasOnly(['nombre', 'fecha', 'archivos', 'hojas', 'creadoPor', 'creado'])
+          && texto(request.resource.data.nombre, 120) && request.resource.data.nombre.size() > 0
+          && request.resource.data.fecha is string && request.resource.data.fecha.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+          && request.resource.data.archivos is list && request.resource.data.archivos.size() >= 1 && request.resource.data.archivos.size() <= 20
+          && request.resource.data.hojas is int && request.resource.data.hojas >= 1 && request.resource.data.hojas <= 2000
+          && request.resource.data.creadoPor == yo()
+          && request.resource.data.creado == request.time;
+        allow update, delete: if false;
+      }
+      match /hojas/{hid} {
+        allow read: if miembro();
+        allow create: if sube()
+          && request.resource.data.keys().hasOnly(['conjunto', 'conjuntoNombre', 'fecha', 'archivo', 'pagina', 'numero', 'titulo',
+                                                    'disciplina', 'creadoPor', 'creado'])
+          && request.resource.data.conjunto is string
+          && exists(/databases/$(base)/documents/proyectos/$(pid)/conjuntos/$(request.resource.data.conjunto))
+          && texto(request.resource.data.conjuntoNombre, 120)
+          && request.resource.data.fecha is string && request.resource.data.fecha.size() == 10
+          && texto(request.resource.data.archivo, 400)
+          && request.resource.data.archivo.matches('^proyectos/' + pid + '/conjuntos/' + request.resource.data.conjunto + '/[^/]+[.]pdf$')
+          && request.resource.data.pagina is int && request.resource.data.pagina >= 1 && request.resource.data.pagina <= 2000
+          && texto(request.resource.data.numero, 40) && request.resource.data.numero.size() > 0
+          && texto(request.resource.data.titulo, 200)
+          && request.resource.data.disciplina in ['General', 'Arquitectura', 'Estructural', 'Hidrosanitario', 'Eléctrico',
+                                                  'Mecánico', 'Paisajismo', 'Topografía', 'Otra']
+          && request.resource.data.creadoPor == yo()
+          && request.resource.data.creado == request.time;
+        allow update, delete: if false;
+      }
     }
 
     // Pedidos de compra (PAG-001). El cliente solo crea el suyo, pendiente y con un plan valido;

@@ -28,6 +28,24 @@ service firebase.storage {
       allow write: if false; // se suben solo desde la consola de Firebase
     }
 
+    // Plataforma de planos (WEB-036): PDF de cada conjunto de un proyecto.
+    // Suben administradores y editores del proyecto (Firestore proyectos/{pid}); leen todos sus miembros.
+    // Solo PDF, hasta 100 MB por archivo. No se reemplazan ni se borran desde el navegador.
+    match /proyectos/{pid}/conjuntos/{cid}/{archivo} {
+      function proyecto() {
+        return firestore.get(/databases/(default)/documents/proyectos/$(pid)).data;
+      }
+      function correo() { return request.auth.token.email.lower(); }
+      function verificado() { return request.auth != null && request.auth.token.email_verified == true; }
+      allow read: if verificado() && correo() in proyecto().correos;
+      allow create: if verificado() && resource == null
+        && (correo() in proyecto().admins || correo() in proyecto().editores)
+        && request.resource.size <= 100 * 1024 * 1024
+        && request.resource.contentType == 'application/pdf'
+        && archivo.matches('.*[.]pdf$');
+      allow update, delete: if false;
+    }
+
     match /{todo=**} {
       allow read, write: if false;
     }

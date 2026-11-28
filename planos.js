@@ -25,6 +25,8 @@ let puedeCrear = false;
 const yo = () => (usuario && usuario.email ? usuario.email.toLowerCase() : "");
 const funcionDe = (p, correo) => Object.keys(FUNCIONES).find((k) => (p[k] || []).includes(correo)) || null;
 const soyAdmin = (p) => (p.admins || []).includes(yo());
+const puedeSubir = (p) => soyAdmin(p) || (p.editores || []).includes(yo());
+const naturales = (a, b) => String(a).localeCompare(String(b), "es", { numeric: true, sensitivity: "base" });
 const fecha = (t) => (t && t.toDate ? t.toDate() : t ? new Date(t) : null);
 
 function estado(texto, clase) {
@@ -99,10 +101,13 @@ function pintarDetalle() {
       ${admin ? '<button class="boton boton--contorno-oscuro planos-renombrar" type="button">Cambiar nombre</button>' : ""}
     </div>
 
-    <div class="planos-pendiente">
-      <strong>Hojas de planos</strong>
-      <p>Pronto podrá subir PDF y separarlos en hojas aquí mismo. Por ahora organice el proyecto y su equipo.</p>
-    </div>
+    <section class="planos-hojas" aria-labelledby="tituloHojas">
+      <div class="planos-hojas__cabeza">
+        <h3 id="tituloHojas" class="planos-subtitulo">Hojas de planos</h3>
+        ${puedeSubir(p) ? '<button class="boton boton--morado planos-subir" type="button">Subir planos</button>' : ""}
+      </div>
+      <div id="listaHojas"><p class="planos-vacio">Cargando hojas…</p></div>
+    </section>
 
     <h3 class="planos-subtitulo">Miembros <span>(${miembros.length} de ${MAX_MIEMBROS})</span></h3>
     <div class="tabla-envoltura">
@@ -137,9 +142,49 @@ function pintarDetalle() {
     ${propio ? `<p class="planos-borrar"><button class="boton-texto planos-eliminar" type="button">Eliminar proyecto</button></p>` : ""}`;
 }
 
+// Hojas del proyecto abierto (WEB-036). La lista completa con búsqueda y filtros es WEB-037.
+const hojasPorProyecto = new Map();
+async function cargarHojas(pid, forzar) {
+  const caja = $("#listaHojas");
+  if (!caja) return;
+  try {
+    if (forzar || !hojasPorProyecto.has(pid)) {
+      const s = await S.F.getDocs(S.F.collection(S.db, "proyectos", pid, "hojas"));
+      hojasPorProyecto.set(pid, s.docs.map((d) => Object.assign({ id: d.id }, d.data())));
+    }
+  } catch (err) { if (pid === actual && $("#listaHojas")) $("#listaHojas").innerHTML = `<p class="planos-vacio">${esc(errorTexto(err))}</p>`; return; }
+  if (pid !== actual || !$("#listaHojas")) return;
+  const hojas = hojasPorProyecto.get(pid).slice().sort((a, b) => naturales(a.numero, b.numero) || naturales(b.fecha, a.fecha));
+  const p = proyectos.find((x) => x.id === pid);
+  if (!hojas.length) {
+    $("#listaHojas").innerHTML = `<p class="planos-vacio">${p && puedeSubir(p)
+      ? "Todavía no hay planos. Pulse «Subir planos» para cargar un PDF y separarlo en hojas."
+      : "Todavía no hay planos en este proyecto."}</p>`;
+    return;
+  }
+  const conjuntos = new Set(hojas.map((h) => h.conjunto)).size;
+  $("#listaHojas").innerHTML = `<p class="planos-meta">${hojas.length} ${hojas.length === 1 ? "hoja" : "hojas"} en ${conjuntos} ${conjuntos === 1 ? "conjunto" : "conjuntos"}</p>
+    <div class="tabla-envoltura"><table class="tabla tabla--admin planos-tabla-hojas">
+      <thead><tr><th>Número</th><th>Título</th><th>Disciplina</th><th>Conjunto</th></tr></thead>
+      <tbody>${hojas.map((h) => `<tr><td><strong>${esc(h.numero)}</strong></td><td>${esc(h.titulo) || "<small>Sin título</small>"}</td>
+        <td>${esc(h.disciplina)}</td><td>${esc(h.conjuntoNombre)}<br><small>${esc(h.fecha)}</small></td></tr>`).join("")}</tbody>
+    </table></div>`;
+}
+
+async function subirPlanos(p) {
+  try {
+    const m = await import("./planos-subir.js");
+    await m.abrirAsistente({ S, proyecto: p, correo: yo(), alTerminar: async (texto) => {
+      estado(texto, "ok");
+      await cargarHojas(p.id, true);
+    } });
+  } catch (err) { estado("No se pudo abrir el asistente. Revise su conexión.", "error"); }
+}
+
 function pintar() {
   pintarLista();
   pintarDetalle();
+  if (actual) cargarHojas(actual);
   $("#bloqueCrear").hidden = !puedeCrear;
   $("#avisoSinPlan").hidden = puedeCrear;
 }
@@ -237,6 +282,7 @@ function enlazar() {
   det.addEventListener("click", async (e) => {
     const p = proyectos.find((x) => x.id === actual);
     if (!p) return;
+    if (e.target.closest(".planos-subir")) { subirPlanos(p); return; }
     if (e.target.closest(".planos-quitar")) {
       const correo = e.target.closest("tr").dataset.correo;
       if (!confirm(`¿Quitar a ${correo} del proyecto «${p.nombre}»? Dejará de verlo.`)) return;
