@@ -131,6 +131,9 @@ async function iniciar() {
   auth.languageCode = "es";
   const db = F.getFirestore(app);
   sesion = { app, auth, db, F };
+  // Otras páginas privadas (planos.js, WEB-035) usan la misma sesión.
+  window.geomagniSesion = sesion;
+  window.dispatchEvent(new CustomEvent("geomagni-sesion", { detail: sesion }));
 
   // Formularios de contacto, postulación y lista de interesados (WEB-010, WEB-014).
   // Los lee solo el administrador (firestore.rules, colección «mensajes»).
@@ -207,7 +210,7 @@ async function iniciar() {
       try {
         await A.signInWithEmailAndPassword(auth, fIng.correo.value.trim(), fIng.clave.value);
         const volver = new URLSearchParams(location.search).get("volver");
-        location.href = volver === "planes" ? "planes.html" : volver === "admin" ? "admin.html" : "cuenta.html";
+        location.href = volver === "planes" ? "planes.html" : volver === "planos" ? "planos.html" : volver === "admin" ? "admin.html" : "cuenta.html";
       } catch (err) { avisar(fIng, mensajeError(err), "error"); ocupado(fIng, false); }
     });
     const olvido = $("#olvideClave");
@@ -226,6 +229,8 @@ async function iniciar() {
     $$("[data-cuenta]").forEach((el) => (el.hidden = el.dataset.cuenta !== (user ? "dentro" : "fuera")));
     $$(".enlace-cuenta").forEach((a) => (a.textContent = user ? "Mi cuenta" : "Ingresar"));
     if (PRECIOS && $(".planes")) pintarPlanes();
+    window.geomagniUsuario = user || null;
+    window.dispatchEvent(new CustomEvent("geomagni-usuario", { detail: user }));
     if (user && $("#panelAdmin")) { await panelAdmin(user); return; }
     if (!panel || !user) return;
     $("#cuentaNombre").textContent = user.displayName || user.email;

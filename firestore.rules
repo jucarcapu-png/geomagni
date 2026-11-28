@@ -125,6 +125,49 @@ service cloud.firestore {
       allow update: if false;
     }
 
+    // Plataforma de planos (WEB-035): proyectos y sus miembros.
+    // Crea un proyecto quien tiene licencia de pago vigente (incluye cortesía). A los invitados les basta
+    // una cuenta GEOMAGNI con correo confirmado: se los identifica por su correo en minúsculas.
+    // Funciones: administradores (invitan, cambian funciones, quitan), editores y lectores.
+    // «correos» = administradores + editores + lectores, sin repetir: sirve para la consulta y la lectura.
+    match /proyectos/{pid} {
+      function correoVerificado() {
+        return request.auth != null && request.auth.token.email_verified == true;
+      }
+      function yo() { return request.auth.token.email.lower(); }
+      function pagoVigente() {
+        let lic = get(/databases/$(base)/documents/licencias/$(request.auth.uid)).data;
+        return lic.tipo == 'pago' && lic.vence > request.time;
+      }
+      function listaCorreos(l) { return l is list && l.size() <= 50; }
+      function miembrosValidos(d) {
+        return listaCorreos(d.admins) && listaCorreos(d.editores) && listaCorreos(d.lectores) && listaCorreos(d.correos)
+          && d.correos.size() == d.admins.size() + d.editores.size() + d.lectores.size()
+          && d.correos.toSet().size() == d.correos.size()
+          && d.correos.hasAll(d.admins) && d.correos.hasAll(d.editores) && d.correos.hasAll(d.lectores)
+          && d.admins.hasAny([d.propietarioCorreo]);
+      }
+      allow read: if (correoVerificado() && yo() in resource.data.correos) || admin();
+      allow create: if correoVerificado() && pagoVigente()
+        && request.resource.data.keys().hasOnly(['nombre', 'descripcion', 'propietario', 'propietarioCorreo',
+                                                  'admins', 'editores', 'lectores', 'correos', 'creado', 'actualizado'])
+        && texto(request.resource.data.nombre, 120) && request.resource.data.nombre.size() > 1
+        && texto(request.resource.data.descripcion, 500)
+        && request.resource.data.propietario == request.auth.uid
+        && request.resource.data.propietarioCorreo == yo()
+        && request.resource.data.admins == [yo()] && request.resource.data.editores == [] && request.resource.data.lectores == []
+        && request.resource.data.correos == [yo()]
+        && request.resource.data.creado == request.time && request.resource.data.actualizado == request.time;
+      allow update: if correoVerificado() && yo() in resource.data.admins
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['nombre', 'descripcion', 'admins', 'editores', 'lectores', 'correos', 'actualizado'])
+        && texto(request.resource.data.nombre, 120) && request.resource.data.nombre.size() > 1
+        && texto(request.resource.data.descripcion, 500)
+        && miembrosValidos(request.resource.data)
+        && request.resource.data.actualizado == request.time;
+      allow delete: if correoVerificado() && resource.data.propietario == request.auth.uid;
+    }
+
     // Pedidos de compra (PAG-001). El cliente solo crea el suyo, pendiente y con un plan valido;
     // Firebase lo aprueba o rechaza al recibir la confirmacion de la pasarela y compara el valor
     // con precios.json. Nadie puede marcar un pedido como pagado desde el navegador.

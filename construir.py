@@ -1206,6 +1206,7 @@ def p_cuenta():
           <p>Le enviamos un enlace de confirmación. Ábralo y vuelva aquí para activar su licencia. Revise también la carpeta de correo no deseado.</p>
           <p><button class="boton boton--morado" id="yaConfirme" type="button">Ya lo confirmé</button> <button class="boton-texto" id="reenviarVerificacion" type="button">Reenviar correo</button></p>
         </div>
+        <p class="cuenta-planos" data-cuenta="dentro" hidden><a class="boton boton--contorno-oscuro" href="planos.html">Planos: mis proyectos compartidos</a></p>
         <div id="bloqueLicencia" hidden>
           <h2>Mi licencia de TRAMA</h2>
           <div id="licencia"><p>Cargando…</p></div>
@@ -1216,6 +1217,49 @@ def p_cuenta():
 """ % {"pronto": PRONTO}
     documento("cuenta.html", "Mi cuenta · GEOMAGNI TECNOLOGÍAS", "Licencia de TRAMA y datos de su cuenta GEOMAGNI.", cuerpo,
               '\n  <meta name="robots" content="noindex, follow">' + MODULO_CUENTA)
+
+# ---------------------------------------------------------------- PLANOS (WEB-035)
+ROBOTS_PRIVADO = chr(10) + '  <meta name="robots" content="noindex, follow">'
+SCRIPT_PLANOS = chr(10) + '  <script type="module" src="planos.js"></script>'
+
+def p_planos():
+    cuerpo = encabezado("Planos", "Plataforma de planos", "Planos",
+                        "Proyectos compartidos con su equipo: invite miembros por correo y defina quién administra, edita o consulta.")
+    cuerpo += AVISO_TRAMA
+    cuerpo += """
+  <section class="seccion">
+    <div class="contenedor">
+%(pronto)s
+      <div class="vacio" data-cuenta="fuera" hidden>
+        <h3>Inicie sesión para ver sus proyectos</h3>
+        <p>Si lo invitaron a un proyecto, ingrese con el correo al que llegó la invitación. Si no tiene cuenta, inscríbase sin costo.</p>
+        <p><a class="boton boton--morado" href="ingresar.html?volver=planos">Ingresar</a> <a class="boton boton--naranja" href="inscripcion.html">Inscribirme</a></p>
+      </div>
+      <div id="panelPlanos" data-cuenta="dentro" hidden>
+        <p id="estadoPlanos" class="planos-estado" role="status">Cargando…</p>
+        <div id="contenidoPlanos" class="planos" hidden>
+          <aside class="planos-lateral" aria-label="Mis proyectos">
+            <h2>Mis proyectos</h2>
+            <div id="listaProyectos"></div>
+            <div id="bloqueCrear" hidden>
+              <form class="formulario planos-crear" id="formCrear" novalidate>
+                <h3>Nuevo proyecto</h3>
+                <div class="campo"><label for="nomProyecto">Nombre</label><input id="nomProyecto" name="nombre" maxlength="120" required></div>
+                <div class="campo"><label for="descProyecto">Descripción <span class="opcional">(opcional)</span></label><textarea id="descProyecto" name="descripcion" rows="3" maxlength="500"></textarea></div>
+                <button class="boton boton--morado" type="submit">Crear proyecto</button>
+                <p class="formulario__nota" role="status"></p>
+              </form>
+            </div>
+            <p id="avisoSinPlan" class="planos-aviso" hidden>Para crear proyectos necesita un <a href="planes.html">plan de pago</a> de TRAMA. Puede participar sin costo en los proyectos a los que lo inviten.</p>
+          </aside>
+          <div id="detalleProyecto" class="planos-detalle"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+""" % {"pronto": PRONTO}
+    documento("planos.html", "Planos · GEOMAGNI TECNOLOGÍAS", "Proyectos de planos compartidos con su equipo.", cuerpo,
+              ROBOTS_PRIVADO + MODULO_CUENTA + SCRIPT_PLANOS)
 
 # ---------------------------------------------------------------- CENTRO DE AYUDA (WEB-028)
 def p_ayuda():
@@ -1294,6 +1338,6 @@ def mapa_del_sitio():
 if __name__ == "__main__":
     print("Generando páginas:")
     p_inicio(); p_productos(); p_planes(); p_descargas(); p_nosotros(); p_trabaja(); p_contacto(); p_privacidad(); p_terminos()
-    p_inscripcion(); p_ingresar(); p_cuenta(); p_admin(); p_novedades(); p_ayuda()
+    p_inscripcion(); p_ingresar(); p_cuenta(); p_planos(); p_admin(); p_novedades(); p_ayuda()
     mapa_del_sitio()
     print("Listo.")
